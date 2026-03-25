@@ -13,6 +13,9 @@ class DataManager {
     }
 
     static getInstance() {
+        if (!DataManager._instance) {
+            DataManager._instance = new DataManager();
+        }
         return DataManager._instance;
     }
 

@@ -17,6 +17,9 @@ class AdManager {
     }
 
     static getInstance() {
+        if (!AdManager._instance) {
+            AdManager._instance = new AdManager();
+        }
         return AdManager._instance;
     }
 

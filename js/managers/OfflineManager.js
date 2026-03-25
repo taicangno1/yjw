@@ -9,6 +9,9 @@ class OfflineManager {
     }
 
     static getInstance() {
+        if (!OfflineManager._instance) {
+            OfflineManager._instance = new OfflineManager();
+        }
         return OfflineManager._instance;
     }
 

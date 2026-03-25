@@ -9,6 +9,9 @@ class BattleManager {
     }
 
     static getInstance() {
+        if (!BattleManager._instance) {
+            BattleManager._instance = new BattleManager();
+        }
         return BattleManager._instance;
     }
 

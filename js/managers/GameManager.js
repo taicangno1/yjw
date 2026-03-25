@@ -9,6 +9,9 @@ class GameManager {
     }
 
     static getInstance() {
+        if (!GameManager._instance) {
+            GameManager._instance = new GameManager();
+        }
         return GameManager._instance;
     }
 
@@ -18,11 +21,21 @@ class GameManager {
     }
 
     initManagers() {
-        DataManager.getInstance();
-        BattleManager.getInstance();
-        OfflineManager.getInstance();
-        AudioManager.getInstance();
-        AdManager.getInstance();
+        if (!this.dataManager) {
+            this.dataManager = new DataManager();
+        }
+        if (!this.battleManager) {
+            this.battleManager = new BattleManager();
+        }
+        if (!this.offlineManager) {
+            this.offlineManager = new OfflineManager();
+        }
+        if (!this.audioManager) {
+            this.audioManager = new AudioManager();
+        }
+        if (!this.adManager) {
+            this.adManager = new AdManager();
+        }
     }
 
     loadScene(sceneKey) {
