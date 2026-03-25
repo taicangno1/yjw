@@ -112,7 +112,7 @@ const AssetGenerator = {
         energyIcon.fillStyle(0x00ff00, 1);
         energyIcon.fillCircle(24, 24, 20);
         energyIcon.fillStyle(0x00cc00, 1);
-        energybaoIcon.fillCircle(24, 24, 14);
+        energyIcon.fillCircle(24, 24, 14);
         energyIcon.generateTexture('energy_icon', 48, 48);
         energyIcon.destroy();
 
