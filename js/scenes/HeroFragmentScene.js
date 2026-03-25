@@ -159,17 +159,6 @@ class HeroFragmentScene extends Phaser.Scene {
         this.showMessage(`${hero.name} 升星成功! 当前星级: ${heroInData.star}`);
     }
 
-        if (hero.star >= 5) {
-            this.showMessage('已达最高星级!');
-            return;
-        }
-
-        DataManager.getInstance().getPlayerData().heroFragments[hero.id] -= fragmentsNeeded;
-        hero.star++;
-
-        this.showMessage(`${hero.name} 升星成功! 当前星级: ${hero.star}`);
-    }
-
     showMessage(text) {
         const msg = this.add.text(640, 360, text, {
             fontSize: '32px',
