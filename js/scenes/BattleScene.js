@@ -285,7 +285,16 @@ class BattleScene extends Phaser.Scene {
             color: '#00ff00'
         }).setOrigin(0.5);
 
-        const continueBtn = this.add.rectangle(640, 450, 200, 50, 0x00cc00);
+        if (rewards.equipment) {
+            const equipName = rewards.equipment.name;
+            const equipColor = this.getQualityColor(rewards.equipment.quality);
+            this.add.text(640, 400, `装备: ${equipName}`, {
+                fontSize: '28px',
+                color: '#' + equipColor.toString(16).padStart(6, '0')
+            }).setOrigin(0.5);
+        }
+
+        const continueBtn = this.add.rectangle(640, 480, 200, 50, 0x00cc00);
         continueBtn.setInteractive({ useHandCursor: true });
         continueBtn.on('pointerdown', () => {
             BattleManager.getInstance().claimRewards();
@@ -328,5 +337,16 @@ class BattleScene extends Phaser.Scene {
             fontSize: '24px',
             color: '#ffffff'
         }).setOrigin(0.5);
+    }
+
+    getQualityColor(quality) {
+        const colors = {
+            green: 0x00ff00,
+            blue: 0x00bfff,
+            purple: 0x9400d3,
+            orange: 0xff8c00,
+            red: 0xff0000
+        };
+        return colors[quality] || 0x00ff00;
     }
 }

@@ -72,7 +72,7 @@ class MainCityScene extends Phaser.Scene {
         const buttons = [
             { key: 'battle', text: '战役', x: 640, y: 280, target: 'LevelSelectScene' },
             { key: 'hero', text: '武将', x: 350, y: 420, target: 'HeroListScene' },
-            { key: 'friend', text: '好友', x: 640, y: 420, target: null, disabled: true },
+            { key: 'equipment', text: '装备', x: 640, y: 420, target: 'EquipmentScene' },
             { key: 'league', text: '联盟', x: 930, y: 420, target: null, disabled: true },
             { key: 'shop', text: '商店', x: 350, y: 560, target: null, disabled: true },
             { key: 'setting', text: '设置', x: 930, y: 560, target: null, disabled: true }

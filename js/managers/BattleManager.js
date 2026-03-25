@@ -74,16 +74,34 @@ class BattleManager {
     calculateRewards(levelId, difficulty) {
         const baseRewards = {
             gold: 100,
-            exp: 50
+            exp: 50,
+            equipmentChance: 0.2
         };
         
         const multiplier = { easy: 1, normal: 1.5, hard: 2 };
         const mult = multiplier[this.currentDifficulty] || 1;
         
+        let equipment = null;
+        if (Math.random() < baseRewards.equipmentChance * mult) {
+            equipment = this.generateEquipmentDrop(difficulty);
+        }
+        
         return {
             gold: Math.floor(baseRewards.gold * mult),
-            exp: Math.floor(baseRewards.exp * mult)
+            exp: Math.floor(baseRewards.exp * mult),
+            equipment: equipment
         };
+    }
+
+    generateEquipmentDrop(difficulty) {
+        const qualityMap = {
+            easy: 'green',
+            normal: 'blue',
+            hard: 'purple'
+        };
+        
+        const quality = qualityMap[difficulty] || 'green';
+        return generateRandomEquipment(quality);
     }
 
     calculateDamage(attacker, defender) {
@@ -132,6 +150,10 @@ class BattleManager {
         this.playerHeroes.forEach(hero => {
             hero.addExp(this.battleRewards.exp);
         });
+        
+        if (this.battleRewards.equipment) {
+            DataManager.getInstance().addEquipment(this.battleRewards.equipment);
+        }
         
         const nextLevel = this.getNextLevel(this.currentLevelId);
         if (nextLevel) {
