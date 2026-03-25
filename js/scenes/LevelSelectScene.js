@@ -156,8 +156,163 @@ class LevelSelectScene extends Phaser.Scene {
         if (isUnlocked) {
             node.on('pointerover', () => node.setScale(1.1));
             node.on('pointerout', () => node.setScale(1));
-            node.on('pointerdown', () => this.startBattle(level.id));
+            node.on('pointerdown', () => this.showLevelOptions(level));
         }
+    }
+
+    showLevelOptions(level) {
+        const playerData = DataManager.getInstance().getPlayerData();
+        const sweepTickets = playerData.items.sweepTicket || 0;
+        const canSweep = playerData.completedLevels && playerData.completedLevels.includes(level.id);
+        
+        const panel = this.add.rectangle(640, 360, 300, 200, 0x000000, 0.95);
+        panel.setStrokeStyle(3, 0xffd700);
+
+        this.add.text(640, 280, level.name, {
+            fontSize: '24px',
+            color: '#ffd700',
+            fontStyle: 'bold'
+        }).setOrigin(0.5);
+
+        const closeBtn = this.add.text(900, 250, 'X', {
+            fontSize: '32px',
+            color: '#ff0000'
+        }).setInteractive({ useHandCursor: true });
+        closeBtn.on('pointerdown', () => {
+            panel.destroy();
+            closeBtn.destroy();
+        });
+
+        const battleBtn = this.add.rectangle(540, 360, 150, 50, 0x00cc00);
+        battleBtn.setInteractive({ useHandCursor: true });
+        this.add.text(540, 360, '挑战', {
+            fontSize: '20px',
+            color: '#ffffff'
+        }).setOrigin(0.5);
+        battleBtn.on('pointerdown', () => {
+            this.startBattle(level.id);
+            panel.destroy();
+            closeBtn.destroy();
+        });
+
+        const sweepBtn = this.add.rectangle(740, 360, 150, 50, canSweep && sweepTickets > 0 ? 0xffd700 : 0x666666);
+        sweepBtn.setInteractive({ useHandCursor: true });
+        this.add.text(740, 360, `扫荡 (${sweepTickets})`, {
+            fontSize: '18px',
+            color: canSweep && sweepTickets > 0 ? '#000000' : '#ffffff'
+        }).setOrigin(0.5);
+        
+        if (canSweep && sweepTickets > 0) {
+            sweepBtn.on('pointerdown', () => {
+                this.sweepLevel(level.id);
+                panel.destroy();
+                closeBtn.destroy();
+            });
+        } else {
+            if (!canSweep) {
+                this.add.text(740, 400, '需先通关', {
+                    fontSize: '12px',
+                    color: '#ff6666'
+                }).setOrigin(0.5);
+            } else {
+                this.add.text(740, 400, '扫荡券不足', {
+                    fontSize: '12px',
+                    color: '#ff6666'
+                }).setOrigin(0.5);
+            }
+        }
+    }
+
+    sweepLevel(levelId) {
+        const playerData = DataManager.getInstance().getPlayerData();
+        if (playerData.items.sweepTicket <= 0) {
+            this.showMessage('扫荡券不足!');
+            return;
+        }
+        
+        if (!playerData.completedLevels || !playerData.completedLevels.includes(levelId)) {
+            this.showMessage('需先通关!');
+            return;
+        }
+
+        playerData.items.sweepTicket--;
+        
+        BattleManager.getInstance().startBattle(levelId, this.currentDifficulty);
+        
+        const rewards = BattleManager.getInstance().getBattleRewards();
+        BattleManager.getInstance().claimRewards();
+        
+        this.showSweepResult(rewards);
+    }
+
+    showSweepResult(rewards) {
+        const panel = this.add.rectangle(640, 360, 350, 300, 0x000000, 0.95);
+        panel.setStrokeStyle(3, 0xffd700);
+
+        this.add.text(640, 250, '扫荡完成!', {
+            fontSize: '32px',
+            color: '#ffd700',
+            fontStyle: 'bold'
+        }).setOrigin(0.5);
+
+        let yPos = 310;
+        this.add.text(640, yPos, `金币: +${rewards.gold}`, {
+            fontSize: '24px',
+            color: '#ffd700'
+        }).setOrigin(0.5);
+        yPos += 45;
+
+        this.add.text(640, yPos, `经验: +${rewards.exp}`, {
+            fontSize: '24px',
+            color: '#00ff00'
+        }).setOrigin(0.5);
+        yPos += 45;
+
+        if (rewards.equipment) {
+            this.add.text(640, yPos, `装备: ${rewards.equipment.name}`, {
+                fontSize: '22px',
+                color: '#00bfff'
+            }).setOrigin(0.5);
+            yPos += 40;
+        }
+
+        if (rewards.fragment) {
+            const heroNames = {
+                'hero_001': '关羽', 'hero_002': '张飞', 'hero_003': '刘备',
+                'hero_004': '曹操', 'hero_005': '赵云'
+            };
+            const heroName = heroNames[rewards.fragment.heroId] || '武将';
+            this.add.text(640, yPos, `碎片: ${heroName}x${rewards.fragment.count}`, {
+                fontSize: '22px',
+                color: '#9400d3'
+            }).setOrigin(0.5);
+        }
+
+        const closeBtn = this.add.rectangle(640, 480, 150, 45, 0x00cc00);
+        closeBtn.setInteractive({ useHandCursor: true });
+        this.add.text(640, 480, '确定', {
+            fontSize: '22px',
+            color: '#ffffff'
+        }).setOrigin(0.5);
+        closeBtn.on('pointerdown', () => {
+            this.scene.restart();
+        });
+    }
+
+    showMessage(text) {
+        const msg = this.add.text(640, 360, text, {
+            fontSize: '32px',
+            color: '#ff0000',
+            fontStyle: 'bold'
+        }).setOrigin(0.5);
+        
+        this.tweens.add({
+            targets: msg,
+            alpha: 0,
+            y: 280,
+            duration: 1500,
+            onComplete: () => msg.destroy()
+        });
     }
 
     createDifficultySelector() {
