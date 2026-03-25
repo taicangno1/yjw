@@ -71,11 +71,13 @@ class MainCityScene extends Phaser.Scene {
     createMenuButtons() {
         const buttons = [
             { key: 'battle', text: '战役', x: 640, y: 280, target: 'LevelSelectScene' },
-            { key: 'hero', text: '武将', x: 350, y: 420, target: 'HeroListScene' },
-            { key: 'equipment', text: '装备', x: 640, y: 420, target: 'EquipmentScene' },
-            { key: 'fragment', text: '碎片', x: 930, y: 420, target: 'HeroFragmentScene' },
-            { key: 'shop', text: '商店', x: 350, y: 560, target: null, disabled: true },
-            { key: 'setting', text: '设置', x: 930, y: 560, target: null, disabled: true }
+            { key: 'hero', text: '武将', x: 200, y: 420, target: 'HeroListScene' },
+            { key: 'equipment', text: '装备', x: 400, y: 420, target: 'EquipmentScene' },
+            { key: 'fragment', text: '碎片', x: 600, y: 420, target: 'HeroFragmentScene' },
+            { key: 'friend', text: '好友', x: 800, y: 420, target: 'FriendScene' },
+            { key: 'league', text: '联盟', x: 200, y: 560, target: 'LeagueScene' },
+            { key: 'rank', text: '排行', x: 400, y: 560, target: 'RankScene' },
+            { key: 'shop', text: '商店', x: 800, y: 560, target: null, disabled: true }
         ];
 
         buttons.forEach(btn => {
