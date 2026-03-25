@@ -5,9 +5,13 @@ class HeroListScene extends Phaser.Scene {
     }
 
     create() {
+        this.createBackground();
         this.createUI();
         this.createHeroList();
-        this.createFilterButtons();
+    }
+
+    createBackground() {
+        this.add.rectangle(640, 360, 1280, 720, 0x1a1a2e);
     }
 
     createUI() {
@@ -18,23 +22,57 @@ class HeroListScene extends Phaser.Scene {
         backBtn.on('pointerdown', () => this.scene.start('MainCityScene'));
 
         this.add.text(640, 50, '武将列表', {
-            fontSize: '36px',
+            fontSize: '40px',
             color: '#ffd700',
             fontStyle: 'bold'
         }).setOrigin(0.5);
+
+        const filterY = 650;
+        const filters = [
+            { key: 'all', label: '全部' },
+            { key: 'infantry', label: '步兵' },
+            { key: 'cavalry', label: '骑兵' },
+            { key: 'archer', label: '弓兵' }
+        ];
+
+        this.add.text(100, filterY, '兵种:', {
+            fontSize: '22px',
+            color: '#ffffff'
+        }).setOrigin(0.5);
+
+        filters.forEach((filter, index) => {
+            const x = 200 + index * 100;
+            const isSelected = this.currentFilter === filter.key;
+            
+            const btn = this.add.rectangle(x, filterY, 80, 36, isSelected ? 0xffd700 : 0x333333);
+            btn.setInteractive({ useHandCursor: true });
+            
+            this.add.text(x, filterY, filter.label, {
+                fontSize: '18px',
+                color: isSelected ? '#000000' : '#ffffff'
+            }).setOrigin(0.5);
+
+            btn.on('pointerdown', () => {
+                this.currentFilter = filter.key;
+                this.scene.restart();
+            });
+        });
     }
 
     createHeroList() {
-        const heroes = DataManager.getInstance().getPlayerData().heroes;
+        let heroes = DataManager.getInstance().getPlayerData().heroes;
         
-        this.heroCards = [];
-        const startX = 140;
-        const startY = 180;
-        const cardWidth = 200;
-        const cardHeight = 280;
-        const gapX = 20;
-        const gapY = 20;
-        const cols = 5;
+        if (this.currentFilter !== 'all') {
+            heroes = heroes.filter(h => h.troop === this.currentFilter);
+        }
+        
+        const startX = 120;
+        const startY = 160;
+        const cardWidth = 180;
+        const cardHeight = 260;
+        const gapX = 30;
+        const gapY = 30;
+        const cols = 6;
 
         heroes.forEach((heroData, index) => {
             const col = index % cols;
@@ -43,90 +81,11 @@ class HeroListScene extends Phaser.Scene {
             const y = startY + row * (cardHeight + gapY);
             
             const hero = new Hero(heroData, true);
-            const card = this.createHeroCard(hero, x, y);
-            this.heroCards.push(card);
+            this.createHeroCard(hero, x, y);
         });
     }
 
     createHeroCard(hero, x, y) {
-        const bgColor = this.getQualityColor(hero.quality);
-        const bg = this.add.rectangle(x, y, 190, 270, 0x333333);
-        bg.setStrokeStyle(3, bgColor);
-
-        this.add.text(x, y - 110, hero.name, {
-            fontSize: '24px',
-            color: '#ffffff',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
-
-        const avatar = this.add.rectangle(x, y - 40, 80, 80, bgColor);
-        
-        this.add.text(x, y + 20, `等级: ${hero.level}`, {
-            fontSize: '18px',
-            color: '#aaaaaa'
-        }).setOrigin(0.5);
-
-        this.add.text(x, y + 50, `星级: ${hero.star}`, {
-            fontSize: '18px',
-            color: '#aaaaaa'
-        }).setOrigin(0.5);
-
-        this.add.text(x, y + 90, `战力: ${hero.attack + hero.defense + Math.floor(hero.hp / 10)}`, {
-            fontSize: '20px',
-            color: '#00ff00'
-        }).setOrigin(0.5);
-
-        const upgradeBtn = this.add.text(x, y + 125, '升级', {
-            fontSize: '20px',
-            color: '#ffffff'
-        }).setOrigin(0.5)
-          .setInteractive({ useHandCursor: true });
-        
-        upgradeBtn.on('pointerdown', () => this.upgradeHero(hero));
-
-        return { bg, hero };
-    }
-
-    createFilterButtons() {
-        const filters = [
-            { key: 'all', label: '全部' },
-            { key: 'infantry', label: '步兵' },
-            { key: 'cavalry', label: '骑兵' },
-            { key: 'archer', label: '弓兵' }
-        ];
-
-        const startX = 400;
-        const y = 700;
-
-        filters.forEach((filter, index) => {
-            const color = this.currentFilter === filter.key ? '#ffd700' : '#666666';
-            const text = this.add.text(startX + index * 120, y, filter.label, {
-                fontSize: '22px',
-                color: color
-            }).setInteractive({ useHandCursor: true });
-            
-            text.on('pointerdown', () => {
-                this.currentFilter = filter.key;
-                this.scene.restart();
-            });
-        });
-    }
-
-    upgradeHero(hero) {
-        const cost = DataManager.getInstance().calculateUpgradeCost(hero.level);
-        const playerData = DataManager.getInstance().getPlayerData();
-        
-        if (playerData.gold >= cost) {
-            DataManager.getInstance().spendGold(cost);
-            hero.levelUp();
-            this.scene.restart();
-            this.showMessage(`升级成功! 消耗${cost}金币`);
-        } else {
-            this.showMessage('金币不足!');
-        }
-    }
-
-    getQualityColor(quality) {
         const colors = {
             green: 0x00ff00,
             blue: 0x00bfff,
@@ -134,13 +93,75 @@ class HeroListScene extends Phaser.Scene {
             orange: 0xff8c00,
             red: 0xff0000
         };
-        return colors[quality] || 0x00ff00;
+        const color = colors[hero.quality] || 0x00ff00;
+        
+        const bg = this.add.rectangle(x, y, 170, 250, 0x2d2d44);
+        bg.setStrokeStyle(3, color);
+
+        const heroKey = `hero_${hero.id.replace('hero_', '')}`;
+        const avatar = this.add.image(x, y - 50, heroKey).setScale(0.8);
+
+        this.add.text(x, y + 30, hero.name, {
+            fontSize: '22px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        }).setOrigin(0.5);
+
+        const troopColors = { infantry: '#008000', cavalry: '#800080', archer: '#ff8c00' };
+        this.add.text(x, y + 55, this.getTroopName(hero.troop), {
+            fontSize: '14px',
+            color: troopColors[hero.troop] || '#ffffff'
+        }).setOrigin(0.5);
+
+        const statsText = [
+            `等级: ${hero.level}`,
+            `星级: ${hero.star}`,
+            `战力: ${Math.floor(hero.attack + hero.defense + hero.hp / 10)}`
+        ].join('\n');
+        
+        this.add.text(x, y + 90, statsText, {
+            fontSize: '14px',
+            color: '#aaaaaa',
+            lineSpacing: 6
+        }).setOrigin(0.5);
+
+        const upgradeBtn = this.add.rectangle(x, y + 140, 100, 36, 0x00cc00);
+        upgradeBtn.setInteractive({ useHandCursor: true });
+        
+        const cost = DataManager.getInstance().calculateUpgradeCost(hero.level);
+        this.add.text(x, y + 140, `升级 ${cost}`, {
+            fontSize: '16px',
+            color: '#ffffff'
+        }).setOrigin(0.5);
+
+        upgradeBtn.on('pointerdown', () => this.upgradeHero(hero));
+        upgradeBtn.on('pointerover', () => upgradeBtn.setFillStyle(0x00ff00));
+        upgradeBtn.on('pointerout', () => upgradeBtn.setFillStyle(0x00cc00));
+    }
+
+    getTroopName(troop) {
+        const names = { infantry: '步兵', cavalry: '骑兵', archer: '弓兵' };
+        return names[troop] || troop;
+    }
+
+    upgradeHero(hero) {
+        const cost = DataManager.getInstance().calculateUpgradeCost(hero.level);
+        const playerData = DataManager.getInstance().getPlayerData();
+        
+        if (playerData.gold >= cost) {
+            DataManager.getInstance().upgradeHero(hero.id);
+            this.scene.restart();
+            this.showMessage(`升级成功!`);
+        } else {
+            this.showMessage('金币不足!');
+        }
     }
 
     showMessage(text) {
         const msg = this.add.text(640, 360, text, {
-            fontSize: '32px',
-            color: '#00ff00'
+            fontSize: '36px',
+            color: '#00ff00',
+            fontStyle: 'bold'
         }).setOrigin(0.5);
         
         this.tweens.add({

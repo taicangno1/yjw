@@ -4,34 +4,47 @@ class BattleScene extends Phaser.Scene {
     }
 
     create() {
+        this.createBackground();
         this.createBattleUI();
         this.startBattle();
+    }
+
+    createBackground() {
+        const bg = this.add.image(640, 360, 'bg_battle');
+        bg.setDisplaySize(1280, 720);
     }
 
     createBattleUI() {
         const topBar = this.add.rectangle(640, 30, 1260, 60, 0x000000, 0.5);
         topBar.setOrigin(0.5);
 
-        this.add.text(50, 30, '< 撤退', {
+        const backBtn = this.add.text(50, 30, '< 撤退', {
             fontSize: '24px',
             color: '#ff6666'
-        }).setInteractive({ useHandCursor: true })
-          .on('pointerdown', () => this.scene.start('MainCityScene'));
+        }).setInteractive({ useHandCursor: true });
+        backBtn.on('pointerdown', () => {
+            this.scene.start('MainCityScene');
+        });
 
         this.roundText = this.add.text(640, 30, '第1回合', {
             fontSize: '24px',
             color: '#ffffff'
         }).setOrigin(0.5);
 
-        this.battleSpeedBtn = this.add.text(1200, 30, '1x', {
-            fontSize: '24px',
-            color: '#00ff00'
-        }).setInteractive({ useHandCursor: true });
-
-        this.add.text(640, 680, 'vs', {
+        this.add.text(640, 680, 'VS', {
             fontSize: '48px',
             color: '#ffd700',
             fontStyle: 'bold'
+        }).setOrigin(0.5);
+
+        this.add.text(300, 100, '我方', {
+            fontSize: '24px',
+            color: '#0066ff'
+        }).setOrigin(0.5);
+
+        this.add.text(980, 100, '敌方', {
+            fontSize: '24px',
+            color: '#ff0000'
         }).setOrigin(0.5);
     }
 
@@ -43,29 +56,46 @@ class BattleScene extends Phaser.Scene {
         this.currentRound = 1;
         
         this.displayHeroes();
-        this.startTurn();
+        
+        this.time.delayedCall(1000, () => {
+            this.startTurn();
+        });
     }
 
     displayHeroes() {
-        const playerStartX = 900;
-        const enemyStartX = 380;
-        const y = 360;
+        const playerStartX = 850;
+        const enemyStartX = 350;
+        const y = 350;
 
         this.playerHeroes.forEach((hero, index) => {
-            hero.sprite = this.add.rectangle(playerStartX + index * 80, y, 60, 100, 0x0066ff);
-            hero.hpBar = this.add.rectangle(playerStartX + index * 80, y - 70, 50, 8, 0x00ff00);
-            hero.nameText = this.add.text(playerStartX + index * 80, y + 70, hero.name, {
-                fontSize: '16px',
-                color: '#0066ff'
+            const heroKey = `hero_${hero.id.replace('hero_', '')}`;
+            hero.sprite = this.add.image(playerStartX + index * 90, y, heroKey).setScale(0.9);
+            hero.hpBarBg = this.add.rectangle(playerStartX + index * 90, y - 70, 70, 10, 0x333333);
+            hero.hpBar = this.add.rectangle(playerStartX + index * 90 - 35, y - 70, 70, 10, 0x00ff00);
+            hero.nameText = this.add.text(playerStartX + index * 90, y + 60, hero.name, {
+                fontSize: '18px',
+                color: '#0066ff',
+                fontStyle: 'bold'
+            }).setOrigin(0.5);
+            hero.levelText = this.add.text(playerStartX + index * 90, y + 85, `Lv.${hero.level}`, {
+                fontSize: '14px',
+                color: '#aaaaaa'
             }).setOrigin(0.5);
         });
 
         this.enemyHeroes.forEach((hero, index) => {
-            hero.sprite = this.add.rectangle(enemyStartX + index * 80, y, 60, 100, 0xff0000);
-            hero.hpBar = this.add.rectangle(enemyStartX + index * 80, y - 70, 50, 8, 0xff0000);
-            hero.nameText = this.add.text(enemyStartX + index * 80, y + 70, hero.name, {
-                fontSize: '16px',
-                color: '#ff0000'
+            const heroKey = `enemy_${hero.id.replace('enemy_', '')}`;
+            hero.sprite = this.add.image(enemyStartX + index * 90, y, heroKey).setScale(0.9);
+            hero.hpBarBg = this.add.rectangle(enemyStartX + index * 90, y - 70, 70, 10, 0x333333);
+            hero.hpBar = this.add.rectangle(enemyStartX + index * 90 - 35, y - 70, 70, 10, 0xff0000);
+            hero.nameText = this.add.text(enemyStartX + index * 90, y + 60, hero.name, {
+                fontSize: '18px',
+                color: '#ff0000',
+                fontStyle: 'bold'
+            }).setOrigin(0.5);
+            hero.levelText = this.add.text(enemyStartX + index * 90, y + 85, `Lv.${hero.level}`, {
+                fontSize: '14px',
+                color: '#aaaaaa'
             }).setOrigin(0.5);
         });
     }
@@ -73,27 +103,35 @@ class BattleScene extends Phaser.Scene {
     startTurn() {
         this.roundText.setText(`第${this.currentRound}回合`);
         
-        const allHeroes = [...this.playerHeroes, ...this.enemyHeroes];
+        const allHeroes = [...this.playerHeroes, ...this.enemyHeroes].filter(h => !h.isDead);
         allHeroes.sort((a, b) => b.speed - a.speed);
         
-        this.executeTurn(allHeroes, 0);
+        if (allHeroes.length === 0) {
+            this.checkBattleEnd();
+            return;
+        }
+        
+        this.executeTurnSequence(allHeroes, 0);
     }
 
-    executeTurn(heroes, index) {
+    executeTurnSequence(heroes, index) {
         if (index >= heroes.length) {
             this.currentRound++;
-            this.startTurn();
+            this.time.delayedCall(500, () => {
+                this.startTurn();
+            });
             return;
         }
 
         const hero = heroes[index];
         if (hero.isDead) {
-            this.executeTurn(heroes, index + 1);
+            this.executeTurnSequence(heroes, index + 1);
             return;
         }
 
         const enemies = hero.isPlayer ? this.enemyHeroes : this.playerHeroes;
         const aliveEnemies = enemies.filter(e => !e.isDead);
+        
         if (aliveEnemies.length === 0) {
             this.checkBattleEnd();
             return;
@@ -101,48 +139,75 @@ class BattleScene extends Phaser.Scene {
 
         const target = aliveEnemies[Math.floor(Math.random() * aliveEnemies.length)];
         
-        const damageResult = BattleManager.getInstance().calculateDamage(hero, target);
-        hero.attackTarget(target, damageResult);
-        
-        this.showDamage(target, damageResult);
-        this.updateHPBar(target);
-        
-        this.time.delayedCall(800, () => {
-            if (damageResult.isCombo && !target.isDead) {
-                const comboDamage = Math.floor(damageResult.damage * 0.5);
-                target.takeDamage(comboDamage);
-                this.showDamage(target, { damage: comboDamage, isCrit: false, isDodge: false, isCombo: false });
-                this.updateHPBar(target);
-            }
+        this.showAttackAnimation(hero, target, () => {
+            const damageResult = BattleManager.getInstance().calculateDamage(hero, target);
+            hero.attackTarget(target, damageResult);
             
-            if (target.isDead) {
-                this.showDeathEffect(target);
-            }
+            this.showDamage(target, damageResult);
+            this.updateHPBar(target);
             
             this.time.delayedCall(300, () => {
-                this.executeTurn(heroes, index + 1);
+                if (damageResult.isCombo && !target.isDead) {
+                    const comboDamage = Math.floor(damageResult.damage * 0.5);
+                    target.takeDamage(comboDamage);
+                    this.showDamage(target, { damage: comboDamage, isCrit: false, isDodge: false, isCombo: true });
+                    this.updateHPBar(target);
+                }
+                
+                if (target.isDead) {
+                    this.showDeathEffect(target);
+                }
+                
+                this.time.delayedCall(300, () => {
+                    this.executeTurnSequence(heroes, index + 1);
+                });
             });
+        });
+    }
+
+    showAttackAnimation(attacker, target, callback) {
+        const originalX = attacker.sprite.x;
+        const direction = attacker.isPlayer ? -1 : 1;
+        
+        this.tweens.add({
+            targets: attacker.sprite,
+            x: originalX + direction * 50,
+            duration: 200,
+            yoyo: true,
+            onComplete: callback
         });
     }
 
     showDamage(hero, result) {
         const x = hero.sprite.x;
-        const y = hero.sprite.y - 50;
+        const y = hero.sprite.y - 80;
         
         let color = '#ffffff';
-        if (result.isDodge) color = '#ffff00';
-        else if (result.isCrit) color = '#ff6600';
+        let text = `-${result.damage}`;
         
-        const text = result.isDodge ? '闪避' : `-${result.damage}`;
+        if (result.isDodge) {
+            color = '#ffff00';
+            text = '闪避';
+        } else if (result.isCrit) {
+            color = '#ff6600';
+            text = `-${result.damage}`;
+        }
+        
+        if (result.isCombo) {
+            text += '!';
+        }
+        
         const dmgText = this.add.text(x, y, text, {
-            fontSize: '32px',
+            fontSize: '36px',
             color: color,
-            fontStyle: 'bold'
+            fontStyle: 'bold',
+            stroke: '#000000',
+            strokeThickness: 3
         }).setOrigin(0.5);
 
         this.tweens.add({
             targets: dmgText,
-            y: y - 50,
+            y: y - 60,
             alpha: 0,
             duration: 1000,
             onComplete: () => dmgText.destroy()
@@ -150,26 +215,28 @@ class BattleScene extends Phaser.Scene {
     }
 
     updateHPBar(hero) {
-        const percent = hero.currentHp / hero.maxHp;
-        hero.hpBar.width = 50 * percent;
+        const percent = Math.max(0, hero.currentHp / hero.maxHp);
+        hero.hpBar.width = 70 * percent;
         
         if (percent < 0.3) {
             hero.hpBar.setFillStyle(0xff0000);
         } else if (percent < 0.6) {
             hero.hpBar.setFillStyle(0xffff00);
+        } else {
+            hero.hpBar.setFillStyle(0x00ff00);
         }
     }
 
     showDeathEffect(hero) {
         this.tweens.add({
-            targets: hero.sprite,
+            targets: [hero.sprite, hero.hpBar, hero.hpBarBg, hero.nameText, hero.levelText],
             alpha: 0,
-            scale: 0.5,
+            scale: 0.3,
             duration: 500,
             onComplete: () => {
-                hero.sprite.destroy();
-                hero.hpBar.destroy();
-                hero.nameText.destroy();
+                [hero.sprite, hero.hpBar, hero.hpBarBg, hero.nameText, hero.levelText].forEach(obj => {
+                    if (obj) obj.destroy();
+                });
             }
         });
     }
@@ -186,68 +253,80 @@ class BattleScene extends Phaser.Scene {
     }
 
     showVictory() {
-        AudioManager.getInstance().playSFX('sfx_victory');
+        AudioManager.getInstance().playSFX('victory');
         
-        const panel = this.add.rectangle(640, 360, 600, 400, 0x000000, 0.9);
+        const panel = this.add.rectangle(640, 360, 500, 400, 0x000000, 0.9);
         panel.setStrokeStyle(4, 0xffd700);
         
-        this.add.text(640, 250, '胜利!', {
-            fontSize: '64px',
+        const title = this.add.text(640, 200, '胜利!', {
+            fontSize: '72px',
             color: '#ffd700',
             fontStyle: 'bold'
         }).setOrigin(0.5);
 
+        this.tweens.add({
+            targets: title,
+            scaleX: 1.1,
+            scaleY: 1.1,
+            duration: 500,
+            yoyo: true,
+            repeat: -1
+        });
+
         const rewards = BattleManager.getInstance().getBattleRewards();
         
-        this.add.text(640, 350, `金币: +${rewards.gold}`, {
-            fontSize: '28px',
+        this.add.text(640, 300, `金币: +${rewards.gold}`, {
+            fontSize: '32px',
             color: '#ffd700'
         }).setOrigin(0.5);
 
-        this.add.text(640, 400, `经验: +${rewards.exp}`, {
-            fontSize: '28px',
+        this.add.text(640, 350, `经验: +${rewards.exp}`, {
+            fontSize: '32px',
             color: '#00ff00'
         }).setOrigin(0.5);
 
-        const continueBtn = this.add.text(640, 500, '继续', {
-            fontSize: '32px',
-            color: '#ffffff'
-        }).setOrigin(0.5)
-          .setInteractive({ useHandCursor: true });
-        
+        const continueBtn = this.add.rectangle(640, 450, 200, 50, 0x00cc00);
+        continueBtn.setInteractive({ useHandCursor: true });
         continueBtn.on('pointerdown', () => {
             BattleManager.getInstance().claimRewards();
             this.scene.start('LevelSelectScene');
         });
+        
+        this.add.text(640, 450, '继续', {
+            fontSize: '28px',
+            color: '#ffffff',
+            fontStyle: 'bold'
+        }).setOrigin(0.5);
     }
 
     showDefeat() {
         const panel = this.add.rectangle(640, 360, 400, 300, 0x000000, 0.9);
         panel.setStrokeStyle(4, 0xff0000);
         
-        this.add.text(640, 300, '失败', {
-            fontSize: '48px',
-            color: '#ff0000'
+        this.add.text(640, 280, '失败', {
+            fontSize: '64px',
+            color: '#ff0000',
+            fontStyle: 'bold'
         }).setOrigin(0.5);
 
-        const retryBtn = this.add.text(640, 380, '重新挑战', {
-            fontSize: '28px',
-            color: '#ffffff'
-        }).setOrigin(0.5)
-          .setInteractive({ useHandCursor: true });
-        
+        const retryBtn = this.add.rectangle(540, 380, 150, 50, 0xcc6600);
+        retryBtn.setInteractive({ useHandCursor: true });
         retryBtn.on('pointerdown', () => {
             this.scene.start('LevelSelectScene');
         });
-
-        const backBtn = this.add.text(640, 430, '返回', {
+        this.add.text(540, 380, '重新挑战', {
             fontSize: '24px',
-            color: '#888888'
-        }).setOrigin(0.5)
-          .setInteractive({ useHandCursor: true });
-        
+            color: '#ffffff'
+        }).setOrigin(0.5);
+
+        const backBtn = this.add.rectangle(740, 380, 150, 50, 0x666666);
+        backBtn.setInteractive({ useHandCursor: true });
         backBtn.on('pointerdown', () => {
             this.scene.start('MainCityScene');
         });
+        this.add.text(740, 380, '返回', {
+            fontSize: '24px',
+            color: '#ffffff'
+        }).setOrigin(0.5);
     }
 }
