@@ -34,18 +34,77 @@ class BattleManager {
         const mult = levelMultiplier[this.currentDifficulty] || 1;
         
         const enemyConfigs = {
-            'level_01_01': [{ id: 'enemy_zhangjiao', name: '张角', level: 1 }],
+            'level_01_01': [{ id: 'enemy_zhangjiao', name: '张角', level: 1, troop: 'caster' }],
             'level_01_02': [
-                { id: 'enemy_zhangjiao', name: '张角', level: 2 },
-                { id: 'enemy_zhangbao', name: '张宝', level: 1 }
+                { id: 'enemy_zhangjiao', name: '张角', level: 2, troop: 'caster' },
+                { id: 'enemy_zhangbao', name: '张宝', level: 1, troop: 'caster' }
             ],
             'level_01_03': [
-                { id: 'enemy_zhangjiao', name: '张角', level: 3 },
-                { id: 'enemy_zhangbao', name: '张宝', level: 2 },
-                { id: 'enemy_zhangliang', name: '张梁', level: 2 }
+                { id: 'enemy_zhangjiao', name: '张角', level: 3, troop: 'caster' },
+                { id: 'enemy_zhangbao', name: '张宝', level: 2, troop: 'caster' },
+                { id: 'enemy_zhangliang', name: '张梁', level: 2, troop: 'infantry' }
             ],
-            'level_02_01': [{ id: 'enemy_liru', name: '李儒', level: 5 }],
-            'level_02_02': [{ id: 'enemy_lvbu', name: '吕布', level: 8 }]
+            'level_02_01': [
+                { id: 'enemy_liru', name: '李儒', level: 5, troop: 'caster' },
+                { id: 'enemy_xurong', name: '徐荣', level: 4, troop: 'infantry' }
+            ],
+            'level_02_02': [{ id: 'enemy_lvbu', name: '吕布', level: 8, troop: 'cavalry' }],
+            'level_02_03': [
+                { id: 'enemy_lvbu', name: '吕布', level: 10, troop: 'cavalry' },
+                { id: 'enemy_huaxiong', name: '华雄', level: 8, troop: 'infantry' }
+            ],
+            'level_03_01': [
+                { id: 'enemy_caocao', name: '曹操', level: 12, troop: 'cavalry' },
+                { id: 'enemy_yuanshao', name: '袁绍', level: 11, troop: 'infantry' }
+            ],
+            'level_03_02': [{ id: 'enemy_caocao', name: '曹操', level: 15, troop: 'cavalry' }],
+            'level_03_03': [
+                { id: 'enemy_liubei', name: '刘备', level: 12, troop: 'infantry' },
+                { id: 'enemy_guanyu', name: '关羽', level: 13, troop: 'cavalry' },
+                { id: 'enemy_zhangfei', name: '张飞', level: 12, troop: 'infantry' }
+            ],
+            'level_03_04': [
+                { id: 'enemy_sunjian', name: '孙坚', level: 14, troop: 'cavalry' },
+                { id: 'enemy_sunce', name: '孙策', level: 13, troop: 'cavalry' }
+            ],
+            'level_04_01': [
+                { id: 'enemy_zhouyu', name: '周瑜', level: 18, troop: 'caster' },
+                { id: 'enemy_huanggai', name: '黄盖', level: 16, troop: 'infantry' }
+            ],
+            'level_04_02': [
+                { id: 'enemy_caocao', name: '曹操', level: 20, troop: 'cavalry' },
+                { id: 'enemy_caoren', name: '曹仁', level: 18, troop: 'infantry' }
+            ],
+            'level_04_03': [
+                { id: 'enemy_guanyu', name: '关羽', level: 18, troop: 'cavalry' },
+                { id: 'enemy_zhangfei', name: '张飞', level: 17, troop: 'infantry' }
+            ],
+            'level_04_04': [
+                { id: 'enemy_liubei', name: '刘备', level: 20, troop: 'infantry' },
+                { id: 'enemy_huangzhong', name: '黄忠', level: 18, troop: 'archer' }
+            ],
+            'level_05_01': [
+                { id: 'enemy_menghuo', name: '孟获', level: 22, troop: 'infantry' },
+                { id: 'enemy_zhurong', name: '祝融夫人', level: 20, troop: 'archer' }
+            ],
+            'level_05_02': [
+                { id: 'enemy_zhugeliang', name: '诸葛亮', level: 25, troop: 'caster' },
+                { id: 'enemy_jiangwei', name: '姜维', level: 22, troop: 'cavalry' }
+            ],
+            'level_05_03': [
+                { id: 'enemy_zhanghe', name: '张郃', level: 24, troop: 'cavalry' },
+                { id: 'enemy_mashu', name: '马谡', level: 20, troop: 'caster' }
+            ],
+            'level_06_01': [{ id: 'enemy_simazhao', name: '司马昭', level: 28, troop: 'caster' }],
+            'level_06_02': [
+                { id: 'enemy_dengai', name: '邓艾', level: 28, troop: 'cavalry' },
+                { id: 'enemy_zhonghui', name: '钟会', level: 26, troop: 'caster' }
+            ],
+            'level_06_03': [
+                { id: 'enemy_wangjun', name: '王濬', level: 30, troop: 'cavalry' },
+                { id: 'enemy_sunhao', name: '孙皓', level: 25, troop: 'infantry' }
+            ],
+            'level_06_04': [{ id: 'enemy_jinwudi', name: '晋武帝', level: 35, troop: 'cavalry' }]
         };
 
         const enemies = enemyConfigs[levelId] || enemyConfigs['level_01_01'];
@@ -53,20 +112,20 @@ class BattleManager {
         return enemies.map(config => ({
             id: config.id,
             name: config.name,
-            quality: 'blue',
-            troop: 'infantry',
+            quality: 'purple',
+            troop: config.troop || 'infantry',
             level: Math.floor(config.level * mult),
             exp: 0,
-            star: 1,
+            star: 2,
             attack: Math.floor(80 * mult),
             defense: Math.floor(60 * mult),
             hp: Math.floor(800 * mult),
             maxHp: Math.floor(800 * mult),
-            speed: 45,
-            critRate: 0.08,
-            dodgeRate: 0.03,
-            comboRate: 0.1,
-            equipment: ['', '', '', ''],
+            speed: 45 + config.level,
+            critRate: 0.1,
+            dodgeRate: 0.05,
+            comboRate: 0.12,
+            equipment: [null, null, null, null],
             isLocked: false
         }));
     }
@@ -199,7 +258,11 @@ class BattleManager {
     getNextLevel(levelId) {
         const levelOrder = [
             'level_01_01', 'level_01_02', 'level_01_03',
-            'level_02_01', 'level_02_02'
+            'level_02_01', 'level_02_02', 'level_02_03',
+            'level_03_01', 'level_03_02', 'level_03_03', 'level_03_04',
+            'level_04_01', 'level_04_02', 'level_04_03', 'level_04_04',
+            'level_05_01', 'level_05_02', 'level_05_03',
+            'level_06_01', 'level_06_02', 'level_06_03', 'level_06_04'
         ];
         
         const currentIndex = levelOrder.indexOf(levelId);

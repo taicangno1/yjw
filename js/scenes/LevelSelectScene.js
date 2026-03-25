@@ -46,32 +46,76 @@ class LevelSelectScene extends Phaser.Scene {
                 name: '第二章 董卓之乱', 
                 color: 0xff6600,
                 levels: [
-                    { id: 'level_02_01', name: '董卓部下', enemies: ['李儒'] },
-                    { id: 'level_02_02', name: '吕布', enemies: ['吕布'] }
+                    { id: 'level_02_01', name: '董卓部下', enemies: ['李儒', '徐荣'] },
+                    { id: 'level_02_02', name: '汜水关', enemies: ['吕布'] },
+                    { id: 'level_02_03', name: '虎牢关', enemies: ['吕布', '华雄'] }
+                ]
+            },
+            { 
+                id: 3, 
+                name: '第三章 群雄逐鹿', 
+                color: 0xff0066,
+                levels: [
+                    { id: 'level_03_01', name: '十八路诸侯', enemies: ['曹操', '袁绍'] },
+                    { id: 'level_03_02', name: '曹操崛起', enemies: ['曹操'] },
+                    { id: 'level_03_03', name: '刘备入主', enemies: ['刘备', '关羽', '张飞'] },
+                    { id: 'level_03_04', name: '孙坚立业', enemies: ['孙坚', '孙策'] }
+                ]
+            },
+            { 
+                id: 4, 
+                name: '第四章 三国鼎立', 
+                color: 0x0066ff,
+                levels: [
+                    { id: 'level_04_01', name: '赤壁之战', enemies: ['周瑜', '黄盖'] },
+                    { id: 'level_04_02', name: '曹操败退', enemies: ['曹操', '曹仁'] },
+                    { id: 'level_04_03', name: '三顾茅庐', enemies: ['关羽', '张飞'] },
+                    { id: 'level_04_04', name: '汉中之战', enemies: ['刘备', '黄忠'] }
+                ]
+            },
+            { 
+                id: 5, 
+                name: '第五章 南征北战', 
+                color: 0x00ff66,
+                levels: [
+                    { id: 'level_05_01', name: '七擒孟获', enemies: ['孟获', '祝融夫人'] },
+                    { id: 'level_05_02', name: '北伐中原', enemies: ['诸葛亮', '姜维'] },
+                    { id: 'level_05_03', name: '街亭之战', enemies: ['张郃', '马谡'] }
+                ]
+            },
+            { 
+                id: 6, 
+                name: '第六章 一统天下', 
+                color: 0xffd700,
+                levels: [
+                    { id: 'level_06_01', name: '三分归晋', enemies: ['司马昭'] },
+                    { id: 'level_06_02', name: '魏灭蜀汉', enemies: ['邓艾', '钟会'] },
+                    { id: 'level_06_03', name: '晋灭东吴', enemies: ['王濬', '孙皓'] },
+                    { id: 'level_06_04', name: '天下归一', enemies: ['晋武帝'] }
                 ]
             }
         ];
 
-        const startY = 180;
-        const chapterSpacing = 220;
+        const startY = 150;
+        const chapterSpacing = 100;
 
         chapters.forEach((chapter, chapterIdx) => {
             const y = startY + chapterIdx * chapterSpacing;
             
             this.add.text(100, y, chapter.name, {
-                fontSize: '28px',
+                fontSize: '24px',
                 color: '#' + chapter.color.toString(16).padStart(6, '0'),
                 fontStyle: 'bold'
             });
 
-            this.add.rectangle(100, y + 30, 1080, 3, chapter.color, 0.5);
+            this.add.rectangle(100, y + 20, 1100, 2, chapter.color, 0.5);
 
             chapter.levels.forEach((level, levelIdx) => {
-                const x = 300 + levelIdx * 200;
+                const x = 250 + levelIdx * 180;
                 const isUnlocked = DataManager.getInstance().isLevelUnlocked(level.id);
                 const isCompleted = DataManager.getInstance().isLevelCompleted(level.id);
 
-                this.createLevelNode(x, y + 30, level, isUnlocked, isCompleted);
+                this.createLevelNode(x, y + 20, level, isUnlocked, isCompleted);
             });
         });
     }
