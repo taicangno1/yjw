@@ -144,6 +144,26 @@ class HeroFragmentScene extends Phaser.Scene {
             return;
         }
 
+        const playerData = DataManager.getInstance().getPlayerData();
+        const heroInData = playerData.heroes.find(h => h.id === hero.id);
+        
+        if (!heroInData) {
+            this.showMessage('武将数据异常!');
+            return;
+        }
+
+        playerData.heroFragments[hero.id] -= fragmentsNeeded;
+        heroInData.star++;
+        
+        DataManager.getInstance().save();
+        this.showMessage(`${hero.name} 升星成功! 当前星级: ${heroInData.star}`);
+    }
+
+        if (hero.star >= 5) {
+            this.showMessage('已达最高星级!');
+            return;
+        }
+
         DataManager.getInstance().getPlayerData().heroFragments[hero.id] -= fragmentsNeeded;
         hero.star++;
 
