@@ -54,8 +54,12 @@ class OfflineEarningsScene extends Phaser.Scene {
             color: '#00ff00'
         }).setOrigin(0.5);
 
-        if (Object.keys(this.earnings.heroFragments).length > 0) {
-            this.add.text(640, 460, `武将碎片: +${Object.values(this.earnings.heroFragments)[0]}`, {
+        const fragments = this.earnings.heroFragments || {};
+        if (Object.keys(fragments).length > 0) {
+            const heroNames = { 'hero_001': '关羽', 'hero_002': '张飞', 'hero_003': '刘备', 'hero_004': '曹操', 'hero_005': '赵云' };
+            const heroId = Object.keys(fragments)[0];
+            const heroName = heroNames[heroId] || '武将';
+            this.add.text(640, 460, `武将碎片: ${heroName}x${fragments[heroId]}`, {
                 fontSize: '24px',
                 color: '#00bfff'
             }).setOrigin(0.5);
