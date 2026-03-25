@@ -46,7 +46,7 @@ class AudioManager {
     }
 
     playSFX(sfxKey) {
-        if (this._sfxVolume > 0) {
+        if (this._sfxVolume > 0 && game.sound.get(sfxKey)) {
             const sfx = game.sound.add(sfxKey);
             if (sfx) {
                 sfx.setVolume(this._sfxVolume);
