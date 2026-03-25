@@ -2,62 +2,590 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>放置三国</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名字大宗师 - 周易起名</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #1a1a2e;
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
         }
-        #game-container {
-            width: 100%;
-            height: 100%;
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 28px;
+            background: linear-gradient(90deg, #f6d365, #fda085);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            color: #888;
+            margin-top: 5px;
+        }
+        .card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .section-title {
+            font-size: 18px;
+            color: #f6d365;
+            margin-bottom: 16px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            gap: 8px;
         }
-        canvas {
-            max-width: 100%;
-            max-height: 100%;
+        .form-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 14px;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #f6d365;
+        }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #f6d365, #fda085);
+            color: #1a1a2e;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(246,211,101,0.3);
+        }
+        .result {
+            display: none;
+            margin-top: 20px;
+        }
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .bazi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .bazi-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 12px 8px;
+            text-align: center;
+        }
+        .bazi-label {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 4px;
+        }
+        .bazi-value {
+            font-size: 18px;
+            color: #f6d365;
+            font-weight: bold;
+        }
+        .wuxing-bar {
+            display: flex;
+            height: 24px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 12px 0;
+            background: rgba(0,0,0,0.3);
+        }
+        .wuxing-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #1a1a2e;
+            font-weight: bold;
+            transition: width 0.5s ease;
+        }
+        .wuxing-label {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 8px;
+        }
+        .wuxing-label span {
+            font-size: 12px;
+            color: #888;
+        }
+        .gua-info {
+            text-align: center;
+            padding: 20px;
+            background: rgba(246,211,101,0.1);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+        .gua-name {
+            font-size: 32px;
+            color: #f6d365;
+            margin-bottom: 8px;
+        }
+        .gua-desc {
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .name-suggestion {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .name-suggestion h4 {
+            color: #f6d365;
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+        .name-score {
+            display: inline-block;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: #1a1a2e;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .score-detail {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+        .tab-nav {
+            display: flex;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 16px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: none;
+            color: #888;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: rgba(246,211,101,0.2);
+            color: #f6d365;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .santi-result {
+            font-size: 13px;
+        }
+        .santi-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .santi-item:last-child {
+            border-bottom: none;
+        }
+        .santi-name {
+            color: #ddd;
+        }
+        .santi-score {
+            font-weight: bold;
+        }
+        .santi-score.ji {
+            color: #4ade80;
+        }
+        .santi-score.xiong {
+            color: #ef4444;
+        }
+        .santi-score.ping {
+            color: #facc15;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
-    <div id="game-container"></div>
-    <script src="js/lib/phaser.min.js"></script>
-    <script src="js/managers/GameManager.js"></script>
-    <script src="js/managers/DataManager.js"></script>
-    <script src="js/managers/BattleManager.js"></script>
-    <script src="js/managers/OfflineManager.js"></script>
-    <script src="js/managers/AudioManager.js"></script>
-    <script src="js/managers/AdManager.js"></script>
-    <script src="js/data/PlayerData.js"></script>
-    <script src="js/entities/Equipment.js"></script>
-    <script src="js/entities/Skill.js"></script>
-    <script src="js/entities/Hero.js"></script>
-    <script src="js/utils/BattleUtils.js"></script>
-    <script src="js/utils/Storage.js"></script>
-    <script src="js/utils/AssetGenerator.js"></script>
-    <script src="js/scenes/BootScene.js"></script>
-    <script src="js/scenes/PreloadScene.js"></script>
-    <script src="js/scenes/MainCityScene.js"></script>
-    <script src="js/scenes/BattleScene.js"></script>
-    <script src="js/scenes/LevelSelectScene.js"></script>
-    <script src="js/scenes/HeroListScene.js"></script>
-    <script src="js/scenes/EquipmentScene.js"></script>
-    <script src="js/scenes/HeroFragmentScene.js"></script>
-    <script src="js/scenes/FriendScene.js"></script>
-    <script src="js/scenes/LeagueScene.js"></script>
-    <script src="js/scenes/RankScene.js"></script>
-    <script src="js/scenes/ShopScene.js"></script>
-    <script src="js/scenes/OfflineEarningsScene.js"></script>
-    <script src="js/main.js"></script>
+    <div class="container">
+        <header>
+            <div class="logo">&#127800;</div>
+            <h1>名字大宗师</h1>
+            <p class="subtitle">周易起名 | 八字五行 | 三才五格</p>
+        </header>
+
+        <div class="card">
+            <div class="section-title">&#128197; 出生信息</div>
+            <div class="form-group">
+                <label>姓氏</label>
+                <input type="text" id="surname" placeholder="请输入姓氏，如：张" maxlength="2">
+            </div>
+            <div class="form-group">
+                <label>出生日期（阳历）</label>
+                <input type="date" id="birthDate">
+            </div>
+            <div class="form-group">
+                <label>出生时辰</label>
+                <select id="birthHour">
+                    <option value="">请选择时辰</option>
+                    <option value="子">子时 (23:00-00:59)</option>
+                    <option value="丑">丑时 (01:00-02:59)</option>
+                    <option value="寅">寅时 (03:00-04:59)</option>
+                    <option value="卯">卯时 (05:00-06:59)</option>
+                    <option value="辰">辰时 (07:00-08:59)</option>
+                    <option value="巳">巳时 (09:00-10:59)</option>
+                    <option value="午">午时 (11:00-12:59)</option>
+                    <option value="未">未时 (13:00-14:59)</option>
+                    <option value="申">申时 (15:00-16:59)</option>
+                    <option value="酉">酉时 (17:00-18:59)</option>
+                    <option value="戌">戌时 (19:00-20:59)</option>
+                    <option value="亥">亥时 (21:00-22:59)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>性别</label>
+                <select id="gender">
+                    <option value="男">男</option>
+                    <option value="女">女</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="generateName()">&#128640; 开始起名</button>
+        </div>
+
+        <div class="result" id="result">
+            <div class="card">
+                <div class="section-title">&#9878; 八字命盘</div>
+                <div class="bazi-grid" id="baziGrid"></div>
+                <div class="wuxing-bar" id="wuxingBar"></div>
+                <div class="wuxing-label" id="wuxingLabel"></div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">&#9830; 周易卦象</div>
+                <div class="gua-info">
+                    <div class="gua-name" id="guaName"></div>
+                    <div class="gua-desc" id="guaDesc"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="tab-nav">
+                    <button class="tab-btn active" onclick="switchTab('santi')">三才五格</button>
+                    <button class="tab-btn" onclick="switchTab('names')">名字推荐</button>
+                </div>
+                <div class="tab-content active" id="tab-santi">
+                    <div class="santi-result" id="santiResult"></div>
+                </div>
+                <div class="tab-content" id="tab-names">
+                    <div id="nameList"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>本应用仅供娱乐参考，起名需综合考虑多方面因素</p>
+        </footer>
+    </div>
+
+    <script>
+        const TIANGAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+        const DIZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+        const WUXING = ['木', '木', '火', '火', '土', '土', '金', '金', '水', '水'];
+        const WUXING_RELATION = {
+            '木': { '生': '火', '克': '土' },
+            '火': { '生': '土', '克': '金' },
+            '土': { '生': '金', '克': '水' },
+            '金': { '生': '水', '克': '木' },
+            '水': { '生': '木', '克': '火' }
+        };
+
+        const GUA_64 = {
+            '111111': { name: '乾为天', desc: '象曰：天行健，君子以自强不息。此卦刚健有力，象征天道的运行永不停歇，君子应效法天道，自我强进，永不松懈。' },
+            '000000': { name: '坤为地', desc: '象曰：地势坤，君子以厚德载物。此卦柔顺宽广，象征大地的承载万物，君子应效法大地之德，包容承载世间万物。' },
+            '100010': { name: '天雷无妄', desc: '象曰：天下雷行，物与无妄。此卦象征雷行于天下，万物各守其正，不敢妄为。寓意顺应天道，不可妄动。' },
+            '010001': { name: '雷天大壮', desc: '象曰：雷在天上，大壮。君子以非礼弗履。此卦雷声在天上轰鸣，象征声势浩大，君子应以此自警，不做非礼之事。' },
+            '111010': { name: '天泽履', desc: '象曰：上天下泽，履。君子以辨上下。此卦象征天在上泽在下，各安其位，君子应明辨上下之分，谨言慎行。' },
+            '011111': { name: '泽天夬', desc: '象曰：泽上于天，夬。君子以施禄及下。此卦象征湖水蒸发升天，即将化为甘霖普降大地，寓意施恩于下。' },
+            '010111': { name: '火地晋', desc: '象曰：明出地上，晋。君子以自昭明德。此卦太阳从地面升起，光明磊落，君子应效法太阳之德，使自己德行更加光明。' },
+            '111000': { name: '地火明夷', desc: '象曰：明入地中，明夷。君子以莅众。此卦日落地下，光明受损，君子应谨慎行事，在艰难中保持明智。' },
+        };
+
+        const STROKES = {
+            '王': 4, '李': 7, '张': 11, '刘': 6, '陈': 16, '杨': 13, '赵': 9, '黄': 12,
+            '周': 8, '吴': 7, '徐': 11, '孙': 6, '胡': 11, '朱': 6, '高': 10, '林': 8,
+            '何': 7, '郭': 10, '马': 10, '罗': 20, '梁': 11, '宋': 7, '郑': 8, '谢': 12,
+            '韩': 12, '唐': 10, '冯': 12, '于': 3, '董': 12, '萧': 11, '程': 12, '曹': 11,
+            '袁': 10, '邓': 12, '许': 11, '傅': 12, '沈': 7, '曾': 12, '彭': 12, '吕': 7,
+            '苏': 7, '卢': 16, '蒋': 15, '蔡': 15, '贾': 13, '丁': 2, '魏': 16, '薛': 15,
+            '叶': 12, '阎': 11, '余': 7, '潘': 12, '杜': 7, '戴': 17, '夏': 10, '钟': 17,
+            '汪': 7, '田': 5, '任': 6, '姜': 9, '范': 8, '方': 4, '石': 5, '姚': 9,
+            '谭': 19, '廖': 14, '邹': 12, '熊': 14, '金': 8, '陆': 16, '郝': 10, '孔': 4,
+            '白': 5, '崔': 11, '康': 11, '毛': 4, '邱': 12, '秦': 10, '江': 7, '史': 5,
+            '顾': 16, '侯': 9, '邵': 8, '孟': 8, '龙': 16, '万': 3, '段': 9, '漕': 16,
+            '钱': 13, '汤': 12, '尹': 4, '黎': 16, '易': 8, '常': 11, '武': 8, '乔': 12,
+            '贺': 12, '赖': 16, '龚': 11, '文': 4
+        };
+
+        const POINTS = {
+            '1': 100, '2': 90, '3': 98, '4': 90, '5': 100, '6': 95, '7': 98, '8': 90, 
+            '9': 97, '10': 90, '11': 100, '12': 92, '13': 100, '14': 92, '15': 100, 
+            '16': 98, '17': 95, '18': 100, '19': 92, '20': 90, '21': 100, '22': 92, 
+            '23': 100, '24': 100, '25': 97, '26': 95, '27': 100, '28': 92, '29': 100, 
+            '30': 95, '31': 100, '32': 100, '33': 100, '34': 92, '35': 100, '36': 92, 
+            '37': 100, '38': 95, '39': 100, '40': 92, '41': 100, '42': 95, '43': 100, 
+            '44': 92, '45': 100, '46': 98, '47': 100, '48': 100, '49': 92, '50': 95, 
+            '51': 100, '52': 100, '53': 92, '54': 92, '55': 100, '56': 92, '57': 100, 
+            '58': 95, '59': 92, '60': 92, '61': 100, '62': 92, '63': 100, '64': 92, 
+            '65': 100, '66': 92, '67': 100, '68': 100, '69': 92, '70': 92, '71': 100, 
+            '72': 92, '73': 100, '74': 92, '75': 100, '76': 92, '77': 95, '78': 95, 
+            '79': 100, '80': 92, '81': 100
+        };
+
+        function getCharStrokes(c) {
+            return STROKES[c] || 8;
+        }
+
+        function calcBazi(year, month, day, hour) {
+            const tgIndex = (year - 4) % 10;
+            const ganZhiYear = TIANGAN[tgIndex] + DIZHI[(year - 4) % 12];
+            
+            let monthIdx = DIZHI.indexOf(month);
+            let ganZhiMonth = TIANGAN[(tgIndex + monthIdx + 2) % 10] + DIZHI[monthIdx];
+            
+            let dayGanIdx = (year * 365 + month * 30 + day + 6) % 10;
+            let dayZhiIdx = (year * 365 + month * 30 + day + 9) % 12;
+            let ganZhiDay = TIANGAN[dayGanIdx] + DIZHI[dayZhiIdx];
+            
+            let hourZhiIdx = DIZHI.indexOf(hour);
+            let ganZhiHour = TIANGAN[(dayGanIdx * 2 + hourZhiIdx) % 10] + DIZHI[hourZhiIdx];
+            
+            return { year: ganZhiYear, month: ganZhiMonth, day: ganZhiDay, hour: ganZhiHour };
+        }
+
+        function getWuxing(gan) {
+            const idx = TIANGAN.indexOf(gan);
+            return idx >= 0 ? WUXING[idx] : '';
+        }
+
+        function analyzeWuxing(bazi) {
+            const wuxingCounts = { '木': 0, '火': 0, '土': 0, '金': 0, '水': 0 };
+            const bazis = [bazi.year[0], bazi.month[0], bazi.day[0], bazi.hour[0]];
+            bazis.forEach(g => {
+                const w = getWuxing(g);
+                if (w) wuxingCounts[w]++;
+            });
+            return wuxingCounts;
+        }
+
+        function getXiYongShen(wuxingCounts) {
+            let max = 0, min = Infinity, strong = '', weak = '';
+            for (let w in wuxingCounts) {
+                if (wuxingCounts[w] > max) { max = wuxingCounts[w]; strong = w; }
+                if (wuxingCounts[w] < min) { min = wuxingCounts[w]; weak = w; }
+            }
+            for (let w in wuxingCounts) {
+                if (w !== strong && wuxingCounts[w] === min && w !== strong) weak = w;
+            }
+            const buyong = WUXING_RELATION[strong] ? WUXING_RELATION[strong]['生'] : '';
+            const xiyong = WUXING_RELATION[weak] ? WUXING_RELATION[weak]['克'] : '';
+            return { buyong, xiyong, strong, weak };
+        }
+
+        function calcGua(surname, name1, name2) {
+            const total = getCharStrokes(surname) + getCharStrokes(name1) + getCharStrokes(name2);
+            const index = total % 64;
+            const binary = index.toString(2).padStart(6, '0');
+            return GUA_64[binary] || GUA_64['111111'];
+        }
+
+        function calcSanCai(surname, name1, name2) {
+            const tiange = getCharStrokes(surname) + 1;
+            const renge = getCharStrokes(surname) + getCharStrokes(name1);
+            const dige = getCharStrokes(name2) + 1;
+            const waige = getCharStrokes(name1) + getCharStrokes(name2);
+            const zongge = getCharStrokes(surname) + getCharStrokes(name1) + getCharStrokes(name2);
+            return { tiange, renge, dige, waige, zongge };
+        }
+
+        function getScoreClass(score) {
+            if (score >= 85) return 'ji';
+            if (score >= 60) return 'ping';
+            return 'xiong';
+        }
+
+        function getScoreText(score) {
+            if (score >= 85) return '吉';
+            if (score >= 60) return '平';
+            return '凶';
+        }
+
+        function calcTotalScore(santi) {
+            let score = 0;
+            for (let key in santi) {
+                score += POINTS[santi[key]] || 90;
+            }
+            return Math.round(score / 5);
+        }
+
+        function generateNameSuggestions(wuxingInfo, gender) {
+            const suggestions = [];
+            const preferWX = wuxingInfo.xiyong;
+            
+            const goodChars = {
+                '木': ['森', '林', '荣', '华', '建', '材', '春', '秋', '松', '柏', '桐', '榕', '槐', '柳', '桂', '枫', '桃', '梅', '兰', '菊', '竹', '萱', '莹', '婷', '妍', '倩', '雅', '欣', '怡', '慧'],
+                '火': ['炎', '焱', '灿', '烂', '光', '辉', '耀', '明', '亮', '晶', '婷', '娜', '昕', '昭', '熙', '丹', '红', '赤', '朱', '阳', '映', '炜', '炳', '熠', '荧', '煜', '灵', '暖', '晴'],
+                '土': ['坤', '厚', '坦', '城', '坚', '培', '增', '墨', '圣', '均', '垣', '基', '域', '堂', '堆', '塞', '壁', '士', '诚', '博', '雅', '慧', '灵'],
+                '金': ['锋', '锐', '铭', '锦', '钦', '钰', '铁', '银', '铜', '锡', '镜', '钟', '鑫', '钧', '铎', '雨', '诗', '倩', '雅', '婷', '慧', '敏', '珊', '静'],
+                '水': ['泽', '润', '洲', '海', '波', '涛', '洁', '洋', '潮', '汐', '渊', '泉', '溪', '涵', '清', '淳', '冷', '冽', '永', '泳', '瀚', '墨', '学', '海', '文', '慧']
+            };
+            
+            const chars = goodChars[preferWX] || goodChars['木'];
+            
+            for (let i = 0; i < 8; i++) {
+                const name1 = chars[Math.floor(Math.random() * chars.length)];
+                const name2 = chars[Math.floor(Math.random() * chars.length)];
+                const Santi = calcSanCai('张', name1, name2);
+                const totalScore = calcTotalScore(Santi);
+                suggestions.push({
+                    name: name1 + name2,
+                    score: totalScore,
+                    wuxing: preferWX + preferWX
+                });
+            }
+            
+            return suggestions.sort((a, b) => b.score - a.score);
+        }
+
+        function generateName() {
+            const surname = document.getElementById('surname').value.trim();
+            const date = document.getElementById('birthDate').value;
+            const hour = document.getElementById('birthHour').value;
+            const gender = document.getElementById('gender').value;
+            
+            if (!surname || !date || !hour) {
+                alert('请填写完整的出生信息');
+                return;
+            }
+            
+            const parts = date.split('-');
+            const birth = { year: parseInt(parts[0]), month: parseInt(parts[1]), day: parseInt(parts[2]) };
+            const bazi = calcBazi(birth.year, birth.month, birth.day, hour);
+            
+            document.getElementById('baziGrid').innerHTML = `
+                <div class="bazi-item"><div class="bazi-label">年柱</div><div class="bazi-value">${bazi.year}</div></div>
+                <div class="bazi-item"><div class="bazi-label">月柱</div><div class="bazi-value">${bazi.month}</div></div>
+                <div class="bazi-item"><div class="bazi-label">日柱</div><div class="bazi-value">${bazi.day}</div></div>
+                <div class="bazi-item"><div class="bazi-label">时柱</div><div class="bazi-value">${bazi.hour}</div></div>
+            `;
+            
+            const wuxingCounts = analyzeWuxing(bazi);
+            const wuxingInfo = getXiYongShen(wuxingCounts);
+            
+            const total = Object.values(wuxingCounts).reduce((a, b) => a + b, 0);
+            const colors = { '木': '#4ade80', '火': '#ef4444', '土': '#facc15', '金': '#a78bfa', '水': '#38bdf8' };
+            
+            let barHTML = '', labelHTML = '';
+            for (let w in wuxingCounts) {
+                const pct = Math.round((wuxingCounts[w] / total) * 100);
+                barHTML += `<div class="wuxing-segment" style="width:${pct}%;background:${colors[w]}">${wuxingCounts[w]}</div>`;
+                labelHTML += `<span>${w}: ${wuxingCounts[w]}</span>`;
+            }
+            document.getElementById('wuxingBar').innerHTML = barHTML;
+            document.getElementById('wuxingLabel').innerHTML = labelHTML;
+            
+            const name1 = '浩';
+            const name2 = '宇';
+            const gua = calcGua(surname, name1, name2);
+            document.getElementById('guaName').textContent = gua.name;
+            document.getElementById('guaDesc').textContent = gua.desc;
+            
+            const santi = calcSanCai(surname, name1, name2);
+            const santiHTML = `
+                <div class="santi-item"><span class="santi-name">天格（${santi.tiange}）</span><span class="santi-score ${getScoreClass(POINTS[santi.tiange])}">${getScoreText(POINTS[santi.tiange])}</span></div>
+                <div class="santi-item"><span class="santi-name">人格（${santi.renge}）</span><span class="santi-score ${getScoreClass(POINTS[santi.renge])}">${getScoreText(POINTS[santi.renge])}</span></div>
+                <div class="santi-item"><span class="santi-name">地格（${santi.dige}）</span><span class="santi-score ${getScoreClass(POINTS[santi.dige])}">${getScoreText(POINTS[santi.dige])}</span></div>
+                <div class="santi-item"><span class="santi-name">外格（${santi.waige}）</span><span class="santi-score ${getScoreClass(POINTS[santi.waige])}">${getScoreText(POINTS[santi.waige])}</span></div>
+                <div class="santi-item"><span class="santi-name">总格（${santi.zongge}）</span><span class="santi-score ${getScoreClass(POINTS[santi.zongge])}">${getScoreText(POINTS[santi.zongge])}</span></div>
+            `;
+            document.getElementById('santiResult').innerHTML = santiHTML;
+            
+            const suggestions = generateNameSuggestions(wuxingInfo, gender);
+            let nameHTML = '';
+            suggestions.forEach(s => {
+                nameHTML += `
+                    <div class="name-suggestion">
+                        <h4>${surname}${s.name}<span class="name-score">${s.score}分</span></h4>
+                        <div class="score-detail">五行：${s.wuxing}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('nameList').innerHTML = nameHTML;
+            
+            document.getElementById('result').classList.add('show');
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+        }
+    </script>
 </body>
 </html>
