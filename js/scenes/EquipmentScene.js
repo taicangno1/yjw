@@ -9,6 +9,7 @@ class EquipmentScene extends Phaser.Scene {
         this.createBackground();
         this.createUI();
         this.createHeroList();
+        this.createBackpackList();
     }
 
     createBackground() {
@@ -81,6 +82,176 @@ class EquipmentScene extends Phaser.Scene {
                 this.selectHero(hero);
             });
         });
+    }
+
+    createBackpackList() {
+        this.refreshBackpack();
+    }
+
+    refreshBackpack() {
+        if (this.backpackItems) {
+            this.backpackItems.forEach(item => item.destroy());
+        }
+        this.backpackItems = [];
+
+        const backpackEquipments = DataManager.getInstance().getBackpackEquipments();
+        
+        backpackEquipments.forEach((equip, index) => {
+            if (index >= 12) return;
+            
+            const col = index % 2;
+            const row = Math.floor(index / 2);
+            const x = 600 + col * 160;
+            const y = 160 + row * 90;
+
+            const card = this.add.rectangle(x, y, 140, 70, 0x3d3d5c)
+                .setInteractive({ useHandCursor: true });
+            card.setStrokeStyle(2, this.getQualityColor(equip.quality));
+
+            this.add.text(x, y - 15, equip.name, {
+                fontSize: '14px',
+                color: '#ffffff',
+                fontStyle: 'bold'
+            }).setOrigin(0.5);
+
+            this.add.text(x, y + 5, `等级: ${equip.level}/${equip.getMaxLevel()}`, {
+                fontSize: '12px',
+                color: '#aaaaaa'
+            }).setOrigin(0.5);
+
+            const statsText = `+${equip.getTotalAttackBonus()}攻 +${equip.getTotalDefenseBonus()}防`;
+            this.add.text(x, y + 25, statsText, {
+                fontSize: '10px',
+                color: '#00ff00'
+            }).setOrigin(0.5);
+
+            if (equip.canStrengthen()) {
+                const strengthenBtn = this.add.rectangle(x + 40, y + 50, 50, 20, 0xffd700);
+                strengthenBtn.setInteractive({ useHandCursor: true });
+                this.add.text(x + 40, y + 50, '强化', {
+                    fontSize: '10px',
+                    color: '#000000'
+                }).setOrigin(0.5);
+
+                strengthenBtn.on('pointerdown', (e) => {
+                    e.stopPropagation();
+                    this.strengthenEquipment(equip);
+                });
+            } else {
+                this.add.text(x + 40, y + 50, '满级', {
+                    fontSize: '10px',
+                    color: '#ff6600'
+                }).setOrigin(0.5);
+            }
+
+            card.on('pointerdown', () => {
+                this.showEquipDetail(equip);
+            });
+
+            this.backpackItems.push(card, strengthenBtn);
+        });
+
+        if (backpackEquipments.length === 0) {
+            this.add.text(750, 400, '背包暂无装备\n通关关卡可获得装备', {
+                fontSize: '18px',
+                color: '#666666',
+                align: 'center'
+            }).setOrigin(0.5);
+        }
+    }
+
+    strengthenEquipment(equipment) {
+        const cost = equipment.getStrengthenCost();
+        const playerData = DataManager.getInstance().getPlayerData();
+        
+        if (playerData.gold < cost) {
+            this.showMessage('金币不足!');
+            return;
+        }
+
+        if (!equipment.canStrengthen()) {
+            this.showMessage('已达最大等级!');
+            return;
+        }
+
+        const result = DataManager.getInstance().strengthenEquipment(equipment.id);
+        
+        if (result.success) {
+            this.showMessage(`强化成功! 等级: ${result.newLevel}`);
+            this.refreshBackpack();
+        } else {
+            this.showMessage(result.reason);
+        }
+    }
+
+    showEquipDetail(equipment) {
+        const panel = this.add.rectangle(750, 400, 300, 350, 0x000000, 0.95);
+        panel.setStrokeStyle(3, this.getQualityColor(equipment.quality));
+
+        this.add.text(750, 180, equipment.name, {
+            fontSize: '28px',
+            color: '#ffd700',
+            fontStyle: 'bold'
+        }).setOrigin(0.5);
+
+        const typeName = Equipment.getTypeName(equipment.type);
+        this.add.text(750, 220, `类型: ${typeName} | 品质: ${equipment.quality}`, {
+            fontSize: '14px',
+            color: '#aaaaaa'
+        }).setOrigin(0.5);
+
+        this.add.text(750, 280, `等级: ${equipment.level}/${equipment.getMaxLevel()}`, {
+            fontSize: '20px',
+            color: '#ffffff'
+        }).setOrigin(0.5);
+
+        this.add.text(750, 320, `强化费用: ${equipment.getStrengthenCost()}金币`, {
+            fontSize: '16px',
+            color: '#ffd700'
+        }).setOrigin(0.5);
+
+        const stats = `
+基础攻击: +${equipment.attackBonus}
+基础防御: +${equipment.defenseBonus}
+基础生命: +${equipment.hpBonus}
+
+当前攻击: +${equipment.getTotalAttackBonus()}
+当前防御: +${equipment.getTotalDefenseBonus()}
+当前生命: +${equipment.getTotalHpBonus()}
+        `.trim();
+
+        this.add.text(750, 400, stats, {
+            fontSize: '14px',
+            color: '#00ff00',
+            lineSpacing: 6
+        }).setOrigin(0.5);
+
+        const closeBtn = this.add.rectangle(920, 150, 40, 40, 0xff0000);
+        closeBtn.setInteractive({ useHandCursor: true });
+        this.add.text(920, 150, 'X', {
+            fontSize: '24px',
+            color: '#ffffff'
+        }).setOrigin(0.5);
+        closeBtn.on('pointerdown', () => {
+            panel.destroy();
+            closeBtn.destroy();
+        });
+
+        if (equipment.canStrengthen()) {
+            const strengthenBtn = this.add.rectangle(750, 530, 150, 50, 0xffd700);
+            strengthenBtn.setInteractive({ useHandCursor: true });
+            this.add.text(750, 530, '强化装备', {
+                fontSize: '20px',
+                color: '#000000',
+                fontStyle: 'bold'
+            }).setOrigin(0.5);
+
+            strengthenBtn.on('pointerdown', () => {
+                this.strengthenEquipment(equipment);
+                panel.destroy();
+                closeBtn.destroy();
+            });
+        }
     }
 
     selectHero(hero) {
@@ -213,6 +384,7 @@ ${equipmentList}
                 DataManager.getInstance().equipItemToHero(hero.id, equip.id, slotIndex);
                 hero.equipment[slotIndex] = equip;
                 this.selectHero(hero);
+                this.refreshBackpack();
                 panel.destroy();
                 closeBtn.destroy();
             });
@@ -224,6 +396,22 @@ ${equipmentList}
                 color: '#666666'
             }).setOrigin(0.5);
         }
+    }
+
+    showMessage(text) {
+        const msg = this.add.text(640, 360, text, {
+            fontSize: '32px',
+            color: '#00ff00',
+            fontStyle: 'bold'
+        }).setOrigin(0.5);
+        
+        this.tweens.add({
+            targets: msg,
+            alpha: 0,
+            y: 280,
+            duration: 1500,
+            onComplete: () => msg.destroy()
+        });
     }
 
     getQualityColor(quality) {

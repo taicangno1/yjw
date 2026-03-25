@@ -50,6 +50,25 @@ class Equipment {
         this.level++;
     }
 
+    getStrengthenCost() {
+        return Math.floor(50 * Math.pow(1.5, this.level - 1));
+    }
+
+    getMaxLevel() {
+        const maxLevels = {
+            green: 10,
+            blue: 15,
+            purple: 20,
+            orange: 25,
+            red: 30
+        };
+        return maxLevels[this.quality] || 10;
+    }
+
+    canStrengthen() {
+        return this.level < this.getMaxLevel();
+    }
+
     getQualityColor() {
         const colors = {
             green: 0x00ff00,

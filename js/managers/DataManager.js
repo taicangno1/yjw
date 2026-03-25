@@ -286,4 +286,28 @@ class DataManager {
             return null;
         }).filter(e => e !== undefined);
     }
+
+    strengthenEquipment(equipmentId) {
+        const equipment = this._playerData.equipments.find(e => e.id === equipmentId);
+        if (!equipment) return { success: false, reason: '装备不存在' };
+
+        if (!equipment.canStrengthen()) {
+            return { success: false, reason: '已达最大等级' };
+        }
+
+        const cost = equipment.getStrengthenCost();
+        if (this._playerData.gold < cost) {
+            return { success: false, reason: '金币不足' };
+        }
+
+        this._playerData.gold -= cost;
+        equipment.strengthen();
+        this.save();
+
+        return { success: true, newLevel: equipment.level };
+    }
+
+    getEquipmentById(equipmentId) {
+        return this._playerData.equipments.find(e => e.id === equipmentId);
+    }
 }
