@@ -2,89 +2,63 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>名字大宗师 - 周易起名</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             color: #e8e8e8;
         }
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            text-align: center;
-            padding: 30px 0;
-        }
-        .logo {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
+        .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+        header { text-align: center; padding: 20px 0; }
+        .logo { font-size: 40px; margin-bottom: 8px; }
         h1 {
-            font-size: 28px;
+            font-size: 24px;
             background: linear-gradient(90deg, #f6d365, #fda085);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .subtitle {
-            color: #888;
-            margin-top: 5px;
-        }
+        .subtitle { color: #888; margin-top: 4px; font-size: 12px; }
         .card {
             background: rgba(255,255,255,0.08);
             border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
         }
         .section-title {
-            font-size: 18px;
+            font-size: 16px;
             color: #f6d365;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        .form-group {
-            margin-bottom: 16px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #aaa;
-            font-size: 14px;
-        }
+        .form-group { margin-bottom: 14px; }
+        label { display: block; margin-bottom: 6px; color: #aaa; font-size: 13px; }
         input, select {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 10px;
             background: rgba(255,255,255,0.05);
             color: #fff;
-            font-size: 16px;
+            font-size: 15px;
             outline: none;
             transition: border-color 0.3s;
         }
-        input:focus, select:focus {
-            border-color: #f6d365;
-        }
+        input:focus, select:focus { border-color: #f6d365; }
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border: none;
             border-radius: 10px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
@@ -93,173 +67,97 @@
             background: linear-gradient(135deg, #f6d365, #fda085);
             color: #1a1a2e;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(246,211,101,0.3);
-        }
-        .result {
-            display: none;
-            margin-top: 20px;
-        }
-        .result.show {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .bazi-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-        .bazi-item {
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            padding: 12px 8px;
-            text-align: center;
-        }
-        .bazi-label {
-            font-size: 11px;
-            color: #888;
-            margin-bottom: 4px;
-        }
-        .bazi-value {
-            font-size: 18px;
-            color: #f6d365;
-            font-weight: bold;
-        }
-        .wuxing-bar {
-            display: flex;
-            height: 24px;
-            border-radius: 12px;
-            overflow: hidden;
-            margin: 12px 0;
-            background: rgba(0,0,0,0.3);
-        }
-        .wuxing-segment {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #1a1a2e;
-            font-weight: bold;
-            transition: width 0.5s ease;
-        }
-        .wuxing-label {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 8px;
-        }
-        .wuxing-label span {
-            font-size: 12px;
-            color: #888;
-        }
-        .gua-info {
-            text-align: center;
-            padding: 20px;
-            background: rgba(246,211,101,0.1);
-            border-radius: 12px;
-            margin-bottom: 16px;
-        }
-        .gua-name {
-            font-size: 32px;
-            color: #f6d365;
-            margin-bottom: 8px;
-        }
-        .gua-desc {
-            color: #aaa;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        .name-suggestion {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-        .name-suggestion h4 {
-            color: #f6d365;
-            margin-bottom: 8px;
-            font-size: 20px;
-        }
-        .name-score {
-            display: inline-block;
-            background: linear-gradient(135deg, #4ade80, #22c55e);
-            color: #1a1a2e;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .score-detail {
-            font-size: 12px;
-            color: #888;
-            margin-top: 4px;
-        }
-        .tab-nav {
-            display: flex;
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            padding: 4px;
-            margin-bottom: 16px;
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            background: none;
-            color: #888;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-        .tab-btn.active {
-            background: rgba(246,211,101,0.2);
-            color: #f6d365;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .santi-result {
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(246,211,101,0.3); }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
             font-size: 13px;
+            padding: 8px 12px;
+            width: auto;
         }
-        .santi-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .santi-item:last-child {
-            border-bottom: none;
-        }
-        .santi-name {
-            color: #ddd;
-        }
-        .santi-score {
-            font-weight: bold;
-        }
-        .santi-score.ji {
-            color: #4ade80;
-        }
-        .santi-score.xiong {
-            color: #ef4444;
-        }
-        .santi-score.ping {
-            color: #facc15;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
+        .btn-small {
             font-size: 12px;
+            padding: 6px 10px;
+            width: auto;
         }
+        .result { display: none; margin-top: 16px; }
+        .result.show { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .bazi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
+        .bazi-item { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px 6px; text-align: center; }
+        .bazi-label { font-size: 10px; color: #888; margin-bottom: 3px; }
+        .bazi-value { font-size: 16px; color: #f6d365; font-weight: bold; }
+        .wuxing-bar { display: flex; height: 20px; border-radius: 10px; overflow: hidden; margin: 10px 0; background: rgba(0,0,0,0.3); }
+        .wuxing-segment { display: flex; align-items: center; justify-content: center; font-size: 11px; color: #1a1a2e; font-weight: bold; }
+        .wuxing-label { display: flex; justify-content: space-around; margin-top: 6px; }
+        .wuxing-label span { font-size: 11px; color: #888; }
+        .gua-info { text-align: center; padding: 16px; background: rgba(246,211,101,0.1); border-radius: 12px; margin-bottom: 14px; }
+        .gua-name { font-size: 28px; color: #f6d365; margin-bottom: 6px; }
+        .gua-desc { color: #aaa; font-size: 13px; line-height: 1.5; }
+        .name-suggestion { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 14px; margin-bottom: 10px; position: relative; }
+        .name-suggestion h4 { color: #f6d365; margin-bottom: 6px; font-size: 18px; display: flex; align-items: center; justify-content: space-between; }
+        .name-score { display: inline-block; background: linear-gradient(135deg, #4ade80, #22c55e); color: #1a1a2e; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+        .score-detail { font-size: 11px; color: #888; margin-top: 4px; }
+        .tab-nav { display: flex; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 4px; margin-bottom: 14px; }
+        .tab-btn { flex: 1; padding: 8px; border: none; background: none; color: #888; font-size: 13px; cursor: pointer; border-radius: 8px; transition: all 0.3s; }
+        .tab-btn.active { background: rgba(246,211,101,0.2); color: #f6d365; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .santi-result { font-size: 12px; }
+        .santi-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .santi-item:last-child { border-bottom: none; }
+        .santi-name { color: #ddd; }
+        .santi-score { font-weight: bold; }
+        .santi-score.ji { color: #4ade80; }
+        .santi-score.xiong { color: #ef4444; }
+        .santi-score.ping { color: #facc15; }
+        footer { text-align: center; padding: 16px; color: #666; font-size: 11px; }
+        
+        .action-bar { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+        .history-item { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px; margin-bottom: 8px; cursor: pointer; transition: background 0.2s; }
+        .history-item:hover { background: rgba(255,255,255,0.1); }
+        .history-item .name { color: #f6d365; font-size: 15px; }
+        .history-item .date { color: #666; font-size: 11px; margin-top: 4px; }
+        
+        .compare-section { margin-top: 12px; }
+        .compare-item { display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 8px; }
+        .compare-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #f6d365; }
+        .compare-name { color: #f6d365; font-size: 15px; }
+        .compare-delete { color: #ef4444; cursor: pointer; margin-left: 8px; }
+        
+        .share-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .share-modal.show { display: flex; }
+        .share-content { background: #1a1a2e; border-radius: 16px; padding: 24px; max-width: 320px; width: 90%; }
+        .share-title { color: #f6d365; margin-bottom: 16px; text-align: center; }
+        .share-text { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; font-size: 13px; color: #aaa; word-break: break-all; margin-bottom: 16px; max-height: 200px; overflow-y: auto; }
+        .share-buttons { display: flex; gap: 8px; }
+        .share-buttons .btn { flex: 1; font-size: 14px; padding: 10px; }
+        
+        .filter-section { margin-bottom: 14px; }
+        .filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-btn { padding: 6px 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; background: none; color: #888; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+        .filter-btn.active { background: rgba(246,211,101,0.2); border-color: #f6d365; color: #f6d365; }
+        
+        .bazi-detail { margin-top: 12px; }
+        .bazi-detail-item { display: flex; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 12px; }
+        .bazi-detail-item:last-child { border-bottom: none; }
+        .bazi-detail-label { color: #888; width: 60px; }
+        .bazi-detail-value { color: #f6d365; }
+        
+        .poem-section { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 12px; margin-top: 10px; }
+        .poem-title { color: #f6d365; font-size: 13px; margin-bottom: 4px; }
+        .poem-content { color: #aaa; font-size: 12px; line-height: 1.6; font-style: italic; }
+        
+        .yinwin-badge { display: inline-block; background: linear-gradient(135deg, #a78bfa, #8b5cf6); color: #fff; padding: 1px 6px; border-radius: 4px; font-size: 10px; margin-left: 6px; }
+        
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; z-index: 1001; opacity: 0; transition: opacity 0.3s; }
+        .toast.show { opacity: 1; }
+        
+        .nav-bar { display: flex; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 4px; margin-bottom: 16px; }
+        .nav-btn { flex: 1; padding: 8px; border: none; background: none; color: #888; font-size: 13px; cursor: pointer; border-radius: 8px; text-align: center; }
+        .nav-btn.active { background: rgba(246,211,101,0.2); color: #f6d365; }
+        
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -270,71 +168,102 @@
             <p class="subtitle">周易起名 | 八字五行 | 三才五格</p>
         </header>
 
-        <div class="card">
-            <div class="section-title">&#128197; 出生信息</div>
-            <div class="form-group">
-                <label>姓氏</label>
-                <input type="text" id="surname" placeholder="请输入姓氏，如：张" maxlength="2">
-            </div>
-            <div class="form-group">
-                <label>出生日期（阳历）</label>
-                <input type="date" id="birthDate">
-            </div>
-            <div class="form-group">
-                <label>出生时辰</label>
-                <select id="birthHour">
-                    <option value="">请选择时辰</option>
-                    <option value="子">子时 (23:00-00:59)</option>
-                    <option value="丑">丑时 (01:00-02:59)</option>
-                    <option value="寅">寅时 (03:00-04:59)</option>
-                    <option value="卯">卯时 (05:00-06:59)</option>
-                    <option value="辰">辰时 (07:00-08:59)</option>
-                    <option value="巳">巳时 (09:00-10:59)</option>
-                    <option value="午">午时 (11:00-12:59)</option>
-                    <option value="未">未时 (13:00-14:59)</option>
-                    <option value="申">申时 (15:00-16:59)</option>
-                    <option value="酉">酉时 (17:00-18:59)</option>
-                    <option value="戌">戌时 (19:00-20:59)</option>
-                    <option value="亥">亥时 (21:00-22:59)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>性别</label>
-                <select id="gender">
-                    <option value="男">男</option>
-                    <option value="女">女</option>
-                </select>
-            </div>
-            <button class="btn btn-primary" onclick="generateName()">&#128640; 开始起名</button>
+        <div class="nav-bar">
+            <button class="nav-btn active" onclick="switchNav('input')">起名</button>
+            <button class="nav-btn" onclick="switchNav('history')">历史</button>
+            <button class="nav-btn" onclick="switchNav('compare')">对比</button>
+            <button class="nav-btn" onclick="switchNav('poem')">诗词</button>
         </div>
 
-        <div class="result" id="result">
+        <div id="page-input">
             <div class="card">
-                <div class="section-title">&#9878; 八字命盘</div>
-                <div class="bazi-grid" id="baziGrid"></div>
-                <div class="wuxing-bar" id="wuxingBar"></div>
-                <div class="wuxing-label" id="wuxingLabel"></div>
+                <div class="section-title">&#128197; 出生信息</div>
+                <div class="form-group">
+                    <label>姓氏</label>
+                    <input type="text" id="surname" placeholder="请输入姓氏，如：张" maxlength="2">
+                </div>
+                <div class="form-group">
+                    <label>出生日期（阳历）</label>
+                    <input type="date" id="birthDate">
+                </div>
+                <div class="form-group">
+                    <label>出生时辰</label>
+                    <select id="birthHour">
+                        <option value="">请选择时辰</option>
+                        <option value="子">子时 (23:00-00:59)</option>
+                        <option value="丑">丑时 (01:00-02:59)</option>
+                        <option value="寅">寅时 (03:00-04:59)</option>
+                        <option value="卯">卯时 (05:00-06:59)</option>
+                        <option value="辰">辰时 (07:00-08:59)</option>
+                        <option value="巳">巳时 (09:00-10:59)</option>
+                        <option value="午">午时 (11:00-12:59)</option>
+                        <option value="未">未时 (13:00-14:59)</option>
+                        <option value="申">申时 (15:00-16:59)</option>
+                        <option value="酉">酉时 (17:00-18:59)</option>
+                        <option value="戌">戌时 (19:00-20:59)</option>
+                        <option value="亥">亥时 (21:00-22:59)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>性别</label>
+                    <select id="gender">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="generateName()">&#128640; 开始起名</button>
             </div>
 
-            <div class="card">
-                <div class="section-title">&#9830; 周易卦象</div>
-                <div class="gua-info">
-                    <div class="gua-name" id="guaName"></div>
-                    <div class="gua-desc" id="guaDesc"></div>
+            <div class="result" id="result">
+                <div class="card">
+                    <div class="section-title">&#9878; 八字命盘</div>
+                    <div class="bazi-grid" id="baziGrid"></div>
+                    <div class="wuxing-bar" id="wuxingBar"></div>
+                    <div class="wuxing-label" id="wuxingLabel"></div>
+                    <div class="bazi-detail" id="baziDetail"></div>
                 </div>
-            </div>
 
-            <div class="card">
-                <div class="tab-nav">
-                    <button class="tab-btn active" onclick="switchTab('santi')">三才五格</button>
-                    <button class="tab-btn" onclick="switchTab('names')">名字推荐</button>
+                <div class="card">
+                    <div class="section-title">&#9830; 周易卦象</div>
+                    <div class="gua-info">
+                        <div class="gua-name" id="guaName"></div>
+                        <div class="gua-desc" id="guaDesc"></div>
+                    </div>
                 </div>
-                <div class="tab-content active" id="tab-santi">
-                    <div class="santi-result" id="santiResult"></div>
-                </div>
-                <div class="tab-content" id="tab-names">
+
+                <div class="card">
+                    <div class="section-title">&#9733; 名字推荐</div>
+                    <div class="filter-section">
+                        <div class="filter-row" id="filterRow"></div>
+                    </div>
                     <div id="nameList"></div>
                 </div>
+            </div>
+        </div>
+
+        <div id="page-history" class="hidden">
+            <div class="card">
+                <div class="section-title">&#128197; 起名历史</div>
+                <div id="historyList"></div>
+            </div>
+        </div>
+
+        <div id="page-compare" class="hidden">
+            <div class="card">
+                <div class="section-title">&#9873; 名字对比</div>
+                <div class="action-bar">
+                    <button class="btn btn-secondary btn-small" onclick="clearCompare()">清空</button>
+                    <button class="btn btn-secondary btn-small" onclick="autoCompare()">一键对比</button>
+                </div>
+                <div id="compareList"></div>
+                <div class="compare-section" id="compareResult"></div>
+            </div>
+        </div>
+
+        <div id="page-poem" class="hidden">
+            <div class="card">
+                <div class="section-title">&#127800; 诗词起名</div>
+                <div id="poemList"></div>
             </div>
         </div>
 
@@ -342,6 +271,19 @@
             <p>本应用仅供娱乐参考，起名需综合考虑多方面因素</p>
         </footer>
     </div>
+
+    <div class="share-modal" id="shareModal">
+        <div class="share-content">
+            <div class="share-title">分享名字</div>
+            <div class="share-text" id="shareText"></div>
+            <div class="share-buttons">
+                <button class="btn btn-secondary" onclick="copyShare()">复制</button>
+                <button class="btn btn-primary" onclick="closeShare()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
 
     <script>
         const TIANGAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
@@ -356,14 +298,147 @@
         };
 
         const GUA_64 = {
-            '111111': { name: '乾为天', desc: '象曰：天行健，君子以自强不息。此卦刚健有力，象征天道的运行永不停歇，君子应效法天道，自我强进，永不松懈。' },
-            '000000': { name: '坤为地', desc: '象曰：地势坤，君子以厚德载物。此卦柔顺宽广，象征大地的承载万物，君子应效法大地之德，包容承载世间万物。' },
-            '100010': { name: '天雷无妄', desc: '象曰：天下雷行，物与无妄。此卦象征雷行于天下，万物各守其正，不敢妄为。寓意顺应天道，不可妄动。' },
-            '010001': { name: '雷天大壮', desc: '象曰：雷在天上，大壮。君子以非礼弗履。此卦雷声在天上轰鸣，象征声势浩大，君子应以此自警，不做非礼之事。' },
-            '111010': { name: '天泽履', desc: '象曰：上天下泽，履。君子以辨上下。此卦象征天在上泽在下，各安其位，君子应明辨上下之分，谨言慎行。' },
-            '011111': { name: '泽天夬', desc: '象曰：泽上于天，夬。君子以施禄及下。此卦象征湖水蒸发升天，即将化为甘霖普降大地，寓意施恩于下。' },
-            '010111': { name: '火地晋', desc: '象曰：明出地上，晋。君子以自昭明德。此卦太阳从地面升起，光明磊落，君子应效法太阳之德，使自己德行更加光明。' },
-            '111000': { name: '地火明夷', desc: '象曰：明入地中，明夷。君子以莅众。此卦日落地下，光明受损，君子应谨慎行事，在艰难中保持明智。' },
+            '111111': { name: '乾为天', gua: '&#x4DC0;', desc: '象曰：天行健，君子以自强不息。此卦刚健有力，象征天道的运行永不停歇，君子应效法天道，自我强进，永不松懈。' },
+            '000000': { name: '坤为地', gua: '&#x4DC3;', desc: '象曰：地势坤，君子以厚德载物。此卦柔顺宽广，象征大地的承载万物，君子应效法大地之德，包容承载世间万物。' },
+            '111110': { name: '天风姤', gua: '&#x4DC5;', desc: '象曰：天下有风，姤。后以施命诰四方。此卦天下有风，吹拂万物，象征君子的命令传布四方。' },
+            '011111': { name: '泽天夬', gua: '&#x4DC7;', desc: '象曰：泽上于天，夬。君子以施禄及下。此卦湖水蒸发升天，即将化为甘霖普降大地，寓意施恩于下。' },
+            '111100': { name: '天山遁', gua: '&#x4DC9;', desc: '象曰：天下有山，遁。君子以远小人，不恶而严。此卦天下有山，山高退避，君子应远离小人，保持威严。' },
+            '001111': { name: '泽山咸', gua: '&#x4DCD;', desc: '象曰：山上有泽，咸。君子以虚受人。此卦山上有泽，水气滋润，君子应效法山的谦虚，广泛接受他人的意见。' },
+            '111010': { name: '天泽履', gua: '&#x4DCF;', desc: '象曰：上天下泽，履。君子以辨上下。此卦象征天在上泽在下，各安其位，君子应明辨上下之分，谨言慎行。' },
+            '010111': { name: '地山谦', gua: '&#x4DD1;', desc: '象曰：地中有山，谦。君子以裒多益寡。此卦地下有山，象征君子谦逊的美德，裒多益寡，称物平施。' },
+            '110111': { name: '雷地豫', gua: '&#x4DD3;', desc: '象曰：雷出地奋，豫。先王以作乐崇德。此卦雷声震动大地，万物生机勃发，象征快乐和预备。' },
+            '111001': { name: '火地晋', gua: '&#x4DD5;', desc: '象曰：明出地上，晋。君子以自昭明德。此卦太阳从地面升起，光明磊落，君子应效法太阳之德，使自己德行更加光明。' },
+            '100111': { name: '天地否', gua: '&#x4DD7;', desc: '象曰：天地不交，否。君子以俭德辟难。此卦天地不相交，象征闭塞不通，君子应收敛德行，避免灾难。' },
+            '111011': { name: '风地观', gua: '&#x4DD9;', desc: '象曰：风行地上，观。先王以省方观民设教。此卦风吹拂地面，观察万物，君子应效法风的精神，巡视四方，观察民情。' },
+            '110011': { name: '山地剥', gua: '&#x4DDB;', desc: '象曰：山附于地，剥。上以厚下安宅。此卦山体剥落，附于地上，君子应厚待下民，安稳宅第。' },
+            '100001': { name: '地雷复', gua: '&#x4DDD;', desc: '象曰：雷在地中，复。先王以至日闭关。此卦雷在地下，象征回复、复生，君子应效法此卦，在至日闭关静修。' },
+            '101111': { name: '天雷无妄', gua: '&#x4DDF;', desc: '象曰：天下雷行，物与无妄。此卦象征雷行于天下，万物各守其正，不敢妄为。寓意顺应天道，不可妄动。' },
+            '111101': { name: '山天大畜', gua: '&#x4DE1;', desc: '象曰：天在山中，大畜。君子以多识前言往行。此卦山中有天，象征大的蓄积，君子应多多记取前人的言行。' },
+            '101110': { name: '山泽损', gua: '&#x4DE3;', desc: '象曰：山下有泽，损。君子以惩忿窒欲。此卦山下有泽，水深山损，君子应克制愤怒，窒塞贪欲。' },
+            '011101': { name: '风雷益', gua: '&#x4DE5;', desc: '象曰：风雷，益。君子以见善则迁。此卦风雷相助，象征增益，君子应见善则迁，有过则改。' },
+            '100010': { name: '泽风大过', gua: '&#x4DE7;', desc: '象曰：泽灭木，大过。君子以独立不惧。此卦泽水淹没木，象征大的过度，君子应独立不惧，遁世无闷。' },
+            '010001': { name: '雷天大壮', gua: '&#x4DE9;', desc: '象曰：雷在天上，大壮。君子以非礼弗履。此卦雷声在天上轰鸣，象征声势浩大，君子应以此自警，不做非礼之事。' },
+            '001110': { name: '泽地萃', gua: '&#x4DEB;', desc: '象曰：地中萃聚万物，萃。君子以除戎器。此卦大地聚集，象征会聚，君子应整治兵器，以备不虞。' },
+            '011100': { name: '地风升', gua: '&#x4DED;', desc: '象曰：地中生木，升。君子以顺德积小。此卦地上生木，象征上升，君子应顺从道德，积累小善。' },
+            '010110': { name: '泽水困', gua: '&#x4DEF;', desc: '象曰：泽无水，困。君子以致命遂志。此卦泽中无水，象征困顿，君子应全力以赴，实现志向。' },
+            '011010': { name: '水风井', gua: '&#x4DF1;', desc: '象曰：木上有水，井。君子以劳民劝相。此卦木上有水，象征井水养育万物，君子应勤劳民众，鼓励互相帮助。' },
+            '010100': { name: '泽火革', gua: '&#x4DF3;', desc: '象曰：泽中有火，革。君子以治历明时。此卦泽中有火，象征变革，君子应修订历法，明确时节。' },
+            '001101': { name: '火风鼎', gua: '&#x4DF5;', desc: '象曰：木上有火，鼎。君子以正位凝命。此卦木上有火，象征鼎立，君子应端正位置，完成使命。' },
+            '000111': { name: '震为雷', gua: '&#x4DF7;', desc: '象曰：洊雷震，君子以恐惧修身。此卦雷声连续不断，君子应因恐惧而修身。' },
+            '111000': { name: '艮为山', gua: '&#x4DF9;', desc: '象曰：兼山，艮。君子以思不出其位。此卦两山重叠，象征静止，君子应思考不超出自己的位置。' },
+            '110100': { name: '风山渐', gua: '&#x4DFB;', desc: '象曰：山上有木，渐。君子以居贤德善俗。此卦山上有木，逐渐成长，君子应积累贤德，改善风俗。' },
+            '001011': { name: '雷泽归妹', gua: '&#x4DFD;', desc: '象曰：泽上有雷，归妹。君子以永终知敝。此卦泽上有雷，象征归妹，君子应永远保持终结，知道弊端。' },
+            '110000': { name: '雷火丰', gua: '&#x4DFF;', desc: '象曰：雷电皆至，丰。君子以折狱致刑。此卦雷电皆至，光明盛大，君子应判决诉讼，执行刑罚。' },
+            '000011': { name: '火山旅', gua: '&#x4E01;', desc: '象曰：山上有火，旅。君子以明慎用刑。此卦山上有火，象征旅行，君子应用刑明慎，不留狱诉。' },
+            '110001': { name: '巽为风', gua: '&#x4E03;', desc: '象曰：随风，巽。君子以申命行事。此卦随风而入，象征顺从，君子应反复宣布命令，行事。' },
+            '100000': { name: '兑为泽', gua: '&#x4E05;', desc: '象曰：丽泽，兑。君子以朋友讲习。此卦两泽相连，喜悦，君子应以朋友讲习学问。' },
+            '001001': { name: '风水涣', gua: '&#x4E07;', desc: '象曰：风行水上，涣。先王以享于帝立庙。此卦风吹水散，象征涣散，君子应祭祀上帝，建立宗庙。' },
+            '100100': { name: '天水讼', gua: '&#x4E09;', desc: '象曰：天与水违行，讼。君子以作事谋始。此卦天与水相违，象征争讼，君子应做事时先谋划。' },
+            '001010': { name: '水地比', gua: '&#x4E0B;', desc: '象曰：地上有水，比。先王以建万国。此卦地上有水，亲密比附，君子应建立万国，亲近诸侯。' },
+            '101010': { name: '坎为水', gua: '&#x4E0D;', desc: '象曰：水流而不盈，行险而不失其信。此卦水流行地而不盈满，象征险难而不失信用。' },
+            '010101': { name: '离为火', gua: '&#x4E0F;', desc: '象曰：明两作，离。大人以继明照于四方。此卦光明重叠，象征分离和依附，君子应继承光明，照耀四方。' },
+            '101101': { name: '水火既济', gua: '&#x4E11;', desc: '象曰：水在火上，既济。君子以思患而豫防之。此卦水在火上，象征完成，君子应考虑祸患而预防。' },
+            '101100': { name: '火水未济', gua: '&#x4E13;', desc: '象曰：火在水上，未济。君子以慎辨物居方。此卦火在水上，象征未完成，君子应谨慎分辨事物，确定方向。' },
+            '110010': { name: '雷水解', gua: '&#x4E15;', desc: '象曰：雷雨作，解。君子以赦过宥罪。此卦雷雨兴起，象征解除，君子应赦免过失，宽恕罪行。' },
+            '010010': { name: '山蹇蹇', gua: '&#x4E17;', desc: '象曰：山上有水，蹇。君子以反身修德。此卦山上有水，象征艰难，君子应反求自身，修养德行。' },
+            '100101': { name: '风火家人', gua: '&#x4E19;', desc: '象曰：风自火出，家人。君子以言有物而行有恒。此卦风从火出，象征一家人，君子应言语有内容，行为有恒心。' },
+            '101001': { name: '火泽睽', gua: '&#x4E1B;', desc: '象曰：上火下泽，睽。君子以同而异。此卦火在泽上，象征乖离，君子应求同存异。' },
+            '100110': { name: '水山蹇', gua: '&#x4E1D;', desc: '象曰：山上有水，蹇。君子以反身修德。此卦山上有水，象征艰难，君子应反求自身。' },
+            '011001': { name: '地火明夷', gua: '&#x4E21;', desc: '象曰：明入地中，明夷。君子以莅众。此卦日落地下，光明受损，君子应谨慎行事，在艰难中保持明智。' },
+            '100111': { name: '地水师', gua: '&#x4E23;', desc: '象曰：地中有水，师。君子以容民畜众。此卦地中有水，象征民众，君子应容纳百姓，蓄养群众。' },
+            '000001': { name: '水天需', gua: '&#x4E25;', desc: '象曰：云上于天，需。君子以饮食宴乐。此卦云在天上，象征等待，君子应饮食宴乐，耐心等待。' },
+            '100000': { name: '天火同人', gua: '&#x4E27;', desc: '象曰：天与火，同人。君子以类族辨物。此卦天与火相同，象征同路人，君子应分类辨物。' },
+            '001100': { name: '地天泰', gua: '&#x4E29;', desc: '象曰：天地交，泰。后以财成天地之道。此卦天地相交，象征通泰，君子应辅成天地之道。' },
+            '000110': { name: '雷天大壮', gua: '&#x4E2B;', desc: '象曰：雷在天上，大壮。君子以非礼弗履。此卦雷声在天上，象征强盛，君子不应做非礼之事。' },
+            '110100': { name: '泽天决', gua: '&#x4E2D;', desc: '象曰：泽上于天，决。君子以施禄及下。此卦泽水在天上，象征决断，君子应施惠于下。' },
+            '001111': { name: '火天大有', gua: '&#x4E2F;', desc: '象曰：火在天上，大有。君子以遏恶扬善。此卦火在天上，象征大有所获，君子应止恶扬善。' },
+            '010011': { name: '坤为地', gua: '&#x4E30;', desc: '象曰：地势坤，君子以厚德载物。此卦柔顺宽广，象征大地的承载万物。' },
+            '111111': { name: '乾为天', gua: '&#x4E32;', desc: '象曰：天行健，君子以自强不息。此卦刚健有力，象征天道的运行永不停歇。' },
+            '011110': { name: '水地比', gua: '&#x4E34;', desc: '象曰：地上有水，比。先王以建万国，亲诸侯。此卦地上有水，亲密比附。' },
+            '001110': { name: '风地观', gua: '&#x4E36;', desc: '象曰：风行地上，观。先王以省方观民设教。此卦风吹拂地面，观察万物。' },
+            '110110': { name: '山火贲', gua: '&#x4E38;', desc: '象曰：山下有火，贲。君子以明庶政，无敢折狱。此卦山下有火，象征文饰。' },
+            '011011': { name: '山地剥', gua: '&#x4E3A;', desc: '象曰：山附于地，剥。上以厚下安宅。此卦山体剥落，附于地上。' },
+            '110101': { name: '火雷噬嗑', gua: '&#x4E3C;', desc: '象曰：雷电噬嗑，先王以明罚敕法。此卦雷电交合，象征咬合。' },
+            '101011': { name: '山雷颐', gua: '&#x4E3E;', desc: '象曰：山下有雷，颐。君子以慎言语。此卦山下有雷，象征颐养。' },
+            '010000': { name: '山泽损', gua: '&#x4E40;', desc: '象曰：山下有泽，损。君子以惩忿窒欲。此卦山下有泽，水深山损。' },
+            '000101': { name: '风雷益', gua: '&#x4E42;', desc: '象曰：风雷相与，益。君子以见善则迁。此卦风雷相助，象征增益。' },
+            '101000': { name: '泽风大过', gua: '&#x4E44;', desc: '象曰：泽灭木，大过。君子以独立不惧。此卦泽水淹没木，象征大的过度。' },
+            '000100': { name: '雷天大壮', gua: '&#x4E46;', desc: '象曰：雷在天上，大壮。君子以非礼弗履。此卦雷声在天上，象征声势浩大。' },
+            '100010': { name: '泽地萃', gua: '&#x4E48;', desc: '象曰：地中萃聚万物，萃。君子以除戎器。此卦大地聚集，象征会聚。' },
+            '010000': { name: '地风升', gua: '&#x4E4A;', desc: '象曰：地中生木，升。君子以顺德积小。此卦地上生木，象征上升。' },
+            '110111': { name: '泽水困', gua: '&#x4E4C;', desc: '象曰：泽无水，困。君子以致命遂志。此卦泽中无水，象征困顿。' },
+            '011111': { name: '水风井', gua: '&#x4E4E;', desc: '象曰：木上有水，井。君子以劳民劝相。此卦木上有水，象征井水养育万物。' },
+            '101110': { name: '泽火革', gua: '&#x4E50;', desc: '象曰：泽中有火，革。君子以治历明时。此卦泽中有火，象征变革。' },
+            '011011': { name: '火风鼎', gua: '&#x4E52;', desc: '象曰：木上有火，鼎。君子以正位凝命。此卦木上有火，象征鼎立。' },
+            '000111': { name: '震为雷', gua: '&#x4E54;', desc: '象曰：洊雷震，君子以恐惧修身。此卦雷声连续不断，象征震惊。' },
+            '111000': { name: '艮为山', gua: '&#x4E56;', desc: '象曰：兼山，艮。君子以思不出其位。此卦两山重叠，象征静止。' },
+            '110100': { name: '风山渐', gua: '&#x4E58;', desc: '象曰：山上有木，渐。君子以居贤德善俗。此卦山上有木，逐渐成长。' },
+            '001011': { name: '雷泽归妹', gua: '&#x4E5A;', desc: '象曰：泽上有雷，归妹。君子以永终知敝。此卦泽上有雷，象征归妹。' },
+            '110000': { name: '雷火丰', gua: '&#x4E5C;', desc: '象曰：雷电皆至，丰。君子以折狱致刑。此卦雷电皆至，光明盛大。' },
+            '000011': { name: '火山旅', gua: '&#x4E5E;', desc: '象曰：山上有火，旅。君子以明慎用刑。此卦山上有火，象征旅行。' },
+            '110001': { name: '巽为风', gua: '&#x4E60;', desc: '象曰：随风，巽。君子以申命行事。此卦随风而入，象征顺从。' },
+            '100000': { name: '兑为泽', gua: '&#x4E62;', desc: '象曰：丽泽，兑。君子以朋友讲习。此卦两泽相连，喜悦。' },
+            '001001': { name: '风水涣', gua: '&#x4E64;', desc: '象曰：风行水上，涣。先王以享于帝立庙。此卦风吹水散，象征涣散。' },
+            '100100': { name: '天水讼', gua: '&#x4E66;', desc: '象曰：天与水违行，讼。君子以作事谋始。此卦天与水相违，象征争讼。' },
+            '001010': { name: '水地比', gua: '&#x4E68;', desc: '象曰：地上有水，比。先王以建万国。此卦地上有水，象征亲密比附。' },
+            '101010': { name: '坎为水', gua: '&#x4E6A;', desc: '象曰：水流而不盈，行险而不失其信。此卦水流行地而不盈满。' },
+            '010101': { name: '离为火', gua: '&#x4E6C;', desc: '象曰：明两作，离。大人以继明照于四方。此卦光明重叠，象征分离和依附。' },
+            '101101': { name: '水火既济', gua: '&#x4E6E;', desc: '象曰：水在火上，既济。君子以思患而豫防之。此卦水在火上，象征完成。' },
+            '101100': { name: '火水未济', gua: '&#x4E70;', desc: '象曰：火在水上，未济。君子以慎辨物居方。此卦火在水上，象征未完成。' },
+            '110010': { name: '雷水解', gua: '&#x4E72;', desc: '象曰：雷雨作，解。君子以赦过宥罪。此卦雷雨兴起，象征解除。' },
+            '010010': { name: '山蹇蹇', gua: '&#x4E74;', desc: '象曰：山上有水，蹇。君子以反身修德。此卦山上有水，象征艰难。' },
+            '100101': { name: '风火家人', gua: '&#x4E76;', desc: '象曰：风自火出，家人。君子以言有物而行有恒。此卦风从火出，象征一家人。' },
+            '101001': { name: '火泽睽', gua: '&#x4E78;', desc: '象曰：上火下泽，睽。君子以同而异。此卦火在泽上，象征乖离。' },
+            '100110': { name: '水山蹇', gua: '&#x4E7A;', desc: '象曰：山上有水，蹇。君子以反身修德。此卦山上有水，象征艰难。' },
+            '011001': { name: '地火明夷', gua: '&#x4E7C;', desc: '象曰：明入地中，明夷。君子以莅众。此卦日落地下，光明受损。' },
+            '100111': { name: '地水师', gua: '&#x4E7E;', desc: '象曰：地中有水，师。君子以容民畜众。此卦地中有水，象征民众。' },
+            '000001': { name: '水天需', gua: '&#x4E80;', desc: '象曰：云上于天，需。君子以饮食宴乐。此卦云在天上，象征等待。' },
+            '100000': { name: '天火同人', gua: '&#x4E82;', desc: '象曰：天与火，同人。君子以类族辨物。此卦天与火相同，象征同路人。' },
+            '001100': { name: '地天泰', gua: '&#x4E84;', desc: '象曰：天地交，泰。后以财成天地之道。此卦天地相交，象征通泰。' },
+            '000110': { name: '雷天大壮', gua: '&#x4E86;', desc: '象曰：雷在天上，大壮。君子以非礼弗履。此卦雷声在天上，象征强盛。' },
+            '110100': { name: '泽天决', gua: '&#x4E88;', desc: '象曰：泽上于天，决。君子以施禄及下。此卦泽水在天上，象征决断。' },
+            '001111': { name: '火天大有', gua: '&#x4E8A;', desc: '象曰：火在天上，大有。君子以遏恶扬善。此卦火在天上，象征大有所获。' },
+            '010011': { name: '地雷复', gua: '&#x4E8C;', desc: '象曰：雷在地中，复。先王以至日闭关。此卦雷在地下，象征回复。' },
+            '101111': { name: '天雷无妄', gua: '&#x4E8E;', desc: '象曰：天下雷行，物与无妄。此卦象征雷行于天下，万物各守其正。' },
+            '111101': { name: '山天大畜', gua: '&#x4E90;', desc: '象曰：天在山中，大畜。君子以多识前言往行。此卦山中有天，象征大的蓄积。' },
+            '101110': { name: '山泽损', gua: '&#x4E92;', desc: '象曰：山下有泽，损。君子以惩忿窒欲。此卦山下有泽，水深山损。' },
+            '011101': { name: '风雷益', gua: '&#x4E94;', desc: '象曰：风雷相与，益。君子以见善则迁。此卦风雷相助，象征增益。' },
+            '100010': { name: '泽风大过', gua: '&#x4E96;', desc: '象曰：泽灭木，大过。君子以独立不惧。此卦泽水淹没木，象征大的过度。' },
+            '010001': { name: '雷天大壮', gua: '&#x4E98;', desc: '象曰：雷在天上，大壮。君子以非礼弗履。此卦雷声在天上轰鸣，象征声势浩大。' },
+            '001110': { name: '泽地萃', gua: '&#x4E9A;', desc: '象曰：地中萃聚万物，萃。君子以除戎器。此卦大地聚集，象征会聚。' },
+            '011100': { name: '地风升', gua: '&#x4E9C;', desc: '象曰：地中生木，升。君子以顺德积小。此卦地上生木，象征上升。' },
+            '010110': { name: '泽水困', gua: '&#x4E9E;', desc: '象曰：泽无水，困。君子以致命遂志。此卦泽中无水，象征困顿。' },
+            '011010': { name: '水风井', gua: '&#x4EA0;', desc: '象曰：木上有水，井。君子以劳民劝相。此卦木上有水，象征井水养育万物。' },
+            '010100': { name: '泽火革', gua: '&#x4EA2;', desc: '象曰：泽中有火，革。君子以治历明时。此卦泽中有火，象征变革。' },
+            '001101': { name: '火风鼎', gua: '&#x4EA4;', desc: '象曰：木上有火，鼎。君子以正位凝命。此卦木上有火，象征鼎立。' },
+            '000111': { name: '震为雷', gua: '&#x4EA6;', desc: '象曰：洊雷震，君子以恐惧修身。此卦雷声连续不断。' },
+            '111000': { name: '艮为山', gua: '&#x4EA8;', desc: '象曰：兼山，艮。君子以思不出其位。此卦两山重叠，象征静止。' },
+            '110100': { name: '风山渐', gua: '&#x4EAA;', desc: '象曰：山上有木，渐。君子以居贤德善俗。此卦山上有木，逐渐成长。' },
+            '001011': { name: '雷泽归妹', gua: '&#x4EAC;', desc: '象曰：泽上有雷，归妹。君子以永终知敝。此卦泽上有雷，象征归妹。' },
+            '110000': { name: '雷火丰', gua: '&#x4EAE;', desc: '象曰：雷电皆至，丰。君子以折狱致刑。此卦雷电皆至，光明盛大。' },
+            '000011': { name: '火山旅', gua: '&#x4EB0;', desc: '象曰：山上有火，旅。君子以明慎用刑。此卦山上有火，象征旅行。' },
+            '110001': { name: '巽为风', gua: '&#x4EB2;', desc: '象曰：随风，巽。君子以申命行事。此卦随风而入，象征顺从。' },
+            '100000': { name: '兑为泽', gua: '&#x4EB4;', desc: '象曰：丽泽，兑。君子以朋友讲习。此卦两泽相连，喜悦。' },
+            '001001': { name: '风水涣', gua: '&#x4EB6;', desc: '象曰：风行水上，涣。先王以享于帝立庙。此卦风吹水散，象征涣散。' },
+            '100100': { name: '天水讼', gua: '&#x4EB8;', desc: '象曰：天与水违行，讼。君子以作事谋始。此卦天与水相违，象征争讼。' },
+            '001010': { name: '水地比', gua: '&#x4EBA;', desc: '象曰：地上有水，比。先王以建万国。此卦地上有水，象征亲密比附。' },
+            '101010': { name: '坎为水', gua: '&#x4EBC;', desc: '象曰：水流而不盈，行险而不失其信。此卦水流行地而不盈满。' },
+            '010101': { name: '离为火', gua: '&#x4EBE;', desc: '象曰：明两作，离。大人以继明照于四方。此卦光明重叠，象征分离和依附。' },
+            '101101': { name: '水火既济', gua: '&#x4EC0;', desc: '象曰：水在火上，既济。君子以思患而豫防之。此卦水在火上，象征完成。' },
+            '101100': { name: '火水未济', gua: '&#x4EC2;', desc: '象曰：火在水上，未济。君子以慎辨物居方。此卦火在水上，象征未完成。' },
+            '110010': { name: '雷水解', gua: '&#x4EC4;', desc: '象曰：雷雨作，解。君子以赦过宥罪。此卦雷雨兴起，象征解除。' },
+            '010010': { name: '山蹇蹇', gua: '&#x4EC6;', desc: '象曰：山上有水，蹇。君子以反身修德。此卦山上有水，象征艰难。' },
+            '100101': { name: '风火家人', gua: '&#x4EC8;', desc: '象曰：风自火出，家人。君子以言有物而行有恒。此卦风从火出，象征一家人。' },
+            '101001': { name: '火泽睽', gua: '&#x4ECA;', desc: '象曰：上火下泽，睽。君子以同而异。此卦火在泽上，象征乖离。' },
+            '100110': { name: '水山蹇', gua: '&#x4ECC;', desc: '象曰：山上有水，蹇。君子以反身修德。此卦山上有水，象征艰难。' },
+            '011001': { name: '地火明夷', gua: '&#x4ECE;', desc: '象曰：明入地中，明夷。君子以莅众。此卦日落地下，光明受损。' },
+            '100111': { name: '地水师', gua: '&#x4ED0;', desc: '象曰：地中有水，师。君子以容民畜众。此卦地中有水，象征民众。' },
+            '000001': { name: '水天需', gua: '&#x4ED2;', desc: '象曰：云上于天，需。君子以饮食宴乐。此卦云在天上，象征等待。' },
+            '100000': { name: '天火同人', gua: '&#x4ED4;', desc: '象曰：天与火，同人。君子以类族辨物。此卦天与火相同，象征同路人。' },
+            '001100': { name: '地天泰', gua: '&#x4ED6;', desc: '象曰：天地交，泰。后以财成天地之道。此卦天地相交，象征通泰。' },
+            '000110': { name: '雷天大壮', gua: '&#x4ED8;', desc: '象曰：雷在天上，大壮。君子以非礼弗履。此卦雷声在天上，象征强盛。' },
+            '110100': { name: '泽天决', gua: '&#x4EDA;', desc: '象曰：泽上于天，决。君子以施禄及下。此卦泽水在天上，象征决断。' },
+            '001111': { name: '火天大有', gua: '&#x4EDC;', desc: '象曰：火在天上，大有。君子以遏恶扬善。此卦火在天上，象征大有所获。' }
         };
 
         const STROKES = {
@@ -379,7 +454,59 @@
             '白': 5, '崔': 11, '康': 11, '毛': 4, '邱': 12, '秦': 10, '江': 7, '史': 5,
             '顾': 16, '侯': 9, '邵': 8, '孟': 8, '龙': 16, '万': 3, '段': 9, '漕': 16,
             '钱': 13, '汤': 12, '尹': 4, '黎': 16, '易': 8, '常': 11, '武': 8, '乔': 12,
-            '贺': 12, '赖': 16, '龚': 11, '文': 4
+            '贺': 12, '赖': 16, '龚': 11, '文': 4, '博': 12, '雅': 12, '慧': 15, '欣': 8,
+            '怡': 9, '婷': 12, '琪': 13, '莹': 13, '琳': 13, '瑶': 14, '琪': 13, '倩': 10,
+            '敏': 11, '静': 16, '丽': 19, '芳': 10, '兰': 5, '梅': 11, '菊': 14, '竹': 6,
+            '松': 8, '柏': 9, '桐': 10, '枫': 11, '桦': 12, '榕': 14, '槐': 14, '柳': 9,
+            '桂': 10, '桃': 10, '樱': 16, '森': 12, '林': 8, '荣': 12, '华': 12, '建': 9,
+            '材': 7, '春': 9, '秋': 9, '月': 4, '阳': 17, '风': 4, '云': 4, '天': 4,
+            '章': 11, '炎': 8, '焱': 12, '灿': 7, '烂': 12, '光': 6, '辉': 15, '耀': 20,
+            '明': 8, '亮': 9, '晶': 12, '娜': 10, '昕': 8, '昭': 9, '熙': 13, '丹': 4,
+            '红': 6, '赤': 7, '朱': 6, '映': 9, '炜': 8, '炳': 9, '熠': 15, '荧': 11,
+            '煜': 13, '灵': 7, '暖': 13, '晴': 12, '坤': 8, '厚': 9, '坦': 8, '城': 10,
+            '坚': 11, '培': 11, '增': 15, '墨': 15, '圣': 13, '均': 7, '垣': 9, '基': 11,
+            '域': 11, '堂': 11, '堆': 11, '塞': 13, '壁': 16, '士': 3, '诚': 13, '锋': 13,
+            '锐': 15, '铭': 14, '锦': 16, '钦': 12, '钰': 10, '铁': 13, '银': 14, '铜': 14,
+            '锡': 14, '镜': 19, '钟': 17, '钧': 9, '铎': 17, '泽': 8, '润': 15, '洲': 10,
+            '海': 10, '波': 8, '涛': 10, '洁': 9, '洋': 10, '潮': 16, '汐': 7, '渊': 11,
+            '泉': 9, '溪': 14, '涵': 11, '清': 11, '淳': 11, '冷': 7, '冽': 8, '永': 5,
+            '泳': 8, '瀚': 20, '学': 16, '雨': 8, '诗': 8, '珊': 10, '浩': 10, '宇': 6,
+            '子': 3, '涵': 11, '轩': 10, '霖': 16, '晨': 11, '睿': 14, '哲': 10, '祥': 11,
+            '瑞': 14, '康': 11, '宁': 14, '安': 6, '文': 4, '武': 8, '英': 11, '敏': 11,
+            '慧': 15, '勇': 9, '俊': 9, '豪': 14, '杰': 12, '峰': 10, '岚': 12, '峻': 10,
+            '贤': 15, '德': 15, '义': 13, '礼': 18, '智': 12, '信': 9, '忠': 8, '孝': 7,
+            '仁': 4, '义': 3, '和': 8, '平': 5, '和': 8, '顺': 12, '通': 10, '达': 12,
+            '思': 9, '悦': 11, '乐': 6, '欢': 6, '欣': 8, '慕': 14, '忆': 17, '念': 8,
+            '惜': 11, '恋': 10, '懿': 22, '彤': 7, '丹': 4, '玲': 10, '环': 8, '玮': 8,
+            '佩': 8, '佳': 8, '俊': 9, '伟': 6, '嘉': 14, '哲': 10, '彦': 9, '峰': 10,
+            '昊': 8, '皓': 12, '晨': 11, '晖': 13, '煜': 13, '熠': 15, '昌': 8, '晟': 10,
+            '昊': 8, '昀': 8, '昕': 8, '明': 8, '亮': 9, '望': 11, '月': 4, '星': 9,
+            '辰': 7, '晨': 11, '云': 4, '霞': 17, '露': 21, '雯': 12, '霏': 16, '霜': 17,
+            '凌': 10, '冰': 6, '寒': 12, '冬': 5, '雪': 11, '雨': 8, '雷': 13, '电': 13,
+            '霆': 14, '霄': 20, '霊': 16, '青山': 8, '碧玉': 14, '珍珠': 10, '琥珀': 13
+        };
+
+        const CHAR_WUXING = {
+            '木': ['森', '林', '荣', '华', '建', '材', '春', '秋', '松', '柏', '桐', '榕', '槐', '柳', '桂', '枫', '桃', '梅', '兰', '菊', '竹', '萱', '莹', '婷', '妍', '倩', '雅', '欣', '怡', '慧', '材', '栋', '梁', '柱', '桥', '楠', '榆', '桂', '樟', '樱', '楷', '桓', '棉', '棕', '棚', '柳', '枚', '杨', '桦', '槿', '棉', '桦', '松', '柏'],
+            '火': ['炎', '焱', '灿', '烂', '光', '辉', '耀', '明', '亮', '晶', '婷', '娜', '昕', '昭', '熙', '丹', '红', '赤', '朱', '阳', '映', '炜', '炳', '熠', '荧', '煜', '灵', '暖', '晴', '昌', '昊', '明', '昀', '晖', '晟', '晔', '晨', '曦', '皓', '天', '日', '晶', '亮', '照', '然', '丹'],
+            '土': ['坤', '厚', '坦', '城', '坚', '培', '增', '墨', '圣', '均', '垣', '基', '域', '堂', '堆', '塞', '壁', '士', '诚', '博', '雅', '慧', '灵', '吉', '埕', '城', '培', '基', '堂', '堆', '塔', '城', '域', '堂', '均', '坊', '坏', '垣', '城', '域', '堂', '坚'],
+            '金': ['锋', '锐', '铭', '锦', '钦', '钰', '铁', '银', '铜', '锡', '镜', '钟', '鑫', '钧', '铎', '雨', '诗', '倩', '雅', '婷', '慧', '敏', '珊', '静', '瑞', '珍', '珠', '玉', '珉', '琳', '琪', '瑶', '瑾', '璇', '瑟', '珩', '琪', '琳', '玉', '珏', '玺', '璧', '环', '玖', '瑄'],
+            '水': ['泽', '润', '洲', '海', '波', '涛', '洁', '洋', '潮', '汐', '渊', '泉', '溪', '涵', '清', '淳', '冷', '冽', '永', '泳', '瀚', '墨', '学', '海', '文', '慧', '泽', '润', '洲', '海', '波', '涛', '洁', '洋', '潮', '汐', '渊', '泉', '溪', '涵', '清', '淳', '冷', '冽', '永', '泳', '瀚', '墨']
+        };
+
+        const SHENGXIAO_GOOD = {
+            '鼠': ['米', '豆', '麦', '高', '草', '龙', '牛', '金', '玉', '赤', '刍', '衣', '系', '申', '王', '心', '月', '西', '丑'],
+            '牛': ['土', '金', '木', '水', '禾', '豆', '米', '龙', '蛇', '金', '玉', '赤', '刍', '衣', '系', '子', '巳', '午', '未'],
+            '虎': ['木', '水', '火', '土', '山', '马', '狗', '金', '玉', '赤', '刍', '衣', '系', '寅', '卯', '午', '戌', '狗'],
+            '兔': ['木', '水', '金', '月', '草', '火', '桑', '肉', '羊', '猪', '狗', '金', '玉', '赤', '刍', '衣', '系', '卯', '寅', '子', '亥'],
+            '龙': ['水', '金', '木', '土', '玉', '血', '月', '立', '大', '金', '玉', '赤', '刍', '衣', '系', '辰', '寅', '午', '戌'],
+            '蛇': ['金', '木', '水', '火', '土', '虫', '豆', '肉', '龙', '牛', '鸡', '金', '玉', '赤', '刍', '衣', '系', '巳', '午', '未', '申'],
+            '马': ['火', '木', '水', '草', '高', '谷', '豆', '麦', '虎', '羊', '狗', '金', '玉', '赤', '刍', '衣', '系', '午', '未', '戌', '寅'],
+            '羊': ['土', '木', '火', '水', '草', '桑', '肉', '豆', '马', '猪', '猴', '金', '玉', '赤', '刍', '衣', '系', '未', '午', '戌', '子'],
+            '猴': ['金', '木', '水', '火', '土', '果', '仁', '豆', '米', '龙', '蛇', '鼠', '金', '玉', '赤', '刍', '衣', '系', '申', '子', '辰'],
+            '鸡': ['金', '木', '水', '火', '土', '米', '豆', '麦', '虫', '蛇', '牛', '龙', '金', '玉', '赤', '刍', '衣', '系', '酉', '丑', '巳', '辰'],
+            '狗': ['土', '金', '木', '水', '肉', '米', '豆', '麦', '虎', '兔', '马', '金', '玉', '赤', '刍', '衣', '系', '戌', '寅', '卯', '午'],
+            '猪': ['水', '木', '金', '土', '豆', '米', '麦', '肉', '羊', '兔', '龙', '金', '玉', '赤', '刍', '衣', '系', '亥', '子', '丑', '卯']
         };
 
         const POINTS = {
@@ -397,24 +524,65 @@
             '79': 100, '80': 92, '81': 100
         };
 
-        function getCharStrokes(c) {
-            return STROKES[c] || 8;
-        }
+        const POEMS = [
+            { title: '《春望》', author: '杜甫', content: '国破山河在，城春草木深。感时花溅泪，恨别鸟惊心。' },
+            { title: '《静夜思》', author: '李白', content: '床前明月光，疑是地上霜。举头望明月，低头思故乡。' },
+            { title: '《登鹳雀楼》', author: '王之涣', content: '白日依山尽，黄河入海流。欲穷千里目，更上一层楼。' },
+            { title: '《相思》', author: '王维', content: '红豆生南国，春来发几枝。愿君多采撷，此物最相思。' },
+            { title: '《鹿柴》', author: '王维', content: '空山不见人，但闻人语响。返景入深林，复照青苔上。' },
+            { title: '《竹里馆》', author: '王维', content: '独坐幽篁里，弹琴复长啸。深林人不知，明月来相照。' },
+            { title: '《山中》', author: '王维', content: '荆溪白石出，天寒红叶稀。山路元无雨，空翠湿人衣。' },
+            { title: '《鸟鸣涧》', author: '王维', content: '人闲桂花落，夜静春山空。月出惊山鸟，时鸣春涧中。' },
+            { title: '《望庐山瀑布》', author: '李白', content: '日照香炉生紫烟，遥看瀑布挂前川。飞流直下三千尺，疑是银河落九天。' },
+            { title: '《早发白帝城》', author: '李白', content: '朝辞白帝彩云间，千里江陵一日还。两岸猿声啼不住，轻舟已过万重山。' },
+            { title: '《黄鹤楼送孟浩然之广陵》', author: '李白', content: '故人西辞黄鹤楼，烟花三月下扬州。孤帆远影碧空尽，唯见长江天际流。' },
+            { title: '《出塞》', author: '王昌龄', content: '秦时明月汉时关，万里长征人未还。但使龙城飞将在，不教胡马度阴山。' },
+            { title: '《枫桥夜泊》', author: '张继', content: '月落乌啼霜满天，江枫渔火对愁眠。姑苏城外寒山寺，夜半钟声到客船。' },
+            { title: '《清明》', author: '杜牧', content: '清明时节雨纷纷，路上行人欲断魂。借问酒家何处有，牧童遥指杏花村。' },
+            { title: '《山行》', author: '杜牧', content: '远上寒山石径斜，白云生处有人家。停车坐爱枫林晚，霜叶红于二月花。' },
+            { title: '《泊秦淮》', author: '杜牧', content: '烟笼寒水月笼沙，夜泊秦淮近酒家。商女不知亡国恨，隔江犹唱后庭花。' },
+            { title: '《江南春》', author: '杜牧', content: '千里莺啼绿映红，水村山郭酒旗风。南朝四百八十寺，多少楼台烟雨中。' },
+            { title: '《秋夕》', author: '杜牧', content: '银烛秋光冷画屏，轻罗小扇扑流萤。天阶夜色凉如水，卧看牵牛织女星。' },
+            { title: '《七夕》', author: '杜牧', content: '银烛秋光冷画屏，轻罗小扇扑流萤。' },
+            { title: '《元日》', author: '王安石', content: '爆竹声中一岁除，春风送暖入屠苏。千门万户曈曈日，总把新桃换旧符。' },
+            { title: '《泊船瓜洲》', author: '王安石', content: '京口瓜洲一水间，钟山只隔数重山。春风又绿江南岸，明月何时照我还。' },
+            { title: '《梅花》', author: '王安石', content: '墙角数枝梅，凌寒独自开。遥知不是雪，为有暗香来。' },
+            { title: '《春江花月夜》', author: '张若虚', content: '春江潮水连海平，海上明月共潮生。滟滟随波千万里，何处春江无月明。' },
+            { title: '《望月怀远》', author: '张九龄', content: '海上生明月，天涯共此时。情人怨遥夜，竟夕起相思。' },
+            { title: '《凉州词》', author: '王翰', content: '葡萄美酒夜光杯，欲饮琵琶马上催。醉卧沙场君莫笑，古来征战几人回。' },
+            { title: '《出塞》', author: '王昌龄', content: '黄河远上白云间，一片孤城万仞山。羌笛何须怨杨柳，春风不度玉门关。' },
+            { title: '《从军行》', author: '王昌龄', content: '青海长云暗雪山，孤城遥望玉门关。黄沙百战穿金甲，不破楼兰终不还。' },
+            { title: '《芙蓉楼送辛渐》', author: '王昌龄', content: '寒雨连江夜入吴，平明送客楚山孤。洛阳亲友如相问，一片冰心在玉壶。' },
+            { title: '《送元二使安西》', author: '王维', content: '渭城朝雨浥轻尘，客舍青青柳色新。劝君更尽一杯酒，西出阳关无故人。' },
+            { title: '《九月九日忆山东兄弟》', author: '王维', content: '独在异乡为异客，每逢佳节倍思亲。遥知兄弟登高处，遍插茱萸少一人。' }
+        ];
+
+        const NAME_POOL_MALE = ['浩', '宇', '杰', '涛', '明', '超', '勇', '俊', '豪', '峰', '磊', '鹏', '飞', '龙', '凯', '晨', '睿', '哲', '祥', '瑞', '康', '宁', '安', '文', '武', '英', '敏', '慧', '杰', '磊', '超', '勇', '俊', '豪', '杰', '涛', '明', '超', '勇', '俊', '豪', '峰', '磊', '鹏', '飞', '龙', '凯', '晨', '睿', '哲', '祥', '瑞', '康', '宁', '安', '文', '武', '英', '敏', '慧', '博', '雅', '嘉', '彦', '峰', '昊', '皓', '晨', '晖', '煜', '熠', '昌', '晟', '哲', '彦', '俊', '伟', '嘉', '哲', '彦', '峰', '昊', '皓', '晨', '晖', '煜', '熠', '昌', '晟'];
+        const NAME_POOL_FEMALE = ['欣', '怡', '婷', '琪', '雅', '静', '敏', '娜', '丽', '芳', '兰', '梅', '菊', '凤', '英', '华', '红', '玉珍', '秀英', '桂英', '婷婷', '欣怡', '思雨', '雨萱', '欣悦', '梦琪', '雅静', '诗涵', '子墨', '欣悦', '思琪', '子萱', '雨桐', '梓萱', '天宇', '欣怡', '思雨', '雨泽', '梓涵', '天翔', '伟宸', '浩宇', '子涵', '雅', '静', '婷', '娜', '欣', '怡', '慧', '敏', '珊', '雅', '静', '婷', '娜', '欣', '怡', '慧', '敏', '珊', '雅', '静', '婷', '娜', '欣', '怡', '慧', '敏', '珊', '雅', '静', '婷', '娜', '欣', '怡', '慧', '敏', '珊'];
+
+        const NAME_RANK = {
+            '伟': 85, '磊': 78, '超': 72, '勇': 68, '俊': 75, '豪': 65, '峰': 70, '杰': 82, '涛': 68, '明': 72, '婷': 80, '欣': 78, '怡': 75, '静': 72, '雅': 82, '慧': 78, '敏': 70, '娜': 68, '丽': 65, '芳': 62, '琪': 85, '琳': 82, '瑶': 78, '雪': 72, '梅': 68, '兰': 70, '玉珍': 88, '秀英': 65, '桂英': 62, '婷婷': 78, '思雨': 82, '雨萱': 85, '欣悦': 80, '梦琪': 85, '诗涵': 88, '子涵': 82, '梓萱': 85, '子轩': 78, '浩然': 82, '天佑': 80
+        };
+
+        let history = JSON.parse(localStorage.getItem('nameHistory') || '[]');
+        let compareList = JSON.parse(localStorage.getItem('compareList') || '[]');
+        let currentFilter = 'all';
+        let currentBazi = null;
+        let currentWuxingInfo = null;
+        let currentSurname = '';
+
+        function getCharStrokes(c) { return STROKES[c] || 8; }
 
         function calcBazi(year, month, day, hour) {
             const tgIndex = (year - 4) % 10;
             const ganZhiYear = TIANGAN[tgIndex] + DIZHI[(year - 4) % 12];
-            
             let monthIdx = DIZHI.indexOf(month);
             let ganZhiMonth = TIANGAN[(tgIndex + monthIdx + 2) % 10] + DIZHI[monthIdx];
-            
             let dayGanIdx = (year * 365 + month * 30 + day + 6) % 10;
             let dayZhiIdx = (year * 365 + month * 30 + day + 9) % 12;
             let ganZhiDay = TIANGAN[dayGanIdx] + DIZHI[dayZhiIdx];
-            
             let hourZhiIdx = DIZHI.indexOf(hour);
             let ganZhiHour = TIANGAN[(dayGanIdx * 2 + hourZhiIdx) % 10] + DIZHI[hourZhiIdx];
-            
             return { year: ganZhiYear, month: ganZhiMonth, day: ganZhiDay, hour: ganZhiHour };
         }
 
@@ -440,7 +608,7 @@
                 if (wuxingCounts[w] < min) { min = wuxingCounts[w]; weak = w; }
             }
             for (let w in wuxingCounts) {
-                if (w !== strong && wuxingCounts[w] === min && w !== strong) weak = w;
+                if (w !== strong && wuxingCounts[w] === min) { weak = w; break; }
             }
             const buyong = WUXING_RELATION[strong] ? WUXING_RELATION[strong]['生'] : '';
             const xiyong = WUXING_RELATION[weak] ? WUXING_RELATION[weak]['克'] : '';
@@ -477,39 +645,83 @@
 
         function calcTotalScore(santi) {
             let score = 0;
-            for (let key in santi) {
-                score += POINTS[santi[key]] || 90;
-            }
+            for (let key in santi) { score += POINTS[santi[key]] || 90; }
             return Math.round(score / 5);
         }
 
-        function generateNameSuggestions(wuxingInfo, gender) {
+        function calcYinYun(name1, name2) {
+            const finals = { 'a': 1, 'o': 2, 'e': 3, 'i': 4, 'u': 5, 'v': 6, 'ai': 7, 'ei': 8, 'ui': 9, 'ao': 10, 'ou': 11, 'iu': 12, 'ie': 13, 've': 14, 'er': 15, 'an': 16, 'en': 17, 'in': 18, 'un': 19, 'vn': 20 };
+            const pinyinMap = {
+                '浩': 'hao', '宇': 'yu', '杰': 'jie', '涛': 'tao', '明': 'ming', '超': 'chao', '勇': 'yong', '俊': 'jun', '豪': 'hao', '峰': 'feng',
+                '磊': 'lei', '鹏': 'peng', '飞': 'fei', '龙': 'long', '凯': 'kai', '晨': 'chen', '睿': 'rui', '哲': 'zhe', '祥': 'xiang', '瑞': 'rui',
+                '欣': 'xin', '怡': 'yi', '婷': 'ting', '琪': 'qi', '雅': 'ya', '静': 'jing', '敏': 'min', '娜': 'na', '丽': 'li', '芳': 'fang',
+                '兰': 'lan', '梅': 'mei', '菊': 'ju', '竹': 'zhu', '松': 'song', '柏': 'bai', '桐': 'tong', '枫': 'feng', '桃': 'tao', '桂': 'gui',
+                '森': 'sen', '林': 'lin', '荣': 'rong', '华': 'hua', '建': 'jian', '材': 'cai', '春': 'chun', '秋': 'qiu', '焱': 'yan', '灿': 'can',
+                '光': 'guang', '辉': 'hui', '耀': 'yao', '亮': 'liang', '晶': 'jing', '丹': 'dan', '红': 'hong', '阳': 'yang', '暖': 'nuan', '晴': 'qing',
+                '坤': 'kun', '厚': 'hou', '坦': 'tan', '城': 'cheng', '坚': 'jian', '培': 'pei', '墨': 'mo', '均': 'jun', '锋': 'feng', '锐': 'rui',
+                '铭': 'ming', '锦': 'jin', '钦': 'qin', '钰': 'yu', '铁': 'tie', '银': 'yin', '钟': 'zhong', '钧': 'jun', '泽': 'ze', '润': 'run',
+                '洲': 'zhou', '海': 'hai', '波': 'bo', '洁': 'jie', '洋': 'yang', '潮': 'chao', '渊': 'yuan', '泉': 'quan', '溪': 'xi', '涵': 'han',
+                '清': 'qing', '淳': 'chun', '永': 'yong', '泳': 'yong', '瀚': 'han', '学': 'xue', '文': 'wen', '博': 'bo', '雅': 'ya', '慧': 'hui'
+            };
+            const py1 = pinyinMap[name1] || name1;
+            const py2 = pinyinMap[name2] || name2;
+            let score = 50;
+            const last1 = py1.slice(-1), last2 = py2.slice(-1);
+            if (last1 === last2) score -= 20;
+            if (py1.length > 1 && py2.length > 1) {
+                if (py1[0] === py2[0]) score -= 10;
+            }
+            return Math.max(0, Math.min(100, score + 50));
+        }
+
+        function getZodiacAnimal(birthDate) {
+            const animals = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'];
+            const year = parseInt(birthDate.split('-')[0]);
+            return animals[(year - 4) % 12];
+        }
+
+        function generateNameSuggestions(wuxingInfo, gender, count = 12) {
             const suggestions = [];
             const preferWX = wuxingInfo.xiyong;
-            
-            const goodChars = {
-                '木': ['森', '林', '荣', '华', '建', '材', '春', '秋', '松', '柏', '桐', '榕', '槐', '柳', '桂', '枫', '桃', '梅', '兰', '菊', '竹', '萱', '莹', '婷', '妍', '倩', '雅', '欣', '怡', '慧'],
-                '火': ['炎', '焱', '灿', '烂', '光', '辉', '耀', '明', '亮', '晶', '婷', '娜', '昕', '昭', '熙', '丹', '红', '赤', '朱', '阳', '映', '炜', '炳', '熠', '荧', '煜', '灵', '暖', '晴'],
-                '土': ['坤', '厚', '坦', '城', '坚', '培', '增', '墨', '圣', '均', '垣', '基', '域', '堂', '堆', '塞', '壁', '士', '诚', '博', '雅', '慧', '灵'],
-                '金': ['锋', '锐', '铭', '锦', '钦', '钰', '铁', '银', '铜', '锡', '镜', '钟', '鑫', '钧', '铎', '雨', '诗', '倩', '雅', '婷', '慧', '敏', '珊', '静'],
-                '水': ['泽', '润', '洲', '海', '波', '涛', '洁', '洋', '潮', '汐', '渊', '泉', '溪', '涵', '清', '淳', '冷', '冽', '永', '泳', '瀚', '墨', '学', '海', '文', '慧']
-            };
-            
-            const chars = goodChars[preferWX] || goodChars['木'];
-            
-            for (let i = 0; i < 8; i++) {
-                const name1 = chars[Math.floor(Math.random() * chars.length)];
-                const name2 = chars[Math.floor(Math.random() * chars.length)];
-                const Santi = calcSanCai('张', name1, name2);
-                const totalScore = calcTotalScore(Santi);
+            const avoidWX = wuxingInfo.buyong;
+            const baseChars = CHAR_WUXING[preferWX] || CHAR_WUXING['木'];
+            const pool = gender === '女' ? NAME_POOL_FEMALE : NAME_POOL_MALE;
+            const usedNames = new Set();
+
+            for (let i = 0; i < pool.length; i++) {
+                const name1 = pool[Math.floor(Math.random() * pool.length)];
+                const name2 = baseChars[Math.floor(Math.random() * baseChars.length)];
+                const fullName = name1 + name2;
+                if (usedNames.has(fullName)) continue;
+                usedNames.add(fullName);
+
+                const santi = calcSanCai('张', name1, name2);
+                const santiScore = calcTotalScore(santi);
+                const yinYunScore = calcYinYun(name1, name2);
+                const rankScore = NAME_RANK[name1] || 70;
+                const totalScore = Math.round(santiScore * 0.4 + yinYunScore * 0.3 + rankScore * 0.3);
+
                 suggestions.push({
-                    name: name1 + name2,
+                    name: fullName,
                     score: totalScore,
-                    wuxing: preferWX + preferWX
+                    santiScore,
+                    yinYunScore,
+                    wuxing: preferWX + preferWX,
+                    strokes1: getCharStrokes(name1),
+                    strokes2: getCharStrokes(name2)
                 });
+
+                if (suggestions.length >= count * 2) break;
             }
-            
-            return suggestions.sort((a, b) => b.score - a.score);
+
+            return suggestions.sort((a, b) => b.score - a.score).slice(0, count);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
         function generateName() {
@@ -517,29 +729,31 @@
             const date = document.getElementById('birthDate').value;
             const hour = document.getElementById('birthHour').value;
             const gender = document.getElementById('gender').value;
-            
+
             if (!surname || !date || !hour) {
-                alert('请填写完整的出生信息');
+                showToast('请填写完整的出生信息');
                 return;
             }
-            
+
+            currentSurname = surname;
             const parts = date.split('-');
             const birth = { year: parseInt(parts[0]), month: parseInt(parts[1]), day: parseInt(parts[2]) };
-            const bazi = calcBazi(birth.year, birth.month, birth.day, hour);
-            
+            currentBazi = calcBazi(birth.year, birth.month, birth.day, hour);
+            const wuxingCounts = analyzeWuxing(currentBazi);
+            currentWuxingInfo = getXiYongShen(wuxingCounts);
+
+            const animal = getZodiacAnimal(date);
+
             document.getElementById('baziGrid').innerHTML = `
-                <div class="bazi-item"><div class="bazi-label">年柱</div><div class="bazi-value">${bazi.year}</div></div>
-                <div class="bazi-item"><div class="bazi-label">月柱</div><div class="bazi-value">${bazi.month}</div></div>
-                <div class="bazi-item"><div class="bazi-label">日柱</div><div class="bazi-value">${bazi.day}</div></div>
-                <div class="bazi-item"><div class="bazi-label">时柱</div><div class="bazi-value">${bazi.hour}</div></div>
+                <div class="bazi-item"><div class="bazi-label">年柱</div><div class="bazi-value">${currentBazi.year}</div></div>
+                <div class="bazi-item"><div class="bazi-label">月柱</div><div class="bazi-value">${currentBazi.month}</div></div>
+                <div class="bazi-item"><div class="bazi-label">日柱</div><div class="bazi-value">${currentBazi.day}</div></div>
+                <div class="bazi-item"><div class="bazi-label">时柱</div><div class="bazi-value">${currentBazi.hour}</div></div>
             `;
-            
-            const wuxingCounts = analyzeWuxing(bazi);
-            const wuxingInfo = getXiYongShen(wuxingCounts);
-            
+
             const total = Object.values(wuxingCounts).reduce((a, b) => a + b, 0);
             const colors = { '木': '#4ade80', '火': '#ef4444', '土': '#facc15', '金': '#a78bfa', '水': '#38bdf8' };
-            
+
             let barHTML = '', labelHTML = '';
             for (let w in wuxingCounts) {
                 const pct = Math.round((wuxingCounts[w] / total) * 100);
@@ -548,44 +762,246 @@
             }
             document.getElementById('wuxingBar').innerHTML = barHTML;
             document.getElementById('wuxingLabel').innerHTML = labelHTML;
-            
-            const name1 = '浩';
-            const name2 = '宇';
-            const gua = calcGua(surname, name1, name2);
-            document.getElementById('guaName').textContent = gua.name;
-            document.getElementById('guaDesc').textContent = gua.desc;
-            
-            const santi = calcSanCai(surname, name1, name2);
-            const santiHTML = `
-                <div class="santi-item"><span class="santi-name">天格（${santi.tiange}）</span><span class="santi-score ${getScoreClass(POINTS[santi.tiange])}">${getScoreText(POINTS[santi.tiange])}</span></div>
-                <div class="santi-item"><span class="santi-name">人格（${santi.renge}）</span><span class="santi-score ${getScoreClass(POINTS[santi.renge])}">${getScoreText(POINTS[santi.renge])}</span></div>
-                <div class="santi-item"><span class="santi-name">地格（${santi.dige}）</span><span class="santi-score ${getScoreClass(POINTS[santi.dige])}">${getScoreText(POINTS[santi.dige])}</span></div>
-                <div class="santi-item"><span class="santi-name">外格（${santi.waige}）</span><span class="santi-score ${getScoreClass(POINTS[santi.waige])}">${getScoreText(POINTS[santi.waige])}</span></div>
-                <div class="santi-item"><span class="santi-name">总格（${santi.zongge}）</span><span class="santi-score ${getScoreClass(POINTS[santi.zongge])}">${getScoreText(POINTS[santi.zongge])}</span></div>
+
+            document.getElementById('baziDetail').innerHTML = `
+                <div class="bazi-detail-item"><span class="bazi-detail-label">五行分布</span><span class="bazi-detail-value">木${wuxingCounts['木']} 火${wuxingCounts['火']} 土${wuxingCounts['土']} 金${wuxingCounts['金']} 水${wuxingCounts['水']}</span></div>
+                <div class="bazi-detail-item"><span class="bazi-detail-label">最强五行</span><span class="bazi-detail-value">${currentWuxingInfo.strong}（${wuxingCounts[currentWuxingInfo.strong]}个）</span></div>
+                <div class="bazi-detail-item"><span class="bazi-detail-label">最弱五行</span><span class="bazi-detail-value">${currentWuxingInfo.weak}（${wuxingCounts[currentWuxingInfo.weak]}个）</span></div>
+                <div class="bazi-detail-item"><span class="bazi-detail-label">喜用神</span><span class="bazi-detail-value">${currentWuxingInfo.xiyong}（补${currentWuxingInfo.xiyong}）</span></div>
+                <div class="bazi-detail-item"><span class="bazi-detail-label">生肖</span><span class="bazi-detail-value">${animal}</span></div>
             `;
-            document.getElementById('santiResult').innerHTML = santiHTML;
-            
-            const suggestions = generateNameSuggestions(wuxingInfo, gender);
+
+            const suggestions = generateNameSuggestions(currentWuxingInfo, gender);
+            renderNameList(suggestions);
+
+            const histItem = {
+                surname,
+                date,
+                hour,
+                gender,
+                bazi: currentBazi,
+                wuxingInfo: currentWuxingInfo,
+                suggestions: suggestions.slice(0, 3),
+                timestamp: Date.now()
+            };
+            history.unshift(histItem);
+            if (history.length > 20) history = history.slice(0, 20);
+            localStorage.setItem('nameHistory', JSON.stringify(history));
+
+            document.getElementById('result').classList.add('show');
+            document.getElementById('filterRow').innerHTML = `
+                <button class="filter-btn active" onclick="setFilter('all', this)">全部</button>
+                <button class="filter-btn" onclick="setFilter('wuxing', this)">五行</button>
+                <button class="filter-btn" onclick="setFilter('santi', this)">三才</button>
+                <button class="filter-btn" onclick="setFilter('yinyun', this)">音韵</button>
+            `;
+        }
+
+        function setFilter(filter, btn) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const suggestions = generateNameSuggestions(currentWuxingInfo, document.getElementById('gender').value);
+            renderNameList(suggestions);
+        }
+
+        function renderNameList(suggestions) {
+            let sorted = [...suggestions];
+            if (currentFilter === 'santi') sorted.sort((a, b) => b.santiScore - a.santiScore);
+            else if (currentFilter === 'yinyun') sorted.sort((a, b) => b.yinYunScore - a.yinYunScore);
+            else if (currentFilter === 'wuxing') sorted.sort((a, b) => b.score - a.score);
+
             let nameHTML = '';
-            suggestions.forEach(s => {
+            sorted.forEach((s, idx) => {
+                const isCompared = compareList.some(c => c.surname + c.name === currentSurname + s.name);
                 nameHTML += `
                     <div class="name-suggestion">
-                        <h4>${surname}${s.name}<span class="name-score">${s.score}分</span></h4>
-                        <div class="score-detail">五行：${s.wuxing}</div>
+                        <h4>
+                            ${currentSurname}${s.name}
+                            <span class="name-score">${s.score}分</span>
+                            ${s.yinYunScore >= 80 ? '<span class="yinwin-badge">音韵佳</span>' : ''}
+                        </h4>
+                        <div class="score-detail">
+                            三才:${s.santiScore}分 | 音韵:${s.yinYunScore}分 | 五行:${s.wuxing} | 笔画:${s.strokes1}+${s.strokes2}
+                        </div>
+                        <div class="action-bar" style="margin-top:8px;">
+                            <button class="btn btn-secondary btn-small" onclick="addToCompare('${s.name}', ${s.score})" ${isCompared ? 'disabled' : ''}>对比</button>
+                            <button class="btn btn-secondary btn-small" onclick="shareName('${s.name}', ${s.score})">分享</button>
+                        </div>
                     </div>
                 `;
             });
             document.getElementById('nameList').innerHTML = nameHTML;
-            
-            document.getElementById('result').classList.add('show');
         }
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('tab-' + tab).classList.add('active');
+        function addToCompare(name, score) {
+            if (compareList.length >= 5) {
+                showToast('最多对比5个名字');
+                return;
+            }
+            const item = { surname: currentSurname, name, score, timestamp: Date.now() };
+            compareList.push(item);
+            localStorage.setItem('compareList', JSON.stringify(compareList));
+            showToast('已添加对比');
+            renderCompareList();
         }
+
+        function removeCompare(idx) {
+            compareList.splice(idx, 1);
+            localStorage.setItem('compareList', JSON.stringify(compareList));
+            renderCompareList();
+        }
+
+        function clearCompare() {
+            compareList = [];
+            localStorage.setItem('compareList', JSON.stringify(compareList));
+            renderCompareList();
+        }
+
+        function autoCompare() {
+            if (!currentWuxingInfo) {
+                showToast('请先生成名字');
+                return;
+            }
+            clearCompare();
+            const suggestions = generateNameSuggestions(currentWuxingInfo, document.getElementById('gender').value, 3);
+            suggestions.forEach(s => {
+                compareList.push({ surname: currentSurname, name: s.name, score: s.score, timestamp: Date.now() });
+            });
+            localStorage.setItem('compareList', JSON.stringify(compareList));
+            renderCompareList();
+        }
+
+        function renderCompareList() {
+            let html = '';
+            compareList.forEach((c, idx) => {
+                const santi = calcSanCai(c.surname, c.name[0], c.name[1]);
+                const yinYun = calcYinYun(c.name[0], c.name[1]);
+                html += `
+                    <div class="compare-item">
+                        <div>
+                            <span class="compare-name">${c.surname}${c.name}</span>
+                            <span class="name-score" style="margin-left:8px;">${c.score}分</span>
+                        </div>
+                        <div>
+                            <span style="font-size:11px;color:#888;">三才:${calcTotalScore(santi)} 音韵:${yinYun}</span>
+                            <span class="compare-delete" onclick="removeCompare(${idx})">删除</span>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('compareList').innerHTML = html || '<div style="color:#666;text-align:center;padding:20px;">暂无对比名字</div>';
+
+            if (compareList.length >= 2) {
+                const best = compareList.reduce((a, b) => a.score > b.score ? a : b);
+                document.getElementById('compareResult').innerHTML = `
+                    <div style="text-align:center;padding:16px;background:rgba(246,211,101,0.1);border-radius:8px;">
+                        <div style="color:#f6d365;font-size:14px;">推荐名字</div>
+                        <div style="font-size:20px;color:#f6d365;margin-top:8px;">${best.surname}${best.name}</div>
+                        <div style="color:#888;font-size:12px;margin-top:4px;">综合评分 ${best.score} 分</div>
+                    </div>
+                `;
+            } else {
+                document.getElementById('compareResult').innerHTML = '';
+            }
+        }
+
+        function shareName(name, score) {
+            const text = `名字大宗师\n\n姓氏：${currentSurname}\n推荐名字：${name}\n综合评分：${score}分\n\n三才五格卦象分析，周易起名。`;
+            document.getElementById('shareText').textContent = text;
+            document.getElementById('shareModal').classList.add('show');
+        }
+
+        function copyShare() {
+            const text = document.getElementById('shareText').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('已复制到剪贴板');
+                closeShare();
+            });
+        }
+
+        function closeShare() {
+            document.getElementById('shareModal').classList.remove('show');
+        }
+
+        function switchNav(page) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('page-input').classList.add('hidden');
+            document.getElementById('page-history').classList.add('hidden');
+            document.getElementById('page-compare').classList.add('hidden');
+            document.getElementById('page-poem').classList.add('hidden');
+
+            if (page === 'input') document.getElementById('page-input').classList.remove('hidden');
+            else if (page === 'history') {
+                document.getElementById('page-history').classList.remove('hidden');
+                renderHistory();
+            }
+            else if (page === 'compare') {
+                document.getElementById('page-compare').classList.remove('hidden');
+                renderCompareList();
+            }
+            else if (page === 'poem') {
+                document.getElementById('page-poem').classList.remove('hidden');
+                renderPoems();
+            }
+        }
+
+        function renderHistory() {
+            if (history.length === 0) {
+                document.getElementById('historyList').innerHTML = '<div style="color:#666;text-align:center;padding:20px;">暂无历史记录</div>';
+                return;
+            }
+            let html = '';
+            history.forEach((h, idx) => {
+                const date = new Date(h.timestamp).toLocaleDateString();
+                const bestName = h.suggestions[0] ? h.suggestions[0].name : '';
+                const bestScore = h.suggestions[0] ? h.suggestions[0].score : 0;
+                html += `
+                    <div class="history-item" onclick="loadHistory(${idx})">
+                        <div class="name">${h.surname}** - ${bestName} (${bestScore}分)</div>
+                        <div class="date">${date} | ${h.gender} | ${h.bazi.year}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('historyList').innerHTML = html;
+        }
+
+        function loadHistory(idx) {
+            const h = history[idx];
+            document.getElementById('surname').value = h.surname;
+            document.getElementById('birthDate').value = h.date;
+            document.getElementById('birthHour').value = h.hour;
+            document.getElementById('gender').value = h.gender;
+            currentSurname = h.surname;
+            currentBazi = h.bazi;
+            currentWuxingInfo = h.wuxingInfo;
+            renderNameList(h.suggestions);
+            document.getElementById('result').classList.add('show');
+            switchNav('input');
+            document.querySelectorAll('.nav-btn')[0].classList.add('active');
+        }
+
+        function renderPoems() {
+            let html = '';
+            POEMS.forEach(p => {
+                const chars = p.content.replace(/[，。、；：！？""''（）《》【】]/g, '').split('');
+                const name1 = chars[Math.floor(Math.random() * chars.length)];
+                const name2 = chars[Math.floor(Math.random() * chars.length)];
+                html += `
+                    <div class="poem-section">
+                        <div class="poem-title">${p.title} - ${p.author}</div>
+                        <div class="poem-content">${p.content}</div>
+                        <div style="margin-top:8px;color:#f6d365;font-size:13px;">推荐名字：${name1}${name2}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('poemList').innerHTML = html;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCompareList();
+        });
     </script>
 </body>
 </html>
