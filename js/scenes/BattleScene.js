@@ -158,6 +158,8 @@ class BattleScene extends Phaser.Scene {
             this.showDamage(target, damageResult, skillName);
             this.updateHPBar(target);
             
+            this.handleLifesteal(hero, damageResult);
+            
             this.time.delayedCall(300, () => {
                 if (damageResult.isCombo && !target.isDead) {
                     const comboDamage = Math.floor(damageResult.damage * 0.5);
@@ -170,10 +172,61 @@ class BattleScene extends Phaser.Scene {
                     this.showDeathEffect(target);
                 }
                 
+                this.handleCounterAttack(target, hero);
+                
                 this.time.delayedCall(300, () => {
                     this.executeTurnSequence(heroes, index + 1);
                 });
             });
+        });
+    }
+
+    handleLifesteal(hero, damageResult) {
+        if (damageResult.damage <= 0 || hero.isDead) return;
+        
+        hero.skills.forEach(skill => {
+            if (skill.type === 'passive' && skill.effect === 'lifesteal') {
+                const healAmount = Math.floor(damageResult.damage * skill.buffValue);
+                hero.heal(healAmount);
+                this.showHeal(hero, healAmount);
+            }
+        });
+    }
+
+    handleCounterAttack(defender, attacker) {
+        if (defender.isDead || attacker.isDead) return;
+        
+        defender.skills.forEach(skill => {
+            if (skill.type === 'passive' && skill.effect === 'counter') {
+                if (Math.random() < skill.buffValue) {
+                    const counterDamage = Math.floor(attacker.getTotalAttack() * 0.5);
+                    attacker.takeDamage(counterDamage);
+                    this.showDamage(attacker, { damage: counterDamage, isCrit: false, isDodge: false, isCombo: false }, '反击');
+                    this.updateHPBar(attacker);
+                    
+                    if (attacker.isDead) {
+                        this.showDeathEffect(attacker);
+                    }
+                }
+            }
+        });
+    }
+
+    showHeal(hero, amount) {
+        if (!hero.sprite) return;
+        
+        const text = this.add.text(hero.sprite.x, hero.sprite.y - 100, `+${amount}`, {
+            fontSize: '28px',
+            color: '#00ff00',
+            fontStyle: 'bold'
+        }).setOrigin(0.5);
+
+        this.tweens.add({
+            targets: text,
+            y: hero.sprite.y - 150,
+            alpha: 0,
+            duration: 1000,
+            onComplete: () => text.destroy()
         });
     }
 

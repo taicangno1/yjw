@@ -126,6 +126,38 @@ const DEFAULT_SKILLS = [
         targetType: 'single',
         cooldown: 3,
         description: '对敌人造成160%攻击力伤害'
+    }),
+    new Skill({
+        id: 'skill_011',
+        name: '稳定输出',
+        type: 'passive',
+        effect: 'ignore_defense',
+        buffValue: 0.2,
+        description: '普通攻击无视20%防御'
+    }),
+    new Skill({
+        id: 'skill_012',
+        name: '勇猛',
+        type: 'passive',
+        effect: 'attack_low_hp',
+        buffValue: 0.15,
+        description: '生命值高于50%时，攻击力提升15%'
+    }),
+    new Skill({
+        id: 'skill_013',
+        name: '狂骨',
+        type: 'passive',
+        effect: 'lifesteal',
+        buffValue: 0.15,
+        description: '造成伤害的15%转化为生命值'
+    }),
+    new Skill({
+        id: 'skill_014',
+        name: '连击',
+        type: 'passive',
+        effect: 'extra_combo',
+        buffValue: 0.1,
+        description: '额外10%连击概率'
     })
 ];
 
