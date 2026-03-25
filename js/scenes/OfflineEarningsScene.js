@@ -4,7 +4,15 @@ class OfflineEarningsScene extends Phaser.Scene {
     }
 
     create(data) {
-        this.earnings = data.earnings;
+        this.earnings = data && data.earnings ? data.earnings : {
+            gold: 0,
+            exp: 0,
+            duration: 0,
+            battlesCount: 0,
+            victoriesCount: 0,
+            equipment: null,
+            fragment: null
+        };
         this.createUI();
     }
 
