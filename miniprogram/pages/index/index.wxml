@@ -1,0 +1,88 @@
+<view class="container">
+  <view class="header">
+    <text class="logo">&#127800;</text>
+    <text class="title">名字大宗师</text>
+    <text class="subtitle">周易起名 | 八字五行 | 三才五格</text>
+  </view>
+
+  <view class="card">
+    <view class="section-title">&#128197; 出生信息</view>
+    <view class="form-group">
+      <text class="label">姓氏</text>
+      <input class="input" type="text" placeholder="请输入姓氏，如：张" maxlength="2" value="{{surname}}" bindinput="onSurnameInput"/>
+    </view>
+    <view class="form-group">
+      <text class="label">出生日期（阳历）</text>
+      <picker mode="date" value="{{birthDate}}" bindchange="onDateChange">
+        <view class="picker">{{birthDate || '请选择日期'}}</view>
+      </picker>
+    </view>
+    <view class="form-group">
+      <text class="label">出生时辰</text>
+      <picker mode="selector" range="{{hours}}" value="{{hourIndex}}" bindchange="onHourChange">
+        <view class="picker">{{hour || '请选择时辰'}}</view>
+      </picker>
+    </view>
+    <view class="form-group">
+      <text class="label">性别</text>
+      <radio-group bindchange="onGenderChange">
+        <label class="radio-label"><radio value="男" checked="{{gender === '男'}}"/> 男</label>
+        <label class="radio-label"><radio value="女" checked="{{gender === '女'}}"/> 女</label>
+      </radio-group>
+    </view>
+    <button class="btn-primary" bindtap="generateName">&#128640; 开始起名</button>
+  </view>
+
+  <view class="result {{showResult ? 'show' : ''}}">
+    <view class="card">
+      <view class="section-title">&#9878; 八字命盘</view>
+      <view class="bazi-grid">
+        <view class="bazi-item"><view class="bazi-label">年柱</view><view class="bazi-value">{{bazi.year}}</view></view>
+        <view class="bazi-item"><view class="bazi-label">月柱</view><view class="bazi-value">{{bazi.month}}</view></view>
+        <view class="bazi-item"><view class="bazi-label">日柱</view><view class="bazi-value">{{bazi.day}}</view></view>
+        <view class="bazi-item"><view class="bazi-label">时柱</view><view class="bazi-value">{{bazi.hour}}</view></view>
+      </view>
+      <view class="wuxing-bar">
+        <view wx:for="{{wuxingArray}}" wx:key="*this" class="wuxing-segment" style="width:{{item.percent}}%;background:{{item.color}}">{{item.count}}</view>
+      </view>
+      <view class="wuxing-label">
+        <text wx:for="{{wuxingArray}}" wx:key="*this">{{item.name}}:{{item.count}}</text>
+      </view>
+      <view class="bazi-detail">
+        <view class="detail-item"><text class="detail-label">最强五行</text><text class="detail-value">{{wuxingInfo.strong}}（{{wuxingCounts[wuxingInfo.strong]}}个）</text></view>
+        <view class="detail-item"><text class="detail-label">最弱五行</text><text class="detail-value">{{wuxingInfo.weak}}（{{wuxingCounts[wuxingInfo.weak]}}个）</text></view>
+        <view class="detail-item"><text class="detail-label">喜用神</text><text class="detail-value">{{wuxingInfo.xiyong}}（补{{wuxingInfo.xiyong}}）</text></view>
+        <view class="detail-item"><text class="detail-label">生肖</text><text class="detail-value">{{animal}}</text></view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="section-title">&#9830; 周易卦象</view>
+      <view class="gua-info">
+        <view class="gua-name">{{guaName}}</view>
+        <view class="gua-desc">{{guaDesc}}</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="section-title">&#9733; 名字推荐</view>
+      <view class="filter-row">
+        <button class="filter-btn {{filter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部</button>
+        <button class="filter-btn {{filter === 'santi' ? 'active' : ''}}" bindtap="setFilter" data-filter="santi">三才</button>
+        <button class="filter-btn {{filter === 'yinyun' ? 'active' : ''}}" bindtap="setFilter" data-filter="yinyun">音韵</button>
+      </view>
+      <view wx:for="{{suggestions}}" wx:key="*this" class="name-item">
+        <view class="name-header">
+          <text class="name-text">{{surname}}{{item.name}}</text>
+          <view class="name-score">{{item.score}}分</view>
+          <view wx:if="{{item.yinYunScore >= 80}}" class="yinwin-badge">音韵佳</view>
+        </view>
+        <view class="name-detail">三才:{{item.santiScore}}分 | 音韵:{{item.yinYunScore}}分 | 五行:{{item.wuxing}} | 笔画:{{item.strokes1}}+{{item.strokes2}}</view>
+        <view class="action-row">
+          <button class="btn-small" catchtap="addToCompare" data-name="{{item.name}}" data-score="{{item.score}}">对比</button>
+          <button class="btn-small" catchtap="shareName" data-name="{{item.name}}" data-score="{{item.score}}">分享</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

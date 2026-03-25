@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/history/index",
+    "pages/compare/index",
+    "pages/poem/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1a1a2e",
+    "navigationBarTitleText": "名字大宗师",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#888888",
+    "selectedColor": "#f6d365",
+    "backgroundColor": "#1a1a2e",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "起名",
+        "iconPath": "assets/icon_home.png",
+        "selectedIconPath": "assets/icon_home_active.png"
+      },
+      {
+        "pagePath": "pages/history/index",
+        "text": "历史",
+        "iconPath": "assets/icon_history.png",
+        "selectedIconPath": "assets/icon_history_active.png"
+      },
+      {
+        "pagePath": "pages/compare/index",
+        "text": "对比",
+        "iconPath": "assets/icon_compare.png",
+        "selectedIconPath": "assets/icon_compare_active.png"
+      },
+      {
+        "pagePath": "pages/poem/index",
+        "text": "诗词",
+        "iconPath": "assets/icon_poem.png",
+        "selectedIconPath": "assets/icon_poem_active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

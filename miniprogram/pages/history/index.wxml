@@ -1,0 +1,10 @@
+<view class="container">
+  <view class="card">
+    <view class="section-title">&#128197; 起名历史</view>
+    <view wx:if="{{history.length === 0}}" class="empty">暂无历史记录</view>
+    <view wx:for="{{history}}" wx:key="timestamp" class="history-item" bindtap="loadHistory" data-index="{{index}}">
+      <view class="history-name">{{item.surname}}** - {{item.suggestions.[0].name}} ({{item.suggestions.[0].score}}分)</view>
+      <view class="history-info">{{formatDate(item.timestamp)}} | {{item.gender}} | {{item.bazi.year}}</view>
+    </view>
+  </view>
+</view>

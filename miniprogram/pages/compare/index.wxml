@@ -1,0 +1,23 @@
+<view class="container">
+  <view class="card">
+    <view class="section-title">&#9873; 名字对比</view>
+    <view class="action-bar">
+      <button class="btn-small" bindtap="clearCompare">清空</button>
+    </view>
+    <view wx:if="{{compareList.length === 0}}" class="empty">暂无对比名字</view>
+    <view wx:for="{{compareList}}" wx:key="timestamp" class="compare-item">
+      <view class="compare-left">
+        <text class="compare-name">{{item.surname}}{{item.name}}</text>
+        <text class="compare-score">{{item.score}}分</text>
+      </view>
+      <view class="compare-right">
+        <text class="compare-delete" bindtap="removeCompare" data-index="{{index}}">删除</text>
+      </view>
+    </view>
+    <view wx:if="{{compareList.length >= 2}}" class="best-result">
+      <view class="best-label">推荐名字</view>
+      <view class="best-name">{{compareList[bestIndex].surname}}{{compareList[bestIndex].name}}</view>
+      <view class="best-score">综合评分 {{compareList[bestIndex].score}} 分</view>
+    </view>
+  </view>
+</view>

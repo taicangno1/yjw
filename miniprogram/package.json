@@ -1,0 +1,13 @@
+{
+  "name": "miniprogram",
+  "version": "1.0.0",
+  "description": "名字大宗师 - 周易起名小程序",
+  "main": "app.js",
+  "scripts": {
+    "dev": "npm run build",
+    "build": "echo '请使用微信开发者工具打开本项目'"
+  },
+  "keywords": ["微信小程序", "起名", "周易", "八字"],
+  "author": "",
+  "license": "MIT"
+}

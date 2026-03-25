@@ -1,0 +1,10 @@
+<view class="container">
+  <view class="card">
+    <view class="section-title">&#127800; 诗词起名</view>
+    <view wx:for="{{poems}}" wx:key="*this" class="poem-item">
+      <view class="poem-title">{{item.title}} - {{item.author}}</view>
+      <view class="poem-content">{{item.content}}</view>
+      <view class="poem-name">推荐名字：{{item.suggestedName}}</view>
+    </view>
+  </view>
+</view>

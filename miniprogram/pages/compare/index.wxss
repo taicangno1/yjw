@@ -1,0 +1,87 @@
+.container {
+  padding: 16rpx;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 100vh;
+}
+.card {
+  background: rgba(255,255,255,0.08);
+  border-radius: 16rpx;
+  padding: 30rpx;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.section-title {
+  font-size: 28rpx;
+  color: #f6d365;
+  margin-bottom: 24rpx;
+}
+.action-bar {
+  display: flex;
+  margin-bottom: 20rpx;
+}
+.btn-small {
+  padding: 12rpx 24rpx;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: none;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+}
+.empty {
+  text-align: center;
+  color: #666;
+  padding: 60rpx 0;
+}
+.compare-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8rpx;
+  margin-bottom: 12rpx;
+}
+.compare-left {
+  display: flex;
+  align-items: center;
+}
+.compare-name {
+  color: #f6d365;
+  font-size: 28rpx;
+}
+.compare-score {
+  margin-left: 16rpx;
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  color: #1a1a2e;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: bold;
+}
+.compare-right {
+  display: flex;
+  align-items: center;
+}
+.compare-delete {
+  color: #ef4444;
+  font-size: 24rpx;
+}
+.best-result {
+  text-align: center;
+  padding: 30rpx;
+  background: rgba(246,211,101,0.1);
+  border-radius: 12rpx;
+  margin-top: 20rpx;
+}
+.best-label {
+  color: #f6d365;
+  font-size: 24rpx;
+}
+.best-name {
+  font-size: 36rpx;
+  color: #f6d365;
+  margin: 12rpx 0;
+}
+.best-score {
+  color: #888;
+  font-size: 22rpx;
+}
