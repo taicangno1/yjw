@@ -1,0 +1,20 @@
+{
+  "creator": {
+    "version": "3.8.0",
+    "engine": "cocos-creator-3d",
+    "project_id": "placeholder-three-kingdoms",
+    "productName": "放置三国",
+    "start_scene": "db://assets/scenes/MainCity.scene",
+    "group_list": ["default"],
+    "collision_matrix": [
+      ["default"]
+    ],
+    "excluded_groups": [],
+    "last_build_scene": "db://assets/scenes/MainCity.scene",
+    "preview_width": 1280,
+    "preview_height": 720,
+    "use_customize_view": true,
+    "use_project_root": true,
+    "customizes": []
+  }
+}

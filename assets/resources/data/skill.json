@@ -1,0 +1,136 @@
+{
+    "skills": [
+        {
+            "id": "skill_001",
+            "name": "普通攻击",
+            "type": "normal",
+            "coefficient": 1.0,
+            "targetType": "single",
+            "description": "对单个敌人造成100%攻击力伤害"
+        },
+        {
+            "id": "skill_002",
+            "name": "青龙偃月",
+            "type": "active",
+            "coefficient": 1.8,
+            "targetType": "single",
+            "cooldown": 3,
+            "description": "对单个敌人造成180%攻击力伤害"
+        },
+        {
+            "id": "skill_003",
+            "name": "燕人咆哮",
+            "type": "active",
+            "coefficient": 1.5,
+            "targetType": "all",
+            "cooldown": 4,
+            "description": "对所有敌人造成150%攻击力伤害"
+        },
+        {
+            "id": "skill_004",
+            "name": "仁德",
+            "type": "passive",
+            "effect": "heal",
+            "value": 0.1,
+            "description": "每回合回复10%最大生命值"
+        },
+        {
+            "id": "skill_005",
+            "name": "以德服人",
+            "type": "active",
+            "coefficient": 0,
+            "targetType": "single",
+            "effect": "buff_attack",
+            "buffValue": 0.3,
+            "cooldown": 5,
+            "description": "提升单个友方30%攻击力，持续2回合"
+        },
+        {
+            "id": "skill_006",
+            "name": "领导力",
+            "type": "passive",
+            "effect": "buff_all_attack",
+            "value": 0.15,
+            "description": "所有友方攻击力提升15%"
+        },
+        {
+            "id": "skill_007",
+            "name": "玄武之阵",
+            "type": "active",
+            "coefficient": 0,
+            "targetType": "all",
+            "effect": "buff_defense",
+            "buffValue": 0.2,
+            "cooldown": 4,
+            "description": "所有友方防御力提升20%，持续2回合"
+        },
+        {
+            "id": "skill_008",
+            "name": "七探蛇盘",
+            "type": "active",
+            "coefficient": 2.0,
+            "targetType": "single",
+            "cooldown": 5,
+            "description": "对单个敌人造成200%攻击力伤害，30%概率造成眩晕"
+        },
+        {
+            "id": "skill_009",
+            "name": "护主",
+            "type": "passive",
+            "effect": "counter",
+            "value": 0.2,
+            "description": "受到攻击时20%概率反击"
+        },
+        {
+            "id": "skill_010",
+            "name": "百步穿杨",
+            "type": "active",
+            "coefficient": 1.6,
+            "targetType": "single",
+            "cooldown": 3,
+            "description": "对单个敌人造成160%攻击力伤害，无视30%防御"
+        },
+        {
+            "id": "skill_011",
+            "name": "稳定输出",
+            "type": "passive",
+            "effect": "ignore_defense",
+            "value": 0.2,
+            "description": "普通攻击无视20%防御"
+        },
+        {
+            "id": "skill_012",
+            "name": "西凉骑兵",
+            "type": "active",
+            "coefficient": 1.4,
+            "targetType": "single",
+            "cooldown": 3,
+            "description": "对单个敌人造成140%攻击力伤害"
+        },
+        {
+            "id": "skill_013",
+            "name": "铁骑冲锋",
+            "type": "active",
+            "coefficient": 1.2,
+            "targetType": "all",
+            "cooldown": 4,
+            "description": "对所有敌人造成120%攻击力伤害"
+        },
+        {
+            "id": "skill_014",
+            "name": "勇猛",
+            "type": "passive",
+            "effect": "buff_attack",
+            "value": 0.1,
+            "description": "生命值高于50%时，攻击力提升10%"
+        },
+        {
+            "id": "skill_015",
+            "name": "狂骨",
+            "type": "passive",
+            "effect": "lifesteal",
+            "value": 0.15,
+            "description": "造成伤害的15%转化为生命值"
+        }
+    ]
+}

@@ -1,0 +1,91 @@
+{
+    "chapters": [
+        {
+            "id": "chapter_01",
+            "name": "黄巾之乱",
+            "levels": [
+                {
+                    "id": "level_01_01",
+                    "name": "黄巾义军",
+                    "enemyHeroes": ["enemy_zhangjiao_1"],
+                    "difficulty": {
+                        "easy": {"enemyLevel": 1, "rewardMultiplier": 1.0},
+                        "normal": {"enemyLevel": 2, "rewardMultiplier": 1.5},
+                        "hard": {"enemyLevel": 3, "rewardMultiplier": 2.0}
+                    },
+                    "energyCost": {"easy": 10, "normal": 20, "hard": 30},
+                    "drop": {
+                        "heroFragment": {"id": "fragment_001", "rate": 0.3},
+                        "gold": 100
+                    }
+                },
+                {
+                    "id": "level_01_02",
+                    "name": "黄巾将领",
+                    "enemyHeroes": ["enemy_zhangjiao_1", "enemy_zhangbao_1"],
+                    "difficulty": {
+                        "easy": {"enemyLevel": 2, "rewardMultiplier": 1.0},
+                        "normal": {"enemyLevel": 3, "rewardMultiplier": 1.5},
+                        "hard": {"enemyLevel": 4, "rewardMultiplier": 2.0}
+                    },
+                    "energyCost": {"easy": 10, "normal": 20, "hard": 30},
+                    "drop": {
+                        "heroFragment": {"id": "fragment_002", "rate": 0.25},
+                        "gold": 150
+                    }
+                },
+                {
+                    "id": "level_01_03",
+                    "name": "黄巾首领",
+                    "enemyHeroes": ["enemy_zhangjiao_1", "enemy_zhangbao_1", "enemy_zhangliang_1"],
+                    "difficulty": {
+                        "easy": {"enemyLevel": 3, "rewardMultiplier": 1.0},
+                        "normal": {"enemyLevel": 4, "rewardMultiplier": 1.5},
+                        "hard": {"enemyLevel": 5, "rewardMultiplier": 2.0}
+                    },
+                    "energyCost": {"easy": 10, "normal": 20, "hard": 30},
+                    "drop": {
+                        "heroFragment": {"id": "fragment_003", "rate": 0.2},
+                        "gold": 200
+                    }
+                }
+            ]
+        },
+        {
+            "id": "chapter_02",
+            "name": "董卓之乱",
+            "levels": [
+                {
+                    "id": "level_02_01",
+                    "name": "董卓部下",
+                    "enemyHeroes": ["enemy_li/ru_1"],
+                    "difficulty": {
+                        "easy": {"enemyLevel": 5, "rewardMultiplier": 1.0},
+                        "normal": {"enemyLevel": 6, "rewardMultiplier": 1.5},
+                        "hard": {"enemyLevel": 7, "rewardMultiplier": 2.0}
+                    },
+                    "energyCost": {"easy": 10, "normal": 20, "hard": 30},
+                    "drop": {
+                        "heroFragment": {"id": "fragment_004", "rate": 0.2},
+                        "gold": 250
+                    }
+                },
+                {
+                    "id": "level_02_02",
+                    "name": "吕布",
+                    "enemyHeroes": ["enemy_lvbu_1"],
+                    "difficulty": {
+                        "easy": {"enemyLevel": 6, "rewardMultiplier": 1.0},
+                        "normal": {"enemyLevel": 8, "rewardMultiplier": 1.5},
+                        "hard": {"enemyLevel": 10, "rewardMultiplier": 2.0}
+                    },
+                    "energyCost": {"easy": 10, "normal": 20, "hard": 30},
+                    "drop": {
+                        "heroFragment": {"id": "fragment_005", "rate": 0.15},
+                        "gold": 300
+                    }
+                }
+            ]
+        }
+    ]
+}
