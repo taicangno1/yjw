@@ -36,9 +36,9 @@ class LevelSelectScene extends Phaser.Scene {
                 name: '第一章 黄巾之乱', 
                 color: 0xffff00,
                 levels: [
-                    { id: 'level_01_01', name: '黄巾义军', enemies: ['张角'] },
-                    { id: 'level_01_02', name: '黄巾将领', enemies: ['张角', '张宝'] },
-                    { id: 'level_01_03', name: '黄巾首领', enemies: ['张角', '张宝', '张梁'] }
+                    { id: 'level_01_01', name: '黄巾义军', enemies: ['张角'], type: 'normal' },
+                    { id: 'level_01_02', name: '黄巾将领', enemies: ['张角', '张宝'], type: 'normal' },
+                    { id: 'level_01_03', name: '黄巾首领', enemies: ['张角', '张宝', '张梁'], type: 'boss' }
                 ]
             },
             { 
@@ -46,9 +46,9 @@ class LevelSelectScene extends Phaser.Scene {
                 name: '第二章 董卓之乱', 
                 color: 0xff6600,
                 levels: [
-                    { id: 'level_02_01', name: '董卓部下', enemies: ['李儒', '徐荣'] },
-                    { id: 'level_02_02', name: '汜水关', enemies: ['吕布'] },
-                    { id: 'level_02_03', name: '虎牢关', enemies: ['吕布', '华雄'] }
+                    { id: 'level_02_01', name: '董卓部下', enemies: ['李儒', '徐荣'], type: 'normal' },
+                    { id: 'level_02_02', name: '汜水关', enemies: ['吕布'], type: 'elite' },
+                    { id: 'level_02_03', name: '虎牢关', enemies: ['吕布', '华雄'], type: 'boss' }
                 ]
             },
             { 
@@ -56,10 +56,10 @@ class LevelSelectScene extends Phaser.Scene {
                 name: '第三章 群雄逐鹿', 
                 color: 0xff0066,
                 levels: [
-                    { id: 'level_03_01', name: '十八路诸侯', enemies: ['曹操', '袁绍'] },
-                    { id: 'level_03_02', name: '曹操崛起', enemies: ['曹操'] },
-                    { id: 'level_03_03', name: '刘备入主', enemies: ['刘备', '关羽', '张飞'] },
-                    { id: 'level_03_04', name: '孙坚立业', enemies: ['孙坚', '孙策'] }
+                    { id: 'level_03_01', name: '十八路诸侯', enemies: ['曹操', '袁绍'], type: 'elite' },
+                    { id: 'level_03_02', name: '曹操崛起', enemies: ['曹操'], type: 'boss' },
+                    { id: 'level_03_03', name: '刘备入主', enemies: ['刘备', '关羽', '张飞'], type: 'boss' },
+                    { id: 'level_03_04', name: '孙坚立业', enemies: ['孙坚', '孙策'], type: 'boss' }
                 ]
             },
             { 
@@ -67,10 +67,10 @@ class LevelSelectScene extends Phaser.Scene {
                 name: '第四章 三国鼎立', 
                 color: 0x0066ff,
                 levels: [
-                    { id: 'level_04_01', name: '赤壁之战', enemies: ['周瑜', '黄盖'] },
-                    { id: 'level_04_02', name: '曹操败退', enemies: ['曹操', '曹仁'] },
-                    { id: 'level_04_03', name: '三顾茅庐', enemies: ['关羽', '张飞'] },
-                    { id: 'level_04_04', name: '汉中之战', enemies: ['刘备', '黄忠'] }
+                    { id: 'level_04_01', name: '赤壁之战', enemies: ['周瑜', '黄盖'], type: 'elite' },
+                    { id: 'level_04_02', name: '曹操败退', enemies: ['曹操', '曹仁'], type: 'boss' },
+                    { id: 'level_04_03', name: '三顾茅庐', enemies: ['关羽', '张飞'], type: 'boss' },
+                    { id: 'level_04_04', name: '汉中之战', enemies: ['刘备', '黄忠'], type: 'boss' }
                 ]
             },
             { 
@@ -78,9 +78,9 @@ class LevelSelectScene extends Phaser.Scene {
                 name: '第五章 南征北战', 
                 color: 0x00ff66,
                 levels: [
-                    { id: 'level_05_01', name: '七擒孟获', enemies: ['孟获', '祝融夫人'] },
-                    { id: 'level_05_02', name: '北伐中原', enemies: ['诸葛亮', '姜维'] },
-                    { id: 'level_05_03', name: '街亭之战', enemies: ['张郃', '马谡'] }
+                    { id: 'level_05_01', name: '七擒孟获', enemies: ['孟获', '祝融夫人'], type: 'elite' },
+                    { id: 'level_05_02', name: '北伐中原', enemies: ['诸葛亮', '姜维'], type: 'boss' },
+                    { id: 'level_05_03', name: '街亭之战', enemies: ['张郃', '马谡'], type: 'boss' }
                 ]
             },
             { 
@@ -88,10 +88,10 @@ class LevelSelectScene extends Phaser.Scene {
                 name: '第六章 一统天下', 
                 color: 0xffd700,
                 levels: [
-                    { id: 'level_06_01', name: '三分归晋', enemies: ['司马昭'] },
-                    { id: 'level_06_02', name: '魏灭蜀汉', enemies: ['邓艾', '钟会'] },
-                    { id: 'level_06_03', name: '晋灭东吴', enemies: ['王濬', '孙皓'] },
-                    { id: 'level_06_04', name: '天下归一', enemies: ['晋武帝'] }
+                    { id: 'level_06_01', name: '三分归晋', enemies: ['司马昭'], type: 'elite' },
+                    { id: 'level_06_02', name: '魏灭蜀汉', enemies: ['邓艾', '钟会'], type: 'boss' },
+                    { id: 'level_06_03', name: '晋灭东吴', enemies: ['王濬', '孙皓'], type: 'boss' },
+                    { id: 'level_06_04', name: '天下归一', enemies: ['晋武帝'], type: 'boss' }
                 ]
             }
         ];
@@ -126,13 +126,30 @@ class LevelSelectScene extends Phaser.Scene {
         
         const node = this.add.image(x, y, nodeKey).setInteractive({ useHandCursor: true });
         
-        this.add.text(x, y - 10, level.name, {
-            fontSize: '16px',
-            color: isUnlocked ? '#ffffff' : '#666666'
+        let typeLabel = '';
+        let typeColor = '#ffffff';
+        if (level.type === 'elite') {
+            typeLabel = '[精英]';
+            typeColor = '#9400d3';
+        } else if (level.type === 'boss') {
+            typeLabel = '[BOSS]';
+            typeColor = '#ff0000';
+        }
+        
+        const nameColor = isUnlocked ? (level.type === 'boss' ? '#ff6666' : level.type === 'elite' ? '#c866ff' : '#ffffff') : '#666666';
+        
+        this.add.text(x, y - 10, typeLabel, {
+            fontSize: '10px',
+            color: typeColor
+        }).setOrigin(0.5);
+        
+        this.add.text(x, y + 5, level.name, {
+            fontSize: '14px',
+            color: nameColor
         }).setOrigin(0.5);
 
-        this.add.text(x, y + 15, level.enemies.join('、'), {
-            fontSize: '12px',
+        this.add.text(x, y + 25, level.enemies.join('、'), {
+            fontSize: '10px',
             color: isUnlocked ? '#aaaaaa' : '#444444'
         }).setOrigin(0.5);
 
