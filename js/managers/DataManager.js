@@ -9,14 +9,11 @@ class DataManager {
         
         this._playerData = null;
         this._saveInterval = 30000;
+        this.initPlayerData();
     }
 
     static getInstance() {
         return DataManager._instance;
-    }
-
-    constructor() {
-        this.initPlayerData();
     }
 
     initPlayerData() {
