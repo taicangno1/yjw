@@ -17,7 +17,8 @@ class Hero {
         this.critRate = data.critRate;
         this.dodgeRate = data.dodgeRate;
         this.comboRate = data.comboRate;
-        this.equipment = [...data.equipment];
+        
+        this.equipment = data.equipment || [null, null, null, null];
         
         this._currentHp = this.hp;
         this._isDead = false;
@@ -27,19 +28,103 @@ class Hero {
         this.nameText = null;
     }
 
+    getTotalAttack() {
+        let baseAttack = this.attack;
+        this.equipment.forEach(equip => {
+            if (equip) {
+                baseAttack += equip.getTotalAttackBonus();
+            }
+        });
+        return baseAttack;
+    }
+
+    getTotalDefense() {
+        let baseDefense = this.defense;
+        this.equipment.forEach(equip => {
+            if (equip) {
+                baseDefense += equip.getTotalDefenseBonus();
+            }
+        });
+        return baseDefense;
+    }
+
+    getTotalMaxHp() {
+        let baseMaxHp = this.maxHp;
+        this.equipment.forEach(equip => {
+            if (equip) {
+                baseMaxHp += equip.getTotalHpBonus();
+            }
+        });
+        return baseMaxHp;
+    }
+
+    equipItem(equipment, slotIndex) {
+        if (slotIndex < 0 || slotIndex >= this.equipment.length) {
+            return null;
+        }
+        
+        const oldEquipment = this.equipment[slotIndex];
+        this.equipment[slotIndex] = equipment;
+        
+        if (equipment && equipment.ownerHeroId) {
+            equipment.ownerHeroId = this.id;
+        }
+        
+        return oldEquipment;
+    }
+
+    unequipItem(slotIndex) {
+        if (slotIndex < 0 || slotIndex >= this.equipment.length) {
+            return null;
+        }
+        
+        const equipment = this.equipment[slotIndex];
+        this.equipment[slotIndex] = null;
+        
+        if (equipment) {
+            equipment.ownerHeroId = null;
+        }
+        
+        return equipment;
+    }
+
+    getEquipmentByType(type) {
+        const typeToSlot = {
+            'weapon': 0,
+            'armor': 1,
+            'helmet': 2,
+            'accessory': 3
+        };
+        
+        const slotIndex = typeToSlot[type];
+        if (slotIndex !== undefined) {
+            return this.equipment[slotIndex];
+        }
+        return null;
+    }
+
+    hasEquipment() {
+        return this.equipment.some(e => e !== null);
+    }
+
     takeDamage(damage) {
-        this._currentHp = Math.max(0, this._currentHp - damage);
+        const actualDefense = this.getTotalDefense();
+        const reducedDamage = Math.max(1, damage - actualDefense * 0.5);
+        this._currentHp = Math.max(0, this._currentHp - reducedDamage);
         if (this._currentHp <= 0) {
             this._isDead = true;
         }
+        return reducedDamage;
     }
 
     heal(amount) {
-        this._currentHp = Math.min(this.maxHp, this._currentHp + amount);
+        this._currentHp = Math.min(this.getTotalMaxHp(), this._currentHp + amount);
     }
 
     attackTarget(target, damageResult) {
-        target.takeDamage(damageResult.damage);
+        const actualAttack = this.getTotalAttack();
+        const damage = Math.floor(actualAttack * (damageResult.damage / this.attack));
+        target.takeDamage(damage);
     }
 
     addExp(amount) {
@@ -54,11 +139,12 @@ class Hero {
         this.level++;
         this.exp -= this.calculateExpForNextLevel();
         
-        this.attack += 5;
-        this.defense += 4;
-        this.maxHp += 50;
+        const baseGrowth = 1 + (this.star - 1) * 0.2;
+        this.attack += Math.floor(5 * baseGrowth);
+        this.defense += Math.floor(4 * baseGrowth);
+        this.maxHp += Math.floor(50 * baseGrowth);
         this.hp = this.maxHp;
-        this._currentHp = this.maxHp;
+        this._currentHp = this.getTotalMaxHp();
     }
 
     calculateExpForNextLevel() {
@@ -78,6 +164,14 @@ class Hero {
     }
 
     get hpPercent() {
-        return this._currentHp / this.maxHp;
+        return this._currentHp / this.getTotalMaxHp();
+    }
+
+    get power() {
+        return Math.floor(
+            this.getTotalAttack() + 
+            this.getTotalDefense() + 
+            this.getTotalMaxHp() / 10
+        );
     }
 }

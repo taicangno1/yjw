@@ -46,6 +46,7 @@ class DataManager {
         };
 
         this.initStarterHeroes();
+        this.initStarterEquipments();
     }
 
     initStarterHeroes() {
@@ -74,7 +75,7 @@ class DataManager {
                 critRate: 0.1,
                 dodgeRate: 0.05,
                 comboRate: 0.15,
-                equipment: ['', '', '', ''],
+                equipment: [null, null, null, null],
                 isLocked: false
             };
             this._playerData.heroes.push(hero);
@@ -82,6 +83,19 @@ class DataManager {
             if (index < 3) {
                 this._playerData.formation.push(config.id);
             }
+        });
+    }
+
+    initStarterEquipments() {
+        const starterEquipments = [
+            { id: 'equip_001', name: '新手长剑', type: 'weapon', quality: 'green', attackBonus: 10, hpBonus: 0, defenseBonus: 0 },
+            { id: 'equip_002', name: '布衣', type: 'armor', quality: 'green', attackBonus: 0, hpBonus: 50, defenseBonus: 5 },
+            { id: 'equip_003', name: '皮帽', type: 'helmet', quality: 'green', attackBonus: 0, hpBonus: 30, defenseBonus: 3 },
+            { id: 'equip_004', name: '护腕', type: 'accessory', quality: 'green', attackBonus: 5, hpBonus: 20, defenseBonus: 2 }
+        ];
+        
+        starterEquipments.forEach(config => {
+            this._playerData.equipments.push(config);
         });
     }
 
@@ -210,5 +224,66 @@ class DataManager {
 
     getFormationHeroes() {
         return this._playerData.heroes.filter(h => this._playerData.formation.includes(h.id));
+    }
+
+    addEquipment(equipment) {
+        this._playerData.equipments.push(equipment);
+        this.save();
+    }
+
+    removeEquipment(equipmentId) {
+        const index = this._playerData.equipments.findIndex(e => e.id === equipmentId);
+        if (index !== -1) {
+            this._playerData.equipments.splice(index, 1);
+            this.save();
+            return true;
+        }
+        return false;
+    }
+
+    getBackpackEquipments() {
+        return this._playerData.equipments.filter(e => {
+            const hero = this._playerData.heroes.find(h => h.equipment.includes(e.id));
+            return !hero;
+        });
+    }
+
+    equipItemToHero(heroId, equipmentId, slotIndex) {
+        const hero = this._playerData.heroes.find(h => h.id === heroId);
+        if (!hero) return null;
+
+        const equipment = this._playerData.equipments.find(e => e.id === equipmentId);
+        if (!equipment) return null;
+
+        const oldEquipmentId = hero.equipment[slotIndex];
+        hero.equipment[slotIndex] = equipmentId;
+        this.save();
+
+        return oldEquipmentId;
+    }
+
+    unequipItemFromHero(heroId, slotIndex) {
+        const hero = this._playerData.heroes.find(h => h.id === heroId);
+        if (!hero) return null;
+
+        const equipmentId = hero.equipment[slotIndex];
+        if (equipmentId) {
+            hero.equipment[slotIndex] = null;
+            this.save();
+            return equipmentId;
+        }
+        return null;
+    }
+
+    getHeroEquipment(heroId) {
+        const hero = this._playerData.heroes.find(h => h.id === heroId);
+        if (!hero) return [];
+
+        return hero.equipment.map(eId => {
+            if (eId) {
+                return this._playerData.equipments.find(e => e.id === eId);
+            }
+            return null;
+        }).filter(e => e !== undefined);
     }
 }
