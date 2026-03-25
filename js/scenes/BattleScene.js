@@ -274,34 +274,51 @@ class BattleScene extends Phaser.Scene {
         });
 
         const rewards = BattleManager.getInstance().getBattleRewards();
+        let yPos = 300;
         
-        this.add.text(640, 300, `金币: +${rewards.gold}`, {
+        this.add.text(640, yPos, `金币: +${rewards.gold}`, {
             fontSize: '32px',
             color: '#ffd700'
         }).setOrigin(0.5);
+        yPos += 50;
 
-        this.add.text(640, 350, `经验: +${rewards.exp}`, {
+        this.add.text(640, yPos, `经验: +${rewards.exp}`, {
             fontSize: '32px',
             color: '#00ff00'
         }).setOrigin(0.5);
+        yPos += 50;
 
         if (rewards.equipment) {
             const equipName = rewards.equipment.name;
             const equipColor = this.getQualityColor(rewards.equipment.quality);
-            this.add.text(640, 400, `装备: ${equipName}`, {
+            this.add.text(640, yPos, `装备: ${equipName}`, {
                 fontSize: '28px',
                 color: '#' + equipColor.toString(16).padStart(6, '0')
             }).setOrigin(0.5);
+            yPos += 50;
         }
 
-        const continueBtn = this.add.rectangle(640, 480, 200, 50, 0x00cc00);
+        if (rewards.fragment) {
+            const heroNames = {
+                'hero_001': '关羽', 'hero_002': '张飞', 'hero_003': '刘备',
+                'hero_004': '曹操', 'hero_005': '赵云'
+            };
+            const heroName = heroNames[rewards.fragment.heroId] || '武将';
+            this.add.text(640, yPos, `碎片: ${heroName}x${rewards.fragment.count}`, {
+                fontSize: '28px',
+                color: '#00bfff'
+            }).setOrigin(0.5);
+            yPos += 50;
+        }
+
+        const continueBtn = this.add.rectangle(640, yPos + 30, 200, 50, 0x00cc00);
         continueBtn.setInteractive({ useHandCursor: true });
         continueBtn.on('pointerdown', () => {
             BattleManager.getInstance().claimRewards();
             this.scene.start('LevelSelectScene');
         });
         
-        this.add.text(640, 450, '继续', {
+        this.add.text(640, yPos + 30, '继续', {
             fontSize: '28px',
             color: '#ffffff',
             fontStyle: 'bold'

@@ -75,7 +75,8 @@ class BattleManager {
         const baseRewards = {
             gold: 100,
             exp: 50,
-            equipmentChance: 0.2
+            equipmentChance: 0.2,
+            fragmentChance: 0.3
         };
         
         const multiplier = { easy: 1, normal: 1.5, hard: 2 };
@@ -86,10 +87,25 @@ class BattleManager {
             equipment = this.generateEquipmentDrop(difficulty);
         }
         
+        let fragment = null;
+        if (Math.random() < baseRewards.fragmentChance) {
+            fragment = this.generateFragmentDrop(levelId);
+        }
+        
         return {
             gold: Math.floor(baseRewards.gold * mult),
             exp: Math.floor(baseRewards.exp * mult),
-            equipment: equipment
+            equipment: equipment,
+            fragment: fragment
+        };
+    }
+
+    generateFragmentDrop(levelId) {
+        const fragmentHeroes = ['hero_001', 'hero_002', 'hero_003', 'hero_004', 'hero_005'];
+        const heroId = fragmentHeroes[Math.floor(Math.random() * fragmentHeroes.length)];
+        return {
+            heroId: heroId,
+            count: Math.floor(Math.random() * 3) + 1
         };
     }
 
@@ -153,6 +169,11 @@ class BattleManager {
         
         if (this.battleRewards.equipment) {
             DataManager.getInstance().addEquipment(this.battleRewards.equipment);
+        }
+        
+        if (this.battleRewards.fragment) {
+            const { heroId, count } = this.battleRewards.fragment;
+            playerData.heroFragments[heroId] = (playerData.heroFragments[heroId] || 0) + count;
         }
         
         const nextLevel = this.getNextLevel(this.currentLevelId);

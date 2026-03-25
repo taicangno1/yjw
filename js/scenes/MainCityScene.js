@@ -73,7 +73,7 @@ class MainCityScene extends Phaser.Scene {
             { key: 'battle', text: '战役', x: 640, y: 280, target: 'LevelSelectScene' },
             { key: 'hero', text: '武将', x: 350, y: 420, target: 'HeroListScene' },
             { key: 'equipment', text: '装备', x: 640, y: 420, target: 'EquipmentScene' },
-            { key: 'league', text: '联盟', x: 930, y: 420, target: null, disabled: true },
+            { key: 'fragment', text: '碎片', x: 930, y: 420, target: 'HeroFragmentScene' },
             { key: 'shop', text: '商店', x: 350, y: 560, target: null, disabled: true },
             { key: 'setting', text: '设置', x: 930, y: 560, target: null, disabled: true }
         ];
