@@ -17,11 +17,14 @@ class EquipmentScene extends Phaser.Scene {
     }
 
     createUI() {
-        const backBtn = this.add.text(50, 50, '< 返回', {
+        const backBtn = this.add.rectangle(80, 50, 100, 50, 0x333333, 0);
+        backBtn.setInteractive({ useHandCursor: true });
+        backBtn.on('pointerdown', () => this.scene.start('MainCityScene'));
+        
+        this.add.text(50, 50, '< 返回', {
             fontSize: '28px',
             color: '#ffffff'
-        }).setInteractive({ useHandCursor: true });
-        backBtn.on('pointerdown', () => this.scene.start('MainCityScene'));
+        }).setOrigin(0, 0.5);
 
         this.add.text(640, 50, '装备管理', {
             fontSize: '40px',

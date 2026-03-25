@@ -18,13 +18,16 @@ class BattleScene extends Phaser.Scene {
         const topBar = this.add.rectangle(640, 30, 1260, 60, 0x000000, 0.5);
         topBar.setOrigin(0.5);
 
-        const backBtn = this.add.text(50, 30, '< 撤退', {
-            fontSize: '24px',
-            color: '#ff6666'
-        }).setInteractive({ useHandCursor: true });
+        const backBtn = this.add.rectangle(80, 30, 100, 50, 0x333333, 0);
+        backBtn.setInteractive({ useHandCursor: true });
         backBtn.on('pointerdown', () => {
             this.scene.start('MainCityScene');
         });
+        
+        this.add.text(50, 30, '< 撤退', {
+            fontSize: '24px',
+            color: '#ff6666'
+        }).setOrigin(0, 0.5);
 
         this.roundText = this.add.text(640, 30, '第1回合', {
             fontSize: '24px',
