@@ -77,7 +77,7 @@ class MainCityScene extends Phaser.Scene {
             { key: 'friend', text: '好友', x: 800, y: 420, target: 'FriendScene' },
             { key: 'league', text: '联盟', x: 200, y: 560, target: 'LeagueScene' },
             { key: 'rank', text: '排行', x: 400, y: 560, target: 'RankScene' },
-            { key: 'shop', text: '商店', x: 800, y: 560, target: null, disabled: true }
+            { key: 'shop', text: '商店', x: 600, y: 560, target: 'ShopScene' }
         ];
 
         buttons.forEach(btn => {
