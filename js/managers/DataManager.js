@@ -1,23 +1,25 @@
-import { _decorator, Component } from 'cc';
-import { PlayerData, HeroData, EquipmentData } from '../data/PlayerData';
-
-const { ccclass, property } = _decorator;
-
-@ccclass('DataManager')
-export class DataManager extends Component {
+class DataManager {
+    static _instance = null;
     
-    private _playerData!: PlayerData;
-    private _saveInterval: number = 30000; // 30秒自动保存
-    
-    onLoad() {
+    constructor() {
+        if (DataManager._instance) {
+            return DataManager._instance;
+        }
+        DataManager._instance = this;
+        
+        this._playerData = null;
+        this._saveInterval = 30000;
+    }
+
+    static getInstance() {
+        return DataManager._instance;
+    }
+
+    constructor() {
         this.initPlayerData();
     }
-    
-    start() {
-        this.schedule(this.save, this._saveInterval);
-    }
-    
-    private initPlayerData(): void {
+
+    initPlayerData() {
         this._playerData = {
             uid: this.generateUID(),
             nickname: '玩家' + Math.floor(Math.random() * 10000),
@@ -35,28 +37,40 @@ export class DataManager extends Component {
             items: { sweepTicket: 5 },
             currentChapter: 1,
             currentLevel: 1,
-            unlockedLevels: [],
+            unlockedLevels: ['level_01_01'],
+            completedLevels: [],
             friends: [],
             friendRequests: [],
             leagueId: '',
             leagueContribution: 0
         };
-        
+
         this.initStarterHeroes();
     }
-    
-    private initStarterHeroes(): void {
-        const starterHeroes = ['hero_001', 'hero_002', 'hero_003', 'hero_004', 'hero_005'];
-        starterHeroes.forEach((heroId, index) => {
-            const hero: HeroData = {
-                id: heroId,
+
+    initStarterHeroes() {
+        const heroConfigs = [
+            { id: 'hero_001', name: '关羽', quality: 'orange', troop: 'cavalry' },
+            { id: 'hero_002', name: '张飞', quality: 'orange', troop: 'infantry' },
+            { id: 'hero_003', name: '刘备', quality: 'orange', troop: 'infantry' },
+            { id: 'hero_004', name: '曹操', quality: 'orange', troop: 'cavalry' },
+            { id: 'hero_005', name: '赵云', quality: 'orange', troop: 'cavalry' }
+        ];
+
+        heroConfigs.forEach((config, index) => {
+            const hero = {
+                id: config.id,
+                name: config.name,
+                quality: config.quality,
+                troop: config.troop,
                 level: 1,
                 exp: 0,
                 star: 1,
-                attack: 100,
-                defense: 80,
-                hp: 1000,
-                speed: 50,
+                attack: 100 + index * 5,
+                defense: 80 + index * 3,
+                hp: 1000 + index * 50,
+                maxHp: 1050 + index * 50,
+                speed: 50 + index * 2,
                 critRate: 0.1,
                 dodgeRate: 0.05,
                 comboRate: 0.15,
@@ -66,25 +80,23 @@ export class DataManager extends Component {
             this._playerData.heroes.push(hero);
             
             if (index < 3) {
-                this._playerData.formation.push(heroId);
+                this._playerData.formation.push(config.id);
             }
         });
-        
-        this._playerData.unlockedLevels = ['level_01_01'];
     }
-    
-    private generateUID(): string {
+
+    generateUID() {
         return 'player_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
     }
-    
-    public save(): void {
+
+    save() {
         this._playerData.lastOfflineTime = Date.now();
         const saveData = JSON.stringify(this._playerData);
         localStorage.setItem('playerData', saveData);
         localStorage.setItem('lastSaveTime', Date.now().toString());
     }
-    
-    public load(): boolean {
+
+    load() {
         const saveData = localStorage.getItem('playerData');
         if (saveData) {
             try {
@@ -98,115 +110,105 @@ export class DataManager extends Component {
         }
         return false;
     }
-    
-    public reset(): void {
+
+    reset() {
         localStorage.removeItem('playerData');
         localStorage.removeItem('lastSaveTime');
         this.initPlayerData();
     }
-    
-    public getPlayerData(): PlayerData {
+
+    getPlayerData() {
         return this._playerData;
     }
-    
-    public addGold(amount: number): void {
+
+    addGold(amount) {
         this._playerData.gold += amount;
+        this.save();
     }
-    
-    public spendGold(amount: number): boolean {
+
+    spendGold(amount) {
         if (this._playerData.gold >= amount) {
             this._playerData.gold -= amount;
+            this.save();
             return true;
         }
         return false;
     }
-    
-    public addYuanbao(amount: number): void {
+
+    addYuanbao(amount) {
         this._playerData.yuanbao += amount;
+        this.save();
     }
-    
-    public addEnergy(amount: number): void {
+
+    addEnergy(amount) {
         this._playerData.energy = Math.min(this._playerData.energy + amount, this._playerData.maxEnergy);
+        this.save();
     }
-    
-    public consumeEnergy(amount: number): boolean {
+
+    consumeEnergy(amount) {
         if (this._playerData.energy >= amount) {
             this._playerData.energy -= amount;
             this._playerData.lastEnergyTime = Date.now();
+            this.save();
             return true;
         }
         return false;
     }
-    
-    public updateEnergy(): void {
+
+    updateEnergy() {
         const now = Date.now();
         const elapsed = (now - this._playerData.lastEnergyTime) / 1000;
-        const energy恢复 = Math.floor(elapsed / 300); // 5分钟恢复1点
-        if (energy恢复 > 0) {
-            this._playerData.energy = Math.min(this._playerData.energy + energy恢复, this._playerData.maxEnergy);
+        const energyRecovered = Math.floor(elapsed / 300);
+        if (energyRecovered > 0) {
+            this._playerData.energy = Math.min(this._playerData.energy + energyRecovered, this._playerData.maxEnergy);
             this._playerData.lastEnergyTime = now;
         }
     }
-    
-    public upgradeHero(heroId: string): boolean {
+
+    calculateUpgradeCost(level) {
+        return Math.floor(100 * Math.pow(1.5, level - 1));
+    }
+
+    upgradeHero(heroId) {
         const hero = this._playerData.heroes.find(h => h.id === heroId);
         if (!hero) return false;
-        
+
         const cost = this.calculateUpgradeCost(hero.level);
         if (this.spendGold(cost)) {
             hero.level += 1;
-            hero.hp = this.calculateHP(hero);
-            hero.attack = this.calculateAttack(hero);
-            hero.defense = this.calculateDefense(hero);
+            hero.attack += 5;
+            hero.defense += 4;
+            hero.maxHp += 50;
+            hero.hp = hero.maxHp;
+            this.save();
             return true;
         }
         return false;
     }
-    
-    private calculateUpgradeCost(level: number): number {
-        return Math.floor(100 * Math.pow(1.5, level - 1));
-    }
-    
-    private calculateHP(hero: HeroData): number {
-        const baseHP = 1000;
-        const growth = this.getHPGrowth(hero.star);
-        return baseHP + (hero.level - 1) * growth;
-    }
-    
-    private calculateAttack(hero: HeroData): number {
-        const baseAttack = 100;
-        const growth = this.getAttackGrowth(hero.star);
-        return baseAttack + (hero.level - 1) * growth;
-    }
-    
-    private calculateDefense(hero: HeroData): number {
-        const baseDefense = 80;
-        const growth = this.getDefenseGrowth(hero.star);
-        return baseDefense + (hero.level - 1) * growth;
-    }
-    
-    private getHPGrowth(star: number): number {
-        const growthTable = [0, 50, 70, 90, 120, 150];
-        return growthTable[star] || 50;
-    }
-    
-    private getAttackGrowth(star: number): number {
-        const growthTable = [0, 5, 7, 9, 12, 15];
-        return growthTable[star] || 5;
-    }
-    
-    private getDefenseGrowth(star: number): number {
-        const growthTable = [0, 4, 5, 7, 9, 12];
-        return growthTable[star] || 4;
-    }
-    
-    public isLevelUnlocked(levelId: string): boolean {
+
+    isLevelUnlocked(levelId) {
         return this._playerData.unlockedLevels.includes(levelId);
     }
-    
-    public unlockLevel(levelId: string): void {
+
+    unlockLevel(levelId) {
         if (!this._playerData.unlockedLevels.includes(levelId)) {
             this._playerData.unlockedLevels.push(levelId);
+            this.save();
         }
+    }
+
+    completeLevel(levelId) {
+        if (!this._playerData.completedLevels.includes(levelId)) {
+            this._playerData.completedLevels.push(levelId);
+            this.save();
+        }
+    }
+
+    isLevelCompleted(levelId) {
+        return this._playerData.completedLevels.includes(levelId);
+    }
+
+    getFormationHeroes() {
+        return this._playerData.heroes.filter(h => this._playerData.formation.includes(h.id));
     }
 }

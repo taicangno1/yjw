@@ -1,35 +1,34 @@
 const STORAGE_PREFIX = 'three_kingdoms_';
 
-export class Storage {
-    
-    public static set(key: string, value: any): void {
+const Storage = {
+    set(key, value) {
         try {
             const jsonValue = JSON.stringify(value);
             localStorage.setItem(STORAGE_PREFIX + key, jsonValue);
         } catch (e) {
             console.error('Storage set error:', e);
         }
-    }
-    
-    public static get<T>(key: string, defaultValue?: T): T | null {
+    },
+
+    get(key, defaultValue = null) {
         try {
             const jsonValue = localStorage.getItem(STORAGE_PREFIX + key);
             if (jsonValue === null) {
-                return defaultValue ?? null;
+                return defaultValue;
             }
-            return JSON.parse(jsonValue) as T;
+            return JSON.parse(jsonValue);
         } catch (e) {
             console.error('Storage get error:', e);
-            return defaultValue ?? null;
+            return defaultValue;
         }
-    }
-    
-    public static remove(key: string): void {
+    },
+
+    remove(key) {
         localStorage.removeItem(STORAGE_PREFIX + key);
-    }
-    
-    public static clear(): void {
-        const keysToRemove: string[] = [];
+    },
+
+    clear() {
+        const keysToRemove = [];
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (key?.startsWith(STORAGE_PREFIX)) {
@@ -37,9 +36,9 @@ export class Storage {
             }
         }
         keysToRemove.forEach(key => localStorage.removeItem(key));
-    }
-    
-    public static has(key: string): boolean {
+    },
+
+    has(key) {
         return localStorage.getItem(STORAGE_PREFIX + key) !== null;
     }
-}
+};

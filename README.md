@@ -1,65 +1,54 @@
 # 放置三国
 
-Q版三国题材放置挂机游戏，支持微信小程序和抖音小程序。
+Q版三国题材放置挂机游戏，纯 HTML5 + Phaser.js 开发，支持浏览器直接运行。
+
+## 在线体验
+
+直接在浏览器打开 `index.html` 即可游玩。
 
 ## 技术栈
 
-- **游戏引擎**: Cocos Creator 3.8.0
-- **开发语言**: TypeScript
-- **目标平台**: 微信小程序、抖音小程序
+- **游戏引擎**: Phaser 3.60
+- **开发语言**: JavaScript (ES6)
+- **渲染模式**: WebGL + Canvas
 
 ## 项目结构
 
 ```
-assets/
-├── scenes/              # 游戏场景
-├── prefabs/             # 预制体
-├── scripts/             # 脚本代码
-│   ├── core/            # 核心系统
-│   ├── data/            # 数据结构
-│   ├── entity/          # 实体类
-│   ├── ui/              # UI逻辑
-│   └── utils/           # 工具类
-├── resources/           # 游戏资源
-│   ├── hero/            # 武将资源
-│   ├── audio/           # 音频资源
-│   └── data/            # 配置数据表
-└── textures/            # 图片资源
+├── index.html              # 游戏入口页面
+├── js/
+│   ├── main.js            # Phaser 游戏配置
+│   ├── scenes/            # 游戏场景
+│   │   ├── BootScene.js          # 启动场景
+│   │   ├── PreloadScene.js       # 预加载场景
+│   │   ├── MainCityScene.js      # 主城场景
+│   │   ├── LevelSelectScene.js   # 关卡选择场景
+│   │   ├── BattleScene.js        # 战斗场景
+│   │   ├── HeroListScene.js      # 武将列表场景
+│   │   └── OfflineEarningsScene.js # 离线收益场景
+│   ├── managers/          # 管理器
+│   │   ├── GameManager.js        # 游戏主管理器
+│   │   ├── DataManager.js        # 数据管理器
+│   │   ├── BattleManager.js      # 战斗管理器
+│   │   ├── OfflineManager.js     # 离线收益管理器
+│   │   ├── AudioManager.js       # 音频管理器
+│   │   └── AdManager.js          # 广告管理器
+│   ├── entities/          # 实体类
+│   │   └── Hero.js              # 武将从类
+│   ├── utils/             # 工具类
+│   │   ├── BattleUtils.js       # 战斗工具
+│   │   └── Storage.js           # 存储工具
+│   └── data/              # 数据
+│       └── PlayerData.js        # 玩家数据结构
+└── assets/                # 资源目录
+    ├── images/            # 图片资源
+    │   ├── backgrounds/  # 背景图
+    │   ├── heroes/       # 武将立绘
+    │   └── ui/          # UI图
+    └── audio/            # 音频资源
+        ├── bgm/         # 背景音乐
+        └── sfx/         # 音效
 ```
-
-## 核心系统
-
-- **GameManager**: 游戏主管理器
-- **DataManager**: 数据管理器（存储、存档）
-- **BattleManager**: 战斗管理器（回合制战斗）
-- **OfflineManager**: 离线收益管理器
-- **AudioManager**: 音频管理器
-- **AdManager**: 广告管理器
-
-## 开发指南
-
-### 环境要求
-
-- Cocos Creator 3.8.0+
-- Node.js 16+
-- npm 或 yarn
-
-### 运行项目
-
-1. 安装 Cocos Creator 3.8.0
-2. 打开 Cocos Creator
-3. 选择 "打开项目"
-4. 选择本项目根目录
-5. 在 Cocos Creator 中打开 "MainCity" 场景
-6. 点击运行按钮预览
-
-### 构建发布
-
-1. 在 Cocos Creator 中选择 "项目" -> "构建发布"
-2. 选择目标平台（微信小游戏/抖音小游戏）
-3. 配置相关参数
-4. 点击构建
-5. 使用对应平台的开发者工具打开构建目录
 
 ## 游戏玩法
 
@@ -67,6 +56,31 @@ assets/
 - **武将养成**: 升级、升星、装备穿戴
 - **兵种克制**: 步、骑、弓三种兵种相互克制
 - **章节剧情**: 跟随三国历史剧情推进关卡
+
+## 运行项目
+
+### 浏览器运行
+
+直接打开 `index.html` 即可。
+
+### 本地服务器
+
+```bash
+python -m http.server 8080
+# 或
+node -e "require('http').createServer((req,res)=>{res.writeHead(200,{'Content-Type':'text/html'});res.end(require('fs').readFileSync('index.html'));}).listen(8080)"
+```
+
+然后访问 http://localhost:8080
+
+## 适配微信/抖音小程序
+
+微信/抖音小程序需要将代码放入各自的小程序项目中：
+
+1. 微信：使用微信开发者工具，将代码导入为"小游戏"项目
+2. 抖音：使用抖音开发者工具，导入为"小游戏"项目
+
+广告接入需要在小程序后台配置广告位并替换 `AdManager.js` 中的 adUnitId。
 
 ## 许可证
 
