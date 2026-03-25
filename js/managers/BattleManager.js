@@ -121,7 +121,17 @@ class BattleManager {
     }
 
     calculateDamage(attacker, defender) {
-        let damage = attacker.attack - defender.defense * 0.5;
+        return this.calculateDamageWithSkill(attacker, defender, null);
+    }
+
+    calculateDamageWithSkill(attacker, defender, skill) {
+        let damage;
+        
+        if (skill && skill.coefficient > 0) {
+            damage = attacker.getTotalAttack() * skill.coefficient - defender.getTotalDefense() * 0.5;
+        } else {
+            damage = attacker.getTotalAttack() - defender.getTotalDefense() * 0.5;
+        }
         
         const restraintBonus = BattleUtils.getTroopRestraintBonus(attacker.troop, defender.troop);
         damage *= restraintBonus;
@@ -144,7 +154,8 @@ class BattleManager {
             damage: Math.floor(damage), 
             isCrit, 
             isDodge, 
-            isCombo 
+            isCombo,
+            skillUsed: skill ? skill.name : null
         };
     }
 

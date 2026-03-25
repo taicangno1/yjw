@@ -139,11 +139,23 @@ class BattleScene extends Phaser.Scene {
 
         const target = aliveEnemies[Math.floor(Math.random() * aliveEnemies.length)];
         
+        const skill = this.selectSkill(hero);
+        
         this.showAttackAnimation(hero, target, () => {
-            const damageResult = BattleManager.getInstance().calculateDamage(hero, target);
+            let damageResult;
+            let skillName = null;
+            
+            if (skill && skill.canUse()) {
+                skill.use();
+                skillName = skill.name;
+                damageResult = BattleManager.getInstance().calculateDamageWithSkill(hero, target, skill);
+            } else {
+                damageResult = BattleManager.getInstance().calculateDamage(hero, target);
+            }
+            
             hero.attackTarget(target, damageResult);
             
-            this.showDamage(target, damageResult);
+            this.showDamage(target, damageResult, skillName);
             this.updateHPBar(target);
             
             this.time.delayedCall(300, () => {
@@ -178,7 +190,19 @@ class BattleScene extends Phaser.Scene {
         });
     }
 
-    showDamage(hero, result) {
+    selectSkill(hero) {
+        if (!hero.skills || hero.skills.length === 0) return null;
+        
+        const activeSkills = hero.skills.filter(s => s.type === 'active' && s.canUse());
+        if (activeSkills.length === 0) return null;
+        
+        if (Math.random() < 0.3) {
+            return activeSkills[Math.floor(Math.random() * activeSkills.length)];
+        }
+        return null;
+    }
+
+    showDamage(hero, result, skillName = null) {
         const x = hero.sprite.x;
         const y = hero.sprite.y - 80;
         

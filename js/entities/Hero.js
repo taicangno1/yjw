@@ -19,6 +19,8 @@ class Hero {
         this.comboRate = data.comboRate;
         
         this.equipment = data.equipment || [null, null, null, null];
+        this.skills = data.skills || getHeroSkills(data.id);
+        this.buffs = [];
         
         this._currentHp = this.hp;
         this._isDead = false;
@@ -28,6 +30,35 @@ class Hero {
         this.nameText = null;
     }
 
+    addBuff(buff) {
+        this.buffs.push(buff);
+    }
+
+    tickBuffs() {
+        this.buffs.forEach(buff => buff.tick());
+        this.buffs = this.buffs.filter(buff => !buff.isExpired());
+    }
+
+    getAttackBonus() {
+        let bonus = 0;
+        this.buffs.forEach(buff => {
+            if (buff.type === 'buff_attack' || buff.type === 'buff_all_attack') {
+                bonus += buff.value;
+            }
+        });
+        return bonus;
+    }
+
+    getDefenseBonus() {
+        let bonus = 0;
+        this.buffs.forEach(buff => {
+            if (buff.type === 'buff_defense') {
+                bonus += buff.value;
+            }
+        });
+        return bonus;
+    }
+
     getTotalAttack() {
         let baseAttack = this.attack;
         this.equipment.forEach(equip => {
@@ -35,7 +66,17 @@ class Hero {
                 baseAttack += equip.getTotalAttackBonus();
             }
         });
-        return baseAttack;
+        return Math.floor(baseAttack * (1 + this.getAttackBonus()));
+    }
+
+    getTotalDefense() {
+        let baseDefense = this.defense;
+        this.equipment.forEach(equip => {
+            if (equip) {
+                baseDefense += equip.getTotalDefenseBonus();
+            }
+        });
+        return Math.floor(baseDefense * (1 + this.getDefenseBonus()));
     }
 
     getTotalDefense() {
