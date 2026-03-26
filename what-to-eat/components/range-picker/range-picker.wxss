@@ -1,0 +1,40 @@
+.range-picker {
+  display: flex;
+  justify-content: space-between;
+}
+
+.range-item {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  background: white;
+  margin: 0 8rpx;
+  border-radius: 44rpx;
+  border: 2rpx solid #F0F0F0;
+  transition: all 0.3s ease;
+}
+
+.range-item:first-child {
+  margin-left: 0;
+}
+
+.range-item:last-child {
+  margin-right: 0;
+}
+
+.range-item.active {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8E53 100%);
+  border-color: #FF6B35;
+  box-shadow: 0 4rpx 16rpx rgba(255, 107, 53, 0.3);
+}
+
+.range-text {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #666;
+}
+
+.range-item.active .range-text {
+  color: white;
+}

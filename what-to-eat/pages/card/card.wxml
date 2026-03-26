@@ -1,0 +1,52 @@
+<view class="container">
+  <view class="header">
+    <view class="header-left" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="header-title">翻牌选餐</text>
+    <view class="header-right">
+      <text class="flip-count">{{flippedCount}} / {{totalCount}}</text>
+    </view>
+  </view>
+
+  <view class="card-grid">
+    <block wx:for="{{merchants}}" wx:key="id">
+      <view 
+        class="card-wrapper {{item.flipped ? 'flipped' : ''}}" 
+        bindtap="flipCard" 
+        data-index="{{index}}"
+      >
+        <view class="card-inner">
+          <view class="card-front">
+            <text class="question-mark">?</text>
+            <text class="card-hint">点击翻牌</text>
+          </view>
+          <view class="card-back">
+            <image class="merchant-cover" src="{{item.cover}}" mode="aspectFill" />
+            <view class="merchant-info">
+              <text class="merchant-name">{{item.name}}</text>
+              <view class="merchant-meta">
+                <text class="rating">⭐ {{item.rating}}</text>
+                <text class="sales">月售{{item.monthlySales}}</text>
+              </view>
+              <view class="merchant-tags">
+                <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag">{{tag}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="bottom-bar" wx:if="{{currentMerchant}}">
+    <view class="current-merchant">
+      <image class="current-cover" src="{{currentMerchant.cover}}" mode="aspectFill" />
+      <view class="current-info">
+        <text class="current-name">{{currentMerchant.name}}</text>
+        <text class="current-distance">{{currentMerchant.distance}}km</text>
+      </view>
+    </view>
+    <button class="confirm-btn" bindtap="showConfirm">选这家</button>
+  </view>
+</view>

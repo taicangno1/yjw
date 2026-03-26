@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "merchant-card": "/components/merchant-card/merchant-card"
+  }
+}

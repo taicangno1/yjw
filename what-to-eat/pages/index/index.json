@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "range-picker": "/components/range-picker/range-picker"
+  }
+}

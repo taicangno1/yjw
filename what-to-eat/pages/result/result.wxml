@@ -1,0 +1,55 @@
+<view class="container">
+  <view class="header">
+    <image class="cover" src="{{merchant.cover}}" mode="aspectFill" />
+    <view class="cover-overlay">
+      <text class="title">就是这家了!</text>
+    </view>
+  </view>
+
+  <view class="merchant-detail">
+    <view class="merchant-header">
+      <image class="merchant-logo" src="{{merchant.logo}}" mode="aspectFill" />
+      <view class="merchant-info">
+        <text class="merchant-name">{{merchant.name}}</text>
+        <view class="merchant-tags">
+          <text class="tag" wx:for="{{merchant.tags}}" wx:for-item="tag">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="stats-row">
+      <view class="stat-item">
+        <text class="stat-value">⭐ {{merchant.rating}}</text>
+        <text class="stat-label">评分</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{merchant.monthlySales}}</text>
+        <text class="stat-label">月售</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{merchant.distance}}km</text>
+        <text class="stat-label">距离</text>
+      </view>
+    </view>
+
+    <view class="info-row">
+      <text class="info-label">起送价</text>
+      <text class="info-value">¥{{merchant.minOrder}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">配送费</text>
+      <text class="info-value">¥{{merchant.shippingFee}}</text>
+    </view>
+  </view>
+
+  <view class="action-bar">
+    <button class="btn-retry" bindtap="retry">
+      <text class="btn-icon">↩</text>
+      <text>重新选择</text>
+    </button>
+    <button class="btn-confirm" bindtap="goToMeituan">
+      <text class="btn-icon">→</text>
+      <text>就选这家</text>
+    </button>
+  </view>
+</view>

@@ -1,0 +1,11 @@
+<view class="range-picker">
+  <block wx:for="{{ranges}}" wx:key="value">
+    <view 
+      class="range-item {{selected === index ? 'active' : ''}}" 
+      bindtap="selectRange" 
+      data-index="{{index}}"
+    >
+      <text class="range-text">{{item.label}}</text>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,14 @@
+<view class="merchant-card {{flipped ? 'flipped' : ''}}" bindtap="onTap">
+  <view class="card-inner">
+    <view class="card-front">
+      <text class="question-mark">?</text>
+    </view>
+    <view class="card-back">
+      <image class="cover" src="{{merchant.cover}}" mode="aspectFill" />
+      <view class="info">
+        <text class="name">{{merchant.name}}</text>
+        <text class="rating">⭐ {{merchant.rating}}</text>
+      </view>
+    </view>
+  </view>
+</view>

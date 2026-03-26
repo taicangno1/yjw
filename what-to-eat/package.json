@@ -1,0 +1,13 @@
+{
+  "name": "今天吃什么",
+  "version": "1.0.0",
+  "description": "翻牌选餐小程序，帮助用户随机选择附近外卖商家",
+  "main": "app.js",
+  "scripts": {
+    "dev": "echo '请在微信开发者工具中打开此项目'",
+    "build": "echo '请在微信开发者工具中构建此项目'"
+  },
+  "keywords": ["微信小程序", "外卖", "美食", "随机选择"],
+  "author": "",
+  "license": "MIT"
+}
