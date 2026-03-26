@@ -2,44 +2,56 @@ const { RANGE_OPTIONS } = require('../../utils/constants');
 
 Page({
   data: {
-    locationText: '点击获取定位',
+    locationText: '请选择您的位置',
     ranges: RANGE_OPTIONS,
     selectedRange: 1,
-    canStart: false
+    canStart: true,
+    showAddressModal: false,
+    inputAddress: '',
+    selectedCity: ''
   },
 
   onLoad() {
-    this.getLocation();
+    const app = getApp();
+    this.setData({
+      canStart: true,
+      selectedCity: app.globalData.selectedCity || ''
+    });
   },
 
-  getLocation() {
-    wx.getLocation({
-      type: 'gcj02',
-      success: (res) => {
-        this.setData({
-          locationText: '未知位置（模拟数据）',
-          canStart: true
-        });
-        getApp().globalData.location = res;
-      },
-      fail: () => {
-        wx.showModal({
-          title: '定位失败',
-          content: '请允许定位权限，以便查找附近商家',
-          confirmText: '重新获取',
-          success: (res) => {
-            if (res.confirm) {
-              this.getLocation();
-            } else {
-              this.setData({
-                locationText: '未获取定位（可继续使用）',
-                canStart: true
-              });
-            }
-          }
-        });
-      }
+  openAddressModal() {
+    this.setData({ showAddressModal: true });
+  },
+
+  closeAddressModal() {
+    this.setData({ showAddressModal: false });
+  },
+
+  onAddressInput(e) {
+    this.setData({ inputAddress: e.detail.value });
+  },
+
+  onCityChange(e) {
+    this.setData({ selectedCity: e.detail.value });
+  },
+
+  confirmAddress() {
+    const { inputAddress, selectedCity } = this.data;
+    if (!selectedCity && !inputAddress) {
+      wx.showToast({ title: '请选择城市或输入地址', icon: 'none' });
+      return;
+    }
+    
+    const locationText = inputAddress || selectedCity;
+    this.setData({
+      locationText,
+      showAddressModal: false,
+      canStart: true
     });
+    
+    const app = getApp();
+    app.globalData.selectedCity = selectedCity;
+    app.globalData.inputAddress = inputAddress;
   },
 
   onRangeSelect(e) {

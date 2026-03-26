@@ -5,14 +5,14 @@
     <text class="subtitle">翻一翻，发现附近美食</text>
   </view>
 
-  <view class="location-card">
+  <view class="location-card" bindtap="openAddressModal">
     <view class="location-header">
       <text class="location-icon">📍</text>
       <text class="location-label">当前位置</text>
     </view>
     <view class="location-info">
       <text class="location-text">{{locationText}}</text>
-      <text class="reget-btn" bindtap="getLocation">重新定位</text>
+      <text class="change-btn">修改</text>
     </view>
   </view>
 
@@ -25,11 +25,37 @@
     />
   </view>
 
-  <button 
-    class="start-btn {{canStart ? '' : 'disabled'}}" 
-    bindtap="startChoosing"
-    disabled="{{!canStart}}"
-  >
+  <button class="start-btn" bindtap="startChoosing">
     开始选餐
   </button>
+
+  <view class="modal-mask {{showAddressModal ? 'show' : ''}}" bindtap="closeAddressModal">
+    <view class="modal-content" catchtap="noop">
+      <view class="modal-header">
+        <text class="modal-title">选择地址</text>
+        <text class="modal-close" bindtap="closeAddressModal">×</text>
+      </view>
+      
+      <view class="modal-body">
+        <picker mode="region" bindchange="onCityChange" value="{{selectedCity}}">
+          <view class="picker-row">
+            <text class="picker-label">选择城市</text>
+            <text class="picker-value">{{selectedCity || '请选择城市'}}</text>
+          </view>
+        </picker>
+        
+        <view class="input-row">
+          <text class="input-label">输入详细地址</text>
+          <input 
+            class="address-input" 
+            placeholder="如：朝阳区三里屯" 
+            value="{{inputAddress}}"
+            bindinput="onAddressInput"
+          />
+        </view>
+      </view>
+      
+      <button class="confirm-address-btn" bindtap="confirmAddress">确认</button>
+    </view>
+  </view>
 </view>

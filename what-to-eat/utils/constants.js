@@ -5,7 +5,7 @@ const RANGE_OPTIONS = [
   { label: '15km', value: 15 }
 ];
 
-const MEITUAN_APP_ID = 'wxf17dccd5cc2a8xxx';
+const MEITUAN_APP_ID = 'wx2c348cf579062e56';
 
 module.exports = {
   RANGE_OPTIONS,
