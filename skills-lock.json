@@ -19,6 +19,12 @@
       "skillPath": "skills/co-op-game-intro-generator/SKILL.md",
       "computedHash": "d57dd7c53f27140d383427a9d28bad044bbaf5af5958a3229eae9ce6c26d3293"
     },
+    "creative-director": {
+      "source": "smixs/creative-director-skill",
+      "sourceType": "github",
+      "skillPath": "creative-director/SKILL.md",
+      "computedHash": "6d21d29aade0c27382b901eff08af0d67cc127e797b6c133485af82a1106d3ab"
+    },
     "h3-prompt-writing": {
       "source": "MiniMax-AI/MiniMax-H3",
       "sourceType": "github",
